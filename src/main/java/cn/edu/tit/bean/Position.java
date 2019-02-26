@@ -9,7 +9,7 @@ package cn.edu.tit.bean;
  */
 public class Position {
 	private String id; //职位ID
-	private String organization; //单位
+	private String organization; //单位Id
 	private String recruitId; //招聘ID
 	private String positonName; //职位名称
 	@Override

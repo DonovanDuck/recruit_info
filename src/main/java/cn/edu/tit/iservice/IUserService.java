@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.tit.bean.Apply;
+import cn.edu.tit.bean.Position;
 import cn.edu.tit.bean.RecruitInfo;
 import cn.edu.tit.bean.User;
 
@@ -81,4 +82,18 @@ public interface IUserService {
 	 * @return 按照单位名查找招聘信息
 	 */
 	public List<RecruitInfo> searchRecruit(String search);
+
+	/**
+	 *@author LiMing
+	 * @param organizationId
+	 * @return 获取单位职位
+	 */
+	public List<Position> getPosition(String string);
+
+	/**
+	 *@author LiMing
+	 * @param employeeNum
+	 * @return 返回用户实体
+	 */
+	public User getUserById(String employeeNum);
 }
