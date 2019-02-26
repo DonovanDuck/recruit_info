@@ -11,6 +11,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONObject;
+
+import cn.edu.tit.bean.Apply;
 import cn.edu.tit.bean.RecruitInfo;
 import cn.edu.tit.bean.User;
 import cn.edu.tit.common.Common;
@@ -32,7 +36,7 @@ import cn.edu.tit.iservice.IUserService;
 @Controller
 public class UserController {
 	@Autowired
-	private IUserService iUserService;
+	private IUserService userService;
 
 	@RequestMapping(value="toMainPage",method= {RequestMethod.GET})
 	public ModelAndView toMainPage(HttpServletRequest request) throws Exception {
@@ -42,7 +46,7 @@ public class UserController {
 		//		String publisherId = publisher.getUserId();
 		try {
 			//获取招聘信息
-			list = iUserService.getRecruitInfo(null);
+			list = userService.getRecruitInfo(null);
 			mv.addObject("list",list);
 			mv.setViewName("/jsp/mainJsp");//设置返回页面
 		} catch (Exception e) {
@@ -58,7 +62,7 @@ public class UserController {
 		List<RecruitInfo> list = new ArrayList<RecruitInfo>();
 		try {
 			//获取招聘信息
-			list = iUserService.searchRecruit(search);
+			list = userService.searchRecruit(search);
 			mv.addObject("list",list);
 			mv.setViewName("/jsp/mainJsp");//设置返回页面
 		} catch (Exception e) {
@@ -105,16 +109,131 @@ public class UserController {
 			{
 				recruit.setAccessory(returnFileList.get(0).getPath());
 			}
-			iUserService.publishRcruit(recruit);
+			userService.publishRcruit(recruit);
 			mv = toMainPage(request);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return mv;
 	}
+	
+	/**
+	 * 添加用户
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="addUser")
+	public ModelAndView addUser(HttpServletRequest request){
+		ModelAndView mv = new ModelAndView();
+		try {
+			User user = new User();
+			user.setUserId(Common.uuid());
+			user.setPassword("123456");
+			user.setOrganizationName(request.getParameter("organization"));
+			user.setUserName(request.getParameter("userName"));
+			user.setWechartNum(request.getParameter("weChat"));
+			userService.addUser(user);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return toUserInfo(request);
+	}
 
 	/**
-	 * @author Liming
+	 * 跳转到用户列表
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="toUserInfo")
+	public ModelAndView toUserInfo(HttpServletRequest request){
+		ModelAndView mv = new ModelAndView();
+		try {
+			List<User> userList = userService.getUser();
+			mv.addObject("userList", userList);
+			mv.setViewName("/jsp/userInfo");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return mv;
+	}
+	
+	/**
+	 * 修改用户密码
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="modifyPassword")
+	public ModelAndView modifyPassword(HttpServletRequest request){
+		ModelAndView mv = new ModelAndView();
+		String userId = "";
+		String password = "";
+		try {
+			//获取用户id
+			 userId = (String) request.getSession().getAttribute("userId");
+			 password = request.getParameter("newPassword");
+			if(!"".equals(userId) || !"".equals(password)){
+				userService.modifyPassword(userId, password);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return mv;
+	}
+	
+	
+	/**
+	 * 校验用户原密码
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="ajaxCheckPassword")
+	public void ajaxCheckPassword(HttpServletRequest request, HttpServletResponse response){
+		try {
+			//校验密码
+//			String userId = (String) request.getSession().getAttribute("userId");
+			String userId = "1";
+			String password = request.getParameter("password");
+			String result = "";
+			Boolean isRight = userService.checkPassword(userId, password);
+			if(isRight)
+				result = JSONObject.toJSONString("OK");
+			else
+				result = JSONObject.toJSONString("ERROR");
+			response.getWriter().println(result);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 读取用户报名表
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="readApply")
+	public ModelAndView readApply(HttpServletRequest request){
+		ModelAndView mv = new ModelAndView();
+		String applyId = request.getParameter("applyId");
+		try {
+			//通过applyId获取报名表
+			Apply apply = userService.getApplyById("1");
+			if(apply != null){
+				request.setAttribute("apply",apply);
+			}
+			mv.setViewName("/jsp/userApplySituation");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return mv;
+	}
+	
+	/** @author Liming
 	 * @param 前台获取的时间格式 
 	 * 返回 Timestamp 格式时间
 	 * */

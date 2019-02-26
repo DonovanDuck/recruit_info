@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import cn.edu.tit.bean.Apply;
 import cn.edu.tit.bean.RecruitInfo;
 import cn.edu.tit.bean.User;
 import cn.edu.tit.common.Common;
@@ -29,8 +30,8 @@ public class UserServiceImpl implements IUserService {
 	 * 增加用户信息
 	 * */
 	@Override
-	public void addUser() throws Exception {
-
+	public void addUser(User user) throws Exception {
+		iUserDao.addUser(user);
 	}
 
 	/**
@@ -96,4 +97,43 @@ public class UserServiceImpl implements IUserService {
 		}
 		return list;
 	}
+
+	@Override
+	public List<User> getUser() {
+		
+		return iUserDao.getUser();
+	}
+
+	@Override
+	public void modifyPassword(String userId, String password) {
+		// TODO Auto-generated method stub
+		iUserDao.modifyPassword(userId, password);
+	}
+
+	@Override
+	public Boolean checkPassword(String userId, String password) {
+		try {
+			User user = iUserDao.getUserByIdAndPs(userId, password);
+			if(user != null) 
+				return true; 
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public Apply getApplyById(String applyId) {
+		// TODO Auto-generated method stub
+		return iUserDao.getApplyById(applyId);
+	}
+
+	@Override
+	public User getUser(String userId, String password) {
+		// TODO Auto-generated method stub
+		return iUserDao.getUserByIdAndPs(userId, password);
+	}
+
+
 }
