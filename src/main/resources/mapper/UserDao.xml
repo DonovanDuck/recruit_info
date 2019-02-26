@@ -2,5 +2,65 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.tit.idao.IUserDao">
-
+	<!-- 结果集映射 -->
+	<resultMap type="cn.edu.tit.bean.RecruitInfo"
+		id="recruitInfo">
+		<id column="recruit_id" property="recruitId" />
+		<result column="organization" property="organization" />
+		<result column="recruit_info" property="recruitInfo" />
+		<result column="accessory" property="accessory" />
+		<result column="start_time" property="startTime" />
+		<result column="end_time" property="endTime" />
+		<result column="publisher" property="publisher" />
+		<result column="publish_time" property="publishTime" />
+	</resultMap>
+	<!-- 添加资源到资源库 -->
+	<insert id="publishRcruit"
+		parameterType="cn.edu.tit.bean.RecruitInfo">
+		INSERT INTO
+		recruit_info
+		(recruit_id,
+		organization,
+		recruit_info,
+		accessory,
+		start_time,
+		end_time,
+		publisher,
+		publish_time)
+		VALUES
+		(#{recruitId},
+		#{organization},
+		#{recruitInfo},
+		#{accessory},
+		#{startTime},
+		#{endTime},
+		#{publisher},
+		#{publishTime});
+	</insert>
+	<select id="getRecruitInfo" parameterType="String"
+		resultMap="recruitInfo">
+		SELECT recruit_id,
+		organization,
+		recruit_info,
+		accessory,
+		start_time,
+		end_time,
+		publish_time,
+		recruit_info from recruit_info
+		<if test="publisherId != null">where publisher = #{publisherId}</if>
+		;
+	</select>
+	<select id="searchRecruit" parameterType="String"
+		resultMap="recruitInfo">
+		SELECT recruit_id,
+		recruit_info,
+		accessory,
+		organization,
+		publisher,
+		start_time,
+		end_time,
+		publish_time,
+		recruit_info from recruit_info where organization = #{search}
+		;
+	</select>
 </mapper>
