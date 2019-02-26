@@ -1,11 +1,15 @@
 package cn.edu.tit.controller;
 
 import java.io.File;
-import java.sql.Date;
+
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -252,7 +256,46 @@ public class UserController {
 			e.printStackTrace();  
 		} 
 		return ts;
-
+	}
+	@RequestMapping(value = "toSignInInfo")
+	public ModelAndView toSignInInfo(HttpServletRequest request,@RequestParam(value="recruitId")String recruitId) {
+		
+		ModelAndView mv = new ModelAndView();
+		List<Apply> applList = new ArrayList<Apply>();
+		Integer numAll, numAllToday ,numDoctor,numDoctorToday,numMaster,numMasterToday,numBachelor,numBachelorToday,numInSide,numInSideToday;
+		//获取今日时间
+		Date date = new Date();// 取时间
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		calendar.add(calendar.DATE, 0);// 把日期往后增加一天.整数往后推,负数往前移动
+		date = calendar.getTime(); // 这个时间就是日期往后推一天的结果
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String dateString = formatter.format(date);
+		numAllToday = userService.applyNumToday(recruitId,dateString); //今天报名人数
+		numAll = userService.applyNum(recruitId);//总报名人数
+		numBachelor = userService.applyNumBachelor(recruitId);
+		numBachelorToday = userService.applyNumBachelorToday(recruitId, dateString);
+		numMaster = userService.applyNumMaster(recruitId);
+		numMasterToday = userService.applyNumMasterToday(recruitId, dateString);
+		numDoctor = userService.applyNumDoctor(recruitId);
+		numDoctorToday = userService.applyNumDoctorToday(recruitId, dateString);
+		numInSide = userService.applyNumInSide(recruitId);
+		numInSideToday = userService.applyNumInSideToday(recruitId, dateString);
+		applList = userService.applyList(recruitId);//报名表
+		
+		mv.addObject("applList",applList);
+		mv.addObject("numInSideToday",numInSideToday);
+		mv.addObject("numInSide",numInSide);
+		mv.addObject("numDoctorToday",numDoctorToday);
+		mv.addObject("numMaster",numMaster);
+		mv.addObject("numMasterToday",numMasterToday);
+		mv.addObject("numBachelorToday",numBachelorToday);
+		mv.addObject("numBachelor",numBachelor);
+		mv.addObject("numAll",numAll);
+		mv.addObject("numAllToday",numAllToday);
+		mv.setViewName("/jsp/application_status");
+		return mv;
+		
 	}
 
 }
