@@ -28,8 +28,7 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/Admin/css/materialize.min.css"
 	media="screen,projection" />
-<link
-	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+<link href="${pageContext.request.contextPath}/css/Admin/bootstrap.css"
 	rel="stylesheet">
 <link
 	href="${pageContext.request.contextPath}/css/Admin/custom-styles.css"
@@ -60,65 +59,6 @@
 		$('#dataTables-example').dataTable();
 	});
 </script>
-<!-- <script type="text/javascript">
-	function getRowValue(element) {
-		//this做为参数传过来是方法中的element,parentNode就是获取父节点，获取了连个父节点，就相当于获取了tr
-		var node = element.parentNode.parentNode;
-		//给每一个input框赋值，node.children[0].innerHTML,node就是tr，tr的子类有多个【0】根据下标取值
-		document.getElementById("teacherId").value = node.children[1].innerHTML;
-		document.getElementById("teacherIdB").value = node.children[1].innerHTML;
-		document.getElementById("teacherName").value = node.children[2].innerHTML;
-		if (node.children[4].innerHTML == "男") {
-			document.getElementById('select').options[0].selected = true;
-		} else {
-			document.getElementById('select').options[1].selected = true;
-		}
-	}
-</script> -->
-<script type="text/javascript">
-	function check() {
-		var uid = $("#file_excel").val();
-		if (uid == null || uid == "") {
-			alert("文件为空");
-			return false;
-		}
-		return true;
-	}
-</script>
-<!-- <script type="text/javascript">
-	function checkTwo() {
-		var teacherId = $("#teacherId").val();
-		var teacherIdB = $("#teacherIdB").val();
-		var judge = true;
-		path = "${pageContext.request.contextPath}/admin/verificationTeacherId/"
-				+ teacherId;
-		if (teacherId != teacherIdB) {
-			$.ajax({
-				async : false,
-				cache : false,
-				url : path,
-				scriptCharset : 'UTF-8',
-				success : function(msg) {
-					if (!isEmpty(msg)) {
-						alert(msg);
-						judge = false;
-					}
-				}
-			});
-		}
-		return judge;
-	}
-</script> -->
-<script type="text/javascript">
-	//判断字符是否为空的方法
-	function isEmpty(obj) {
-		if (obj == null||obj == "null") {
-			return true;
-		}else{
-			return false;
-		}
-	}
-</script>
 </head>
 <body>
 	<div id="wrapper">
@@ -147,61 +87,78 @@
 		<div id="page-wrapper">
 			<div id="page-inner">
 				<div class="col-md-12">
-					<!-- Advanced Tables -->
 					<div class="card">
 						<div class="card-content " style="padding-top: 0%">
 							<div class="table-responsive" style="overflow-x: hidden;">
 								<hr>
-								<table class="table table-striped table-bordered table-hover"
-									id="dataTables-example">
+								<form action="${pageContext.request.contextPath}/user/searchRecruit" enctype="multipart/form-data">
+									<div class="col-md-6">
+										<div class="col-md-4">
+											<input type="text" class="form-control" id="search"
+												name="search" placeholder="单位名搜索">
+										</div>
+										<div class="col-md-2">
+											<button type="submit" class="btn btn-primary btn-sm">搜索
+											</button>
+										</div>
+									</div>
+								</form>
+								<div class="col-md-6 text-right">
+									<a
+										href="${pageContext.request.contextPath}/user/toPublishRcruitPage"
+										style="font-size: 20px">
+										<button type="button" class="btn btn-primary ">发布招聘信息
+										</button>
+									</a>
+								</div>
+								<table class="table table-bordered " style="margin-top: 5%">
 									<thead>
 										<tr>
 											<th class="text-center">编号</th>
-											<th class="text-center">工号</th>
-											<th class="text-center">姓名</th>
-											<th class="text-center">昵称</th>
-											<th class="text-center">性别</th>
-											<th class="text-center">系部</th>
-											<th class="text-center">状态</th>
-											<th class="text-center">密码</th>
-											<th></th>
+											<th class="text-center">单位</th>
+											<th class="text-center">招聘信息</th>
+											<th class="text-center">报名开始时间</th>
+											<th class="text-center">报名截止时间</th>
+											<th class="text-center">详细信息</th>
 										</tr>
 									</thead>
 									<tbody id="asds">
-										<tr>
-											<td class="text-center">11</td>
-											<td class="text-center">22</td>
-											<td class="text-center">33</td>
-											<td class="text-center">44</td>
-											<td class="text-center">55</td>
-											<td class="text-center">66</td>
-											<!--教师系部-->
-
-											<td class="text-center">77</td>
-											<!--教师状态-->
-											<td class="text-center"><a href=""
-												class="waves-effect waves-dark" style="font-size: 20px">
-													<button type="button" class="btn btn-default btn-lg"
-														style="padding-top: 4%;">
-														<small>重置</small>
-													</button>
-											</a></td>
-											<td class="text-center">
-												<button id="edit" type="button"
-													class="btn btn-default btn-lg" data-toggle="modal"
-													data-target="#Edit" id="" style="padding-top: 2%;"
-													onclick="getRowValue(this)">
-													<small>编辑</small>
-												</button>
-												<button type="button" class="btn btn-default btn-lg"
-													data-toggle="modal" data-target="#"
-													style="padding-top: 2%;">
-													<small>详情</small>
-												</button>
-											</td>
-										</tr>
+										<c:forEach items="${list }" var="list" varStatus="status">
+											<tr>
+												<td class="text-center" style="padding-top:1%;">${requestScope.offset+status.index}</td>
+												<td class="text-center" style="padding-top:1%;">${list.organization }</td>
+												<td class="text-center" style="padding-top:1%;">${list.recruitInfo }</td>
+												<td class="text-center" style="padding-top:1%;">${list.startTime }</td>
+												<td class="text-center" style="padding-top:1%;">${list.endTime }</td>
+												<td class="text-center"><a href="${pageContext.request.contextPath}/.."
+													class="waves-effect waves-dark" style="font-size: 20px">
+														<button type="button" class="btn btn-default btn-lg"
+															style="padding-top: 4%;">
+															<small>查看报名情况</small>
+														</button>
+												</a></td>
+											</tr>
+										</c:forEach>
 									</tbody>
 								</table>
+								<div class="col-md-12">
+									<div class="col-md-4">
+										<ul class="pagination">
+											<li><a href="#" aria-label="Previous"> <span
+													aria-hidden="true">&laquo;</span>
+											</a></li>
+											<li><a href="#">1</a></li>
+											<li><a href="#">2</a></li>
+											<li><a href="#">3</a></li>
+											<li><a href="#">4</a></li>
+											<li><a href="#">5</a></li>
+											<li><a href="#" aria-label="Next"> <span
+													aria-hidden="true">&raquo;</span>
+											</a></li>
+										</ul>
+									</div>
+									<div class="col-md-8"></div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -209,51 +166,5 @@
 			</div>
 		</div>
 	</div>
-	<div class="modal" id="Edit" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="myModalLabel">编辑教师信息</h4>
-				</div>
-				<div class="modal-body">
-					<div class="modal-body">
-						<form role="form" id="updateInfo"
-							action="${pageContext.request.contextPath}/.."
-							onsubmit="return checkTwo()">
-							<div class="form-group">
-								<label for="teacherId" class="control-label">教师工号</label> <input
-									type="text" class="form-control" id="teacherId"
-									name="teacherId"> <input type="text"
-									style="display: none" id="teacherIdB" name="teacherIdB" />
-							</div>
-							<div class="form-group">
-								<label for="teacherName" class="control-label">教师姓名</label> <input
-									type="text" class="form-control" id="teacherName"
-									name="teacherName">
-							</div>
-							<div class="form-group">
-								<label class="control-label">教师性别</label> <select
-									class="form-control" id="select" name="select">
-									<option>男</option>
-									<option>女</option>
-								</select>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default"
-									data-dismiss="modal" style="margin-left: 2%">关闭</button>
-								<button type="submit" class="btn btn-primary" id="submitButton">提交</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal -->
 </body>
-
 </html>
