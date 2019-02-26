@@ -28,6 +28,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONObject;
+
+import cn.edu.tit.bean.Apply;
 import cn.edu.tit.bean.User;
 import cn.edu.tit.common.Common;
 import cn.edu.tit.iservice.IUserService;
@@ -36,11 +39,12 @@ import net.sf.json.JSONArray;
  * @author LiMing
  * 管理员Controller层
  */
-@RequestMapping("/admin")
+
 @Controller
+@RequestMapping("/admin")
 public class UserController {
 	@Autowired
-	private IUserService iAdminService;
+	private IUserService userService;
 
 
 	/**
@@ -81,5 +85,121 @@ public class UserController {
 		mv.addObject("readResult", readResult);//返回信息
 		return mv;
 	}
+	
+	/**
+	 * 添加用户
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="addUser")
+	public ModelAndView addUser(HttpServletRequest request){
+		ModelAndView mv = new ModelAndView();
+		try {
+			User user = new User();
+			user.setUserId(Common.uuid());
+			user.setPassword("123456");
+			user.setOrganizationName(request.getParameter("organization"));
+			user.setUserName(request.getParameter("userName"));
+			user.setWechartNum(request.getParameter("weChat"));
+			userService.addUser(user);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return toUserInfo(request);
+	}
 
+	/**
+	 * 跳转到用户列表
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="toUserInfo")
+	public ModelAndView toUserInfo(HttpServletRequest request){
+		ModelAndView mv = new ModelAndView();
+		try {
+			List<User> userList = userService.getUser();
+			mv.addObject("userList", userList);
+			mv.setViewName("/jsp/userInfo");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return mv;
+	}
+	
+	/**
+	 * 修改用户密码
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="modifyPassword")
+	public ModelAndView modifyPassword(HttpServletRequest request){
+		ModelAndView mv = new ModelAndView();
+		String userId = "";
+		String password = "";
+		try {
+			//获取用户id
+			 userId = (String) request.getSession().getAttribute("userId");
+			 password = request.getParameter("newPassword");
+			if(!"".equals(userId) || !"".equals(password)){
+				userService.modifyPassword(userId, password);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return mv;
+	}
+	
+	
+	/**
+	 * 校验用户原密码
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="ajaxCheckPassword")
+	public void ajaxCheckPassword(HttpServletRequest request, HttpServletResponse response){
+		try {
+			//校验密码
+//			String userId = (String) request.getSession().getAttribute("userId");
+			String userId = "1";
+			String password = request.getParameter("password");
+			String result = "";
+			Boolean isRight = userService.checkPassword(userId, password);
+			if(isRight)
+				result = JSONObject.toJSONString("OK");
+			else
+				result = JSONObject.toJSONString("ERROR");
+			response.getWriter().println(result);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 读取用户报名表
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="readApply")
+	public ModelAndView readApply(HttpServletRequest request){
+		ModelAndView mv = new ModelAndView();
+		String applyId = request.getParameter("applyId");
+		try {
+			//通过applyId获取报名表
+			Apply apply = userService.getApplyById("1");
+			if(apply != null){
+				request.setAttribute("apply",apply);
+			}
+			mv.setViewName("/jsp/userApplySituation");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return mv;
+	}
+	
 }

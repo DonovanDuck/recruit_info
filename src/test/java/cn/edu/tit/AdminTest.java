@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.alibaba.fastjson.JSONObject;
+
 import cn.edu.tit.bean.User;
 import cn.edu.tit.idao.IUserDao;
 import cn.edu.tit.iservice.IUserService;
@@ -23,10 +25,11 @@ public class AdminTest {
 	private IUserService iadminService;
 
 	@Resource
-	private IUserDao iAdminDao;
+	private IUserDao userDao;
 
 	@Test
 	public void Test() {
+		System.out.println(userDao.getApplyById("1"));
 	}
 }
 
