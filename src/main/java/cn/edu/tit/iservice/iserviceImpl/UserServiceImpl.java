@@ -80,24 +80,6 @@ public class UserServiceImpl implements IUserService {
 		return list;
 	}
 
-	/**
-	 * @author LiMing
-	 * @param 单位名
-	 * @return 按照单位名查找招聘信息
-	 */
-	@Override
-	public List<RecruitInfo> searchRecruit(String search) {
-		List<RecruitInfo> list =new ArrayList<RecruitInfo>();
-		try {
-			list = iUserDao.searchRecruit(search);
-			System.out.println("searchRecruit-------------执行成功");
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("searchRecruit-------------执行失败");
-			list = null;
-		}
-		return list;
-	}
 
 	@Override
 	public List<User> getUser() {

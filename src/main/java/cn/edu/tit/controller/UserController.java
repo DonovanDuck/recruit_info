@@ -56,23 +56,6 @@ public class UserController {
 		}
 		return mv;
 	}
-
-	@RequestMapping(value="searchRecruit",method= {RequestMethod.GET})
-	public ModelAndView searchRecruit(HttpServletRequest request,@RequestParam(value="search") String search) throws Exception {
-		ModelAndView mv = new ModelAndView();
-		List<RecruitInfo> list = new ArrayList<RecruitInfo>();
-		try {
-			//获取招聘信息
-			list = userService.searchRecruit(search);
-			mv.addObject("list",list);
-			mv.setViewName("/jsp/mainJsp");//设置返回页面
-		} catch (Exception e) {
-			e.printStackTrace();
-			mv = null;
-		}
-		return mv;
-	}
-
 	@RequestMapping(value="toPublishRcruitPage",method= {RequestMethod.GET})
 	public ModelAndView toPublishRcruitPage(HttpServletRequest request) throws Exception {
 		ModelAndView mv = new ModelAndView();

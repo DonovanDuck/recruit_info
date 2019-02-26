@@ -78,13 +78,6 @@ public interface IUserService {
 
 	/**
 	 *@author LiMing
-	 * @param 单位名
-	 * @return 按照单位名查找招聘信息
-	 */
-	public List<RecruitInfo> searchRecruit(String search);
-
-	/**
-	 *@author LiMing
 	 * @param organizationId
 	 * @return 获取单位职位
 	 */
