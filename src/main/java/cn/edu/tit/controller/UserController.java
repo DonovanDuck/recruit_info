@@ -248,7 +248,6 @@ public class UserController {
 		}
 		return mv;
 	}
-
 	/** @author Liming
 	 * @param 前台获取的时间格式 
 	 * 返回 Timestamp 格式时间
@@ -267,6 +266,7 @@ public class UserController {
 			e.printStackTrace();  
 		} 
 		return ts;
+
 	}
 
 }

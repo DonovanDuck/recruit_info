@@ -12,7 +12,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.alibaba.fastjson.JSONObject;
 
 import cn.edu.tit.bean.RecruitInfo;
-
 import cn.edu.tit.bean.User;
 import cn.edu.tit.idao.IUserDao;
 import cn.edu.tit.iservice.IUserService;
@@ -31,11 +30,8 @@ public class UserTest {
 
 	@Test
 	public void Test() {
-		List<RecruitInfo> list = new ArrayList<RecruitInfo>();
-		list = iUserService.getRecruitInfo("111");
-		for (RecruitInfo recruitInfo : list) {
-			System.out.println(recruitInfo.toString());
-		}
-	}}
+
+	}
+}
 
 
