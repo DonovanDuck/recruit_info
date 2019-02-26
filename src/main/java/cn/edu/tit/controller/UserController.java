@@ -82,6 +82,11 @@ public class UserController {
 		return mv;
 	}
 	
-
+	@RequestMapping(value = "signInInfo")
+	@ResponseBody
+	public String signInInfo(HttpServletRequest request) {
+		//根据单位名称查找招聘信息
+		
+	}
 
 }
