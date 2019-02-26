@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.tit.bean.Apply;
+import cn.edu.tit.bean.RecruitInfo;
 import cn.edu.tit.bean.User;
 import cn.edu.tit.common.Common;
 import cn.edu.tit.idao.IUserDao;
@@ -17,7 +18,6 @@ import cn.edu.tit.iservice.IUserService;
 /**
  * @author LiMing
  * 管理员功能模块
- * 无返回值时返回Sting类型  msg 信息，在页面弹出信息可以利用
  * */
 @Service
 public class UserServiceImpl implements IUserService {
@@ -44,12 +44,58 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	/**
-	 * @author 
+	 *@author LiMing
+	 * @param recruit
 	 * 发布招聘信息
-	 * */
+	 */
 	@Override
-	public void publishRecuritInfo() throws Exception {
-		
+	public void publishRcruit(RecruitInfo recruit)throws Exception {
+		try {
+			iUserDao.publishRcruit(recruit);
+			System.out.println("publishRcruit-------------执行成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("publishRcruit-------------执行失败");
+		}
+	}
+
+	/**
+	 *@author LiMing
+	 * @param 当参数(publisherId)为空时,查询所有招聘信息.
+	 * @param 当参数(publisherId)不空时,条件查询该ID下的招聘信息
+	 * @return 获取所有招聘信息
+	 */
+	@Override
+	public List<RecruitInfo> getRecruitInfo(String publisherId) {
+		List<RecruitInfo> list =new ArrayList<RecruitInfo>();
+		try {
+			list = iUserDao.getRecruitInfo(publisherId);
+			System.out.println("getRecruitInfo-------------执行成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("getRecruitInfo-------------执行失败");
+			list = null;
+		}
+		return list;
+	}
+
+	/**
+	 * @author LiMing
+	 * @param 单位名
+	 * @return 按照单位名查找招聘信息
+	 */
+	@Override
+	public List<RecruitInfo> searchRecruit(String search) {
+		List<RecruitInfo> list =new ArrayList<RecruitInfo>();
+		try {
+			list = iUserDao.searchRecruit(search);
+			System.out.println("searchRecruit-------------执行成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("searchRecruit-------------执行失败");
+			list = null;
+		}
+		return list;
 	}
 
 	@Override
@@ -88,4 +134,6 @@ public class UserServiceImpl implements IUserService {
 		// TODO Auto-generated method stub
 		return iUserDao.getUserByIdAndPs(userId, password);
 	}
+
+
 }
