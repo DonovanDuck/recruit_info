@@ -3,4 +3,133 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.tit.idao.IUserDao">
 
+<resultMap type="cn.edu.tit.bean.User" id="userMap">
+		<id column="user_id" property="userId" />
+		<result column="user_name" property="userName" />
+		<result column="wechart_num" property="wechartNum" />
+		<result column="organization_name" property="organizationName" />
+		<result column="password" property="password" />
+</resultMap>
+
+<resultMap type="cn.edu.tit.bean.Apply" id="applyMap">
+		<id column="apply_id" property="applyId" />
+		<result column="apply_user_name" property="applyUserName" />
+		<result column="gender" property="gender" />
+		<result column="nation" property="nation" />
+		<result column="politics_status" property="politicsStatus" />
+		<result column="native_place" property="nativePlace" />
+		<result column="identity_num" property="identityNum" />
+		<result column="is_marry" property="isMarry" />
+		<result column="speciality" property="speciality" />
+		<result column="telephone" property="telephone" />
+		<result column="bachelor_degree_and_major" property="bachelorDegreeAndMajor" />
+		<result column="undergraduate_graduation_time" property="undergraduateGraduationTime" />
+		<result column="graduate_school_and_major" property="graduateSchoolAndMajor" />
+		<result column="graduate_time" property="graduateTime" />
+		<result column="doctoral_degree_and_major" property="doctoralDegreeAndMajor" />
+		<result column="doctoral_graduation_time" property="doctoralGraduationTime" />
+		<result column="work_organization" property="workOrganization" />
+		<result column="position" property="position" />
+		<result column="telephone_organizatino" property="telephoneOriganization" />
+		<result column="professional_and_technical_qualification" property="professionalAndTechnicalQualification" />
+		<result column="practicing_requirements" property="practicingRequirements" />
+		<result column="mailing_address" property="mailingAddress" />
+		<result column="postal_address" property="postalAddress" />
+		<result column="e-mail" property="eMail" />
+		<result column="application_organization" property="applicationOrganization" />
+		<result column="major_applicant" property="majorApplicant" />
+		<result column="work_experience" property="workExperience" />
+		<result column="occupation_applicant" property="occupationApplicant" />
+</resultMap>
+
+
+	<!-- 结果集映射 -->
+	<resultMap type="cn.edu.tit.bean.RecruitInfo"
+		id="recruitInfo">
+		<id column="recruit_id" property="recruitId" />
+		<result column="organization" property="organization" />
+		<result column="recruit_info" property="recruitInfo" />
+		<result column="accessory" property="accessory" />
+		<result column="start_time" property="startTime" />
+		<result column="end_time" property="endTime" />
+		<result column="publisher" property="publisher" />
+		<result column="publish_time" property="publishTime" />
+	</resultMap>
+
+
+<!-- 添加用户信息 -->
+<insert id="addUser" parameterType="cn.edu.tit.bean.User">
+	insert into user(user_id, user_name, wechart_num, organization_name, password) 
+		values(#{userId},#{userName},#{wechartNum},#{organizationName},#{password});
+</insert>
+
+<!-- 查询所有用户 -->
+<select id="getUser" resultMap="userMap">
+	select * from user;
+</select>
+
+<!-- 修改用户信息 -->
+<update id="modifyPassword">
+	update user set password=#{password} where user_id=#{userId};
+</update>
+
+<!-- 根据id，密码查询用户 -->
+<select id="checkPassword" resultMap="userMap">
+	select * from user where user_id = #{userId} and password = #{password};
+</select>
+
+<!-- 根据报名id获取表明表 -->
+<select id="getApplyById" resultMap="applyMap">
+	select * from apply where apply_id = #{applyId};
+</select>
+
+	<!-- 添加资源到资源库 -->
+	<insert id="publishRcruit"
+		parameterType="cn.edu.tit.bean.RecruitInfo">
+		INSERT INTO
+		recruit_info
+		(recruit_id,
+		organization,
+		recruit_info,
+		accessory,
+		start_time,
+		end_time,
+		publisher,
+		publish_time)
+		VALUES
+		(#{recruitId},
+		#{organization},
+		#{recruitInfo},
+		#{accessory},
+		#{startTime},
+		#{endTime},
+		#{publisher},
+		#{publishTime});
+	</insert>
+	<select id="getRecruitInfo" parameterType="String"
+		resultMap="recruitInfo">
+		SELECT recruit_id,
+		organization,
+		recruit_info,
+		accessory,
+		start_time,
+		end_time,
+		publish_time,
+		recruit_info from recruit_info
+		<if test="publisherId != null">where publisher = #{publisherId}</if>
+		;
+	</select>
+	<select id="searchRecruit" parameterType="String"
+		resultMap="recruitInfo">
+		SELECT recruit_id,
+		recruit_info,
+		accessory,
+		organization,
+		publisher,
+		start_time,
+		end_time,
+		publish_time,
+		recruit_info from recruit_info where organization = #{search}
+		;
+	</select>
 </mapper>

@@ -8,7 +8,6 @@ import org.apache.commons.beanutils.Converter;
 /**
  * 把String转换成java.util.Date的类型转换器
  * @author qdmmy6
- *
  */
 public class DateConverter implements Converter {
 
@@ -22,7 +21,7 @@ public class DateConverter implements Converter {
 		String val = (String) value;//把值转换成String
 		
 		// 使用SimpleDateFormat进行转换
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		try {
 			return sdf.parse(val);
 		} catch (ParseException e) {
