@@ -81,5 +81,7 @@ public class UserController {
 		mv.addObject("readResult", readResult);//返回信息
 		return mv;
 	}
+	
+
 
 }
