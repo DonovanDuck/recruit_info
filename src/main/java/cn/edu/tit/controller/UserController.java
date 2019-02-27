@@ -17,6 +17,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSONObject;
 
 import cn.edu.tit.bean.Apply;
+import cn.edu.tit.bean.Position;
 import cn.edu.tit.bean.RecruitInfo;
 import cn.edu.tit.bean.User;
 import cn.edu.tit.common.Common;
@@ -46,11 +48,11 @@ public class UserController {
 	public ModelAndView toMainPage(HttpServletRequest request) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		List<RecruitInfo> list = new ArrayList<RecruitInfo>();
-		//		User publisher = (User) request.getSession().getAttribute("User");
-		//		String publisherId = publisher.getUserId();
+		User publisher = (User) request.getSession().getAttribute("User");
+		String publisherId = publisher.getUserId();
 		try {
 			//获取招聘信息
-			list = userService.getRecruitInfo(null);
+			list = userService.getRecruitInfo(publisherId);
 			mv.addObject("list",list);
 			mv.setViewName("/jsp/mainJsp");//设置返回页面
 		} catch (Exception e) {
@@ -60,15 +62,26 @@ public class UserController {
 		return mv;
 	}
 	
+	/**
+	 * 查询招聘信息
+	 * @param request
+	 * @param search
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value="searchRecruit",method= {RequestMethod.GET})
 	public ModelAndView searchRecruit(HttpServletRequest request,@RequestParam(value="search") String search) throws Exception {
 		ModelAndView mv = new ModelAndView();
-		List<RecruitInfo> list = new ArrayList<RecruitInfo>();
+		List<Position> list = new ArrayList<Position>();
+		User publisher = (User) request.getSession().getAttribute("User");
+		String organizationId = publisher.getOrganizationId();
 		try {
-			//获取招聘信息
-			list = userService.searchRecruit(search);
+			list = userService.getPosition(organizationId);
+			if(list!=null)
+			{
 			mv.addObject("list",list);
-			mv.setViewName("/jsp/mainJsp");//设置返回页面
+			}
+			mv.setViewName("/jsp/publishRecruit");//设置返回页面
 		} catch (Exception e) {
 			e.printStackTrace();
 			mv = null;
@@ -76,11 +89,20 @@ public class UserController {
 		return mv;
 	}
 
-	@RequestMapping(value="toPublishRcruitPage",method= {RequestMethod.GET})
-	public ModelAndView toPublishRcruitPage() throws Exception {
+
+	@RequestMapping(value="userLogin",method= {RequestMethod.GET})
+	public ModelAndView userLogin(HttpServletRequest request,@RequestParam(value="employeeNum") String employeeNum,@RequestParam(value="password") String password) throws Exception {
 		ModelAndView mv = new ModelAndView();
+		User user = new User();
 		try {
-			mv.setViewName("/jsp/publishRecruit");//设置返回页面
+			user = userService.getUserById(employeeNum);
+			if(user ==null||!user.getPassword().equals(password))
+			{
+				mv.setViewName("/jsp/login");//设置返回页面
+			}else {
+				request.getSession().setAttribute("User", user);
+				mv = toMainPage(request);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			mv = null;
@@ -103,7 +125,9 @@ public class UserController {
 			List<File> returnFileList = (List<File>) obj[0]; // 要返回的文件集合
 			RecruitInfo recruit = new RecruitInfo();
 			recruit.setOrganization((String) formdata.get("organization"));
-			recruit.setPublisher("111");
+			User publisher = (User) request.getSession().getAttribute("User");
+			String publisherId = publisher.getUserId();
+			recruit.setPublisher(publisherId);
 			recruit.setEndTime(timeConverter((String)formdata.get("endTime")));
 			recruit.setPublishTime(new Timestamp(System.currentTimeMillis()));
 			recruit.setRecruitId(recruitId);
@@ -120,7 +144,7 @@ public class UserController {
 		}
 		return mv;
 	}
-	
+
 	/**
 	 * 添加用户
 	 * @param request
@@ -136,8 +160,9 @@ public class UserController {
 			user.setOrganizationName(request.getParameter("organization"));
 			user.setUserName(request.getParameter("userName"));
 			user.setWechartNum(request.getParameter("weChat"));
+			user.setOrganizationId(Common.uuid());
 			userService.addUser(user);
-			
+
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -163,7 +188,7 @@ public class UserController {
 		}
 		return mv;
 	}
-	
+
 	/**
 	 * 修改用户密码
 	 * @param request
@@ -176,8 +201,8 @@ public class UserController {
 		String password = "";
 		try {
 			//获取用户id
-			 userId = (String) request.getSession().getAttribute("userId");
-			 password = request.getParameter("newPassword");
+			userId = (String) request.getSession().getAttribute("userId");
+			password = request.getParameter("newPassword");
 			if(!"".equals(userId) || !"".equals(password)){
 				userService.modifyPassword(userId, password);
 			}
@@ -188,7 +213,31 @@ public class UserController {
 		return mv;
 	}
 	
+	/**
+	 * 修改用户信息
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="modifyUser")
+	public ModelAndView modifyUser(HttpServletRequest request){
+		ModelAndView mv = new ModelAndView();
+		try {
+			//获取用户信息
+			User user = new User();
+			user.setUserId((request.getParameter("userId")));
+			user.setOrganizationName(request.getParameter("organizationName"));
+			user.setUserName(request.getParameter("userName"));
+			if(!"".equals(user.getUserId())){
+				userService.modifyuser(user);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return toUserInfo(request);
+	}
 	
+
 	/**
 	 * 校验用户原密码
 	 * @param request
@@ -198,7 +247,7 @@ public class UserController {
 	public void ajaxCheckPassword(HttpServletRequest request, HttpServletResponse response){
 		try {
 			//校验密码
-//			String userId = (String) request.getSession().getAttribute("userId");
+			//			String userId = (String) request.getSession().getAttribute("userId");
 			String userId = "1";
 			String password = request.getParameter("password");
 			String result = "";
@@ -213,7 +262,7 @@ public class UserController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 读取用户报名表
 	 * @param request
@@ -236,8 +285,6 @@ public class UserController {
 		}
 		return mv;
 	}
-	
-
 	/** @author Liming
 	 * @param 前台获取的时间格式 
 	 * 返回 Timestamp 格式时间

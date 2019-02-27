@@ -41,6 +41,23 @@
 	src="${pageContext.request.contextPath}/js/Admin/custom-scripts.js"></script>
 <script
 	src="${pageContext.request.contextPath}/js/Admin/materialize.min.js"></script>
+<script type="text/javascript">
+	function submitButton() {
+		var startTime = $("#startTime").val();
+		var endTime = $("#endTime").val();
+		var organization = $("organization").val();
+		if (startTime == endTime) {
+			alert("开始时间与截止时间相等,重新选择");
+		} else if (startTime >= endTime) {
+			alert("开始时间后于截止时间,重新选择");
+		} else if (organization == null || organization == "") {
+			alert("招聘单位为空");
+		} else if (judge) {
+			//recruitForm.submit();
+		}
+		return false;
+	}
+</script>
 </head>
 <body>
 	<div id="wrapper">
@@ -73,13 +90,15 @@
 						<form class="form-horizontal"
 							action="${pageContext.request.contextPath}/user/publishRcruit"
 							method="post" enctype="multipart/form-data"
-							style="width: 50%; margin-left: 25%; padding-top: 2%">
+							style="width: 50%; margin-left: 25%; padding-top: 2%"
+							name="recruitForm" id="recruitForm">
 							<div class="form-group">
 								<div class="col-md-4 text-right">
 									<h3>招聘单位:</h3>
 								</div>
 								<div class="col-md-7">
-									<input name="organization" id="organization" type="text" id="organization">
+									<input name="organization" id="organization" type="text"
+										id="organization" placeholder="招聘单位">
 								</div>
 							</div>
 							<div class="form-group">
@@ -87,7 +106,21 @@
 									<h3>招聘信息:</h3>
 								</div>
 								<div class="col-md-7">
-									<input name="recruitInfo" id="recruitInfo" type="text" id="recruitInfo">
+									<c:if test="${empty list!=null }">
+										<select class="form-control">
+											<c:forEach items="${list }" var="list" varStatus="status">
+												<option>${list.positonName }</option>
+											</c:forEach>
+										</select>
+										<input name="recruitInfo" id="recruitInfo" type="text"
+											id="recruitInfo" placeholder="输入其他职位">
+									</c:if>
+									<c:if test="${empty list==null }">
+										<input name="recruitInfo" id="recruitInfo" type="text"
+											id="recruitInfo" placeholder="职位名称">
+									</c:if>
+									<input name="recruitInfo" id="recruitInfo" type="text"
+										id="recruitInfo" placeholder="人数">
 								</div>
 							</div>
 							<div class="form-group">
@@ -104,7 +137,9 @@
 									<h3>开始时间:</h3>
 								</div>
 								<div class="col-md-7">
-									<input size="16" type="datetime-local" value="2016-01-11T16:00:00" id="startTime" name="startTime" class="form_datetime">
+									<input size="16" type="datetime-local"
+										value="2016-01-11T16:00:00" id="startTime" name="startTime"
+										class="form_datetime">
 								</div>
 							</div>
 							<div class="form-group">
@@ -112,12 +147,15 @@
 									<h3>截止时间:</h3>
 								</div>
 								<div class="col-md-7">
-									<input size="16" type="datetime-local" value="2016-01-11T16:00:00" id="endTime" name="endTime" class="form_datetime">
+									<input size="16" type="datetime-local"
+										value="2016-01-11T16:00:00" id="endTime" name="endTime"
+										class="form_datetime">
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-offset-3">
-									<button type="submit" class="btn btn-primary">发布</button>
+									<button type="button" class="btn btn-primary"
+										onclick="submitButton()">发布</button>
 									<button type="reset" class="btn btn-primary"
 										style="margin-left: 47%">重置</button>
 								</div>
