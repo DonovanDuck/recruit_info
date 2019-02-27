@@ -30,7 +30,6 @@ public class UserTest {
 
 	@Test
 	public void Test() {
-		System.out.println(userDao.getApplyById("1"));
 
 	}
 }

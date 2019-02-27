@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import cn.edu.tit.bean.Apply;
+import cn.edu.tit.bean.Position;
 import cn.edu.tit.bean.User;
 import cn.edu.tit.bean.RecruitInfo;
 
@@ -74,9 +75,16 @@ public interface IUserDao {
 	public List<RecruitInfo> getRecruitInfo(@Param("publisherId")String publisherId);
 
 	/**
-	 * @author LiMing
-	 * @param 单位名
-	 * @return 按照单位名查找招聘信息
+	 *@author LiMing
+	 * @param organizationId
+	 * @return 获取单位职位
 	 */
-	public List<RecruitInfo> searchRecruit(@Param("search")String search);
+	public List<Position> getPosition(@Param("string")String string);
+
+	/**
+	 *@author LiMing
+	 * @param employeeNum
+	 * @return 返回用户实体
+	 */
+	public User getUserById(@Param("employeeNum")String employeeNum);
 }

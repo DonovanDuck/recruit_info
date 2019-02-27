@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.tit.bean.Apply;
+import cn.edu.tit.bean.Position;
 import cn.edu.tit.bean.RecruitInfo;
 import cn.edu.tit.bean.User;
 import cn.edu.tit.common.Common;
@@ -79,24 +80,6 @@ public class UserServiceImpl implements IUserService {
 		return list;
 	}
 
-	/**
-	 * @author LiMing
-	 * @param 单位名
-	 * @return 按照单位名查找招聘信息
-	 */
-	@Override
-	public List<RecruitInfo> searchRecruit(String search) {
-		List<RecruitInfo> list =new ArrayList<RecruitInfo>();
-		try {
-			list = iUserDao.searchRecruit(search);
-			System.out.println("searchRecruit-------------执行成功");
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("searchRecruit-------------执行失败");
-			list = null;
-		}
-		return list;
-	}
 
 	@Override
 	public List<User> getUser() {
@@ -133,6 +116,36 @@ public class UserServiceImpl implements IUserService {
 	public User getUser(String userId, String password) {
 		// TODO Auto-generated method stub
 		return iUserDao.getUserByIdAndPs(userId, password);
+	}
+
+	/**
+	 *@author LiMing
+	 * @param organizationId
+	 * @return 获取单位职位
+	 */
+	@Override
+	public List<Position> getPosition(String string) {
+		List<Position> list =new ArrayList<Position>();
+		try {
+			list = iUserDao.getPosition(string);
+			System.out.println("getPosition-------------执行成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("getPosition-------------执行失败");
+			list = null;
+		}
+		return list;
+	}
+
+	/**
+	 *@author LiMing
+	 * @param employeeNum
+	 * @return 返回用户实体
+	 */
+	@Override
+	public User getUserById(String employeeNum) {
+		// TODO Auto-generated method stub
+		return iUserDao.getUserById(employeeNum);
 	}
 
 
