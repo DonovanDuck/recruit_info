@@ -28,7 +28,8 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/Admin/css/materialize.min.css"
 	media="screen,projection" />
-<link href="${pageContext.request.contextPath}/css/Admin/bootstrap.css"
+<link
+	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
 	rel="stylesheet">
 <link
 	href="${pageContext.request.contextPath}/css/Admin/custom-styles.css"
@@ -56,13 +57,14 @@
 	src="${pageContext.request.contextPath}/js/Admin/moment-with-locales.min.js"></script>
 <script>
 	$(document).ready(function() {
-		$('#dataTables-example').dataTable();
+		$("#dataTables-example").dataTable();
 	});
 </script>
 </head>
 <body>
 	<div id="wrapper">
-		<nav class="navbar navbar-default top-navbar" role="navigation">
+		<nav class="navbar navbar-default top-navbar" role="navigation"
+			style="height: 60px;">
 			<div class="text-center">
 				<h2>新疆招聘信息系统</h2>
 			</div>
@@ -88,22 +90,9 @@
 			<div id="page-inner">
 				<div class="col-md-12">
 					<div class="card">
-						<div class="card-content " style="padding-top: 0%">
+						<div class="card-content">
 							<div class="table-responsive" style="overflow-x: hidden;">
-								<hr>
-								<form action="${pageContext.request.contextPath}/user/searchRecruit" enctype="multipart/form-data">
-									<div class="col-md-6">
-										<div class="col-md-4">
-											<input type="text" class="form-control" id="search"
-												name="search" placeholder="单位名搜索">
-										</div>
-										<div class="col-md-2">
-											<button type="submit" class="btn btn-primary btn-sm">搜索
-											</button>
-										</div>
-									</div>
-								</form>
-								<div class="col-md-6 text-right">
+								<div class="col-md-7">
 									<a
 										href="${pageContext.request.contextPath}/user/toPublishRcruitPage"
 										style="font-size: 20px">
@@ -111,7 +100,8 @@
 										</button>
 									</a>
 								</div>
-								<table class="table table-bordered " style="margin-top: 5%">
+								<table class="table table-striped table-bordered table-hover"
+									id="dataTables-example" style="margin-top: -1%">
 									<thead>
 										<tr>
 											<th class="text-center">编号</th>
@@ -131,6 +121,13 @@
 												<td class="text-center" style="padding-top:1%;">${list.startTime }</td>
 												<td class="text-center" style="padding-top:1%;">${list.endTime }</td>
 												<td class="text-center"><a href="${pageContext.request.contextPath}/user/toSignInInfo?recruitId=${list.recruitId}"
+												<%-- <td class="text-center" style="padding-top: 1%;">${requestScope.offset+status.index}</td>
+												<td class="text-center" style="padding-top: 1%;">${list.organization }</td>
+												<td class="text-center" style="padding-top: 1%;">${list.recruitInfo }</td>
+												<td class="text-center" style="padding-top: 1%;">${list.startTime }</td>
+												<td class="text-center" style="padding-top: 1%;">${list.endTime }</td>
+												<td class="text-center"><a
+													href="${pageContext.request.contextPath}/.." --%>
 													class="waves-effect waves-dark" style="font-size: 20px">
 														<button type="button" class="btn btn-default btn-lg"
 															style="padding-top: 4%;">
@@ -141,24 +138,6 @@
 										</c:forEach>
 									</tbody>
 								</table>
-								<div class="col-md-12">
-									<div class="col-md-4">
-										<ul class="pagination">
-											<li><a href="#" aria-label="Previous"> <span
-													aria-hidden="true">&laquo;</span>
-											</a></li>
-											<li><a href="#">1</a></li>
-											<li><a href="#">2</a></li>
-											<li><a href="#">3</a></li>
-											<li><a href="#">4</a></li>
-											<li><a href="#">5</a></li>
-											<li><a href="#" aria-label="Next"> <span
-													aria-hidden="true">&raquo;</span>
-											</a></li>
-										</ul>
-									</div>
-									<div class="col-md-8"></div>
-								</div>
 							</div>
 						</div>
 					</div>

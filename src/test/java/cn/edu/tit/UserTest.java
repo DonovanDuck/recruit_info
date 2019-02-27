@@ -30,8 +30,6 @@ public class UserTest {
 
 	@Test
 	public void Test() {
-		User user = new User("1", "df", "3", "ccc", "1");
-		userDao.modifyUser(user);
 	}
 }
 
