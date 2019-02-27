@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,6 +57,13 @@ public class UserController {
 		return mv;
 	}
 	
+	/**
+	 * 查询招聘信息
+	 * @param request
+	 * @param search
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value="searchRecruit",method= {RequestMethod.GET})
 	public ModelAndView searchRecruit(HttpServletRequest request,@RequestParam(value="search") String search) throws Exception {
 		ModelAndView mv = new ModelAndView();
@@ -184,6 +192,29 @@ public class UserController {
 		return mv;
 	}
 	
+	/**
+	 * 修改用户信息
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="modifyUser")
+	public ModelAndView modifyUser(HttpServletRequest request){
+		ModelAndView mv = new ModelAndView();
+		try {
+			//获取用户信息
+			User user = new User();
+			user.setUserId((request.getParameter("userId")));
+			user.setOrganizationName(request.getParameter("organizationName"));
+			user.setUserName(request.getParameter("userName"));
+			if(!"".equals(user.getUserId())){
+				userService.modifyuser(user);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return toUserInfo(request);
+	}
 	
 	/**
 	 * 校验用户原密码

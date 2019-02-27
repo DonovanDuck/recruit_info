@@ -8,6 +8,7 @@
 		<result column="user_name" property="userName" />
 		<result column="wechart_num" property="wechartNum" />
 		<result column="organization_name" property="organizationName" />
+		<result column="organization_id" property="organizationId" />
 		<result column="password" property="password" />
 </resultMap>
 
@@ -40,6 +41,8 @@
 		<result column="major_applicant" property="majorApplicant" />
 		<result column="work_experience" property="workExperience" />
 		<result column="occupation_applicant" property="occupationApplicant" />
+		<result column="recruit_id" property="recruitId" />
+		<result column="submit_time" property="submitTime" />
 </resultMap>
 
 
@@ -59,8 +62,8 @@
 
 <!-- 添加用户信息 -->
 <insert id="addUser" parameterType="cn.edu.tit.bean.User">
-	insert into user(user_id, user_name, wechart_num, organization_name, password) 
-		values(#{userId},#{userName},#{wechartNum},#{organizationName},#{password});
+	insert into user(user_id, user_name, wechart_num, organization_name, password, organization_id) 
+		values(#{userId},#{userName},#{wechartNum},#{organizationName},#{password},#{organizationId});
 </insert>
 
 <!-- 查询所有用户 -->
@@ -68,13 +71,13 @@
 	select * from user;
 </select>
 
-<!-- 修改用户信息 -->
+<!-- 修改用户密码 -->
 <update id="modifyPassword">
 	update user set password=#{password} where user_id=#{userId};
 </update>
 
 <!-- 根据id，密码查询用户 -->
-<select id="checkPassword" resultMap="userMap">
+<select id="getUserByIdAndPs" resultMap="userMap">
 	select * from user where user_id = #{userId} and password = #{password};
 </select>
 
@@ -132,4 +135,10 @@
 		recruit_info from recruit_info where organization = #{search}
 		;
 	</select>
+	
+	<!-- 修改用户信息 -->
+	<update id="modifyUser">
+	update user set organization_name=#{organizationName} , user_name = #{userName} where user_id=#{userId};
+</update>
+	
 </mapper>

@@ -79,4 +79,12 @@ public interface IUserDao {
 	 * @return 按照单位名查找招聘信息
 	 */
 	public List<RecruitInfo> searchRecruit(@Param("search")String search);
+	
+	
+	
+	/**
+	 * 修改用户信息
+	 * @param user
+	 */
+	public void modifyUser(User user);
 }

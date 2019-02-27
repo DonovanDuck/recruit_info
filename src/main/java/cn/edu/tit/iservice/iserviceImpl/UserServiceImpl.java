@@ -135,5 +135,11 @@ public class UserServiceImpl implements IUserService {
 		return iUserDao.getUserByIdAndPs(userId, password);
 	}
 
+	@Override
+	public void modifyuser(User user) {
+		// TODO Auto-generated method stub
+		iUserDao.modifyUser(user);
+	}
+
 
 }

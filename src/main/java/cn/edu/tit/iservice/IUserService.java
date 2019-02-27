@@ -81,4 +81,10 @@ public interface IUserService {
 	 * @return 按照单位名查找招聘信息
 	 */
 	public List<RecruitInfo> searchRecruit(String search);
+	
+	/**
+	 * 修改用户信息
+	 * @param user
+	 */
+	public void modifyuser(User user);
 }

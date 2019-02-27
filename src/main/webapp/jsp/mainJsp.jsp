@@ -75,7 +75,7 @@
 						href="${pageContext.request.contextPath}/admin/readTeacherInfo"
 						class="waves-effect waves-dark" style="font-size: 20px">招聘信息</a></li>
 					<li class="text-left"><a
-						href="${pageContext.request.contextPath}/admin/readStudentInfo"
+						href="${pageContext.request.contextPath}/user/toUserInfo"
 						class="waves-effect waves-dark" style="font-size: 20px">用户管理</a></li>
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/admin/readCategories"
