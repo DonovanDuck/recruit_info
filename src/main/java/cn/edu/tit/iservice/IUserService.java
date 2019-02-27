@@ -81,4 +81,25 @@ public interface IUserService {
 	 * @return 按照单位名查找招聘信息
 	 */
 	public List<RecruitInfo> searchRecruit(String search);
+	
+	/**
+	 * 修改用户信息
+	 * @param user
+	 */
+	public void modifyuser(User user);
+	public List<Apply> applyList(String recruitId);
+	public Integer applyNum(String recruitId);
+	public Integer applyNumDoctor(String recruitId);
+	public Integer applyNumMaster(String recruitId);
+	public Integer applyNumBachelor(String recruitId);
+	public Integer applyNumDoubleOne(String recruitId);
+	public Integer applyNumInSide(String recruitId);
+	
+	public Integer applyNumToday(String recruitId, String dateString);
+	public Integer applyNumDoctorToday(String recruitId, String dateString);
+	public Integer applyNumMasterToday(String recruitId, String dateString);
+	public Integer applyNumBachelorToday(String recruitId, String dateString);
+	public Integer applyNumDoubleOneToday(String recruitId, String dateString);
+	public Integer applyNumInSideToday(String recruitId, String dateString);
+	
 }

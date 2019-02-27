@@ -10,7 +10,16 @@ public class User {
 	private String userName; // 用户名
 	private String wechartNum; // 微信号
 	private String organizationName; //单位名
+	private String organizationId;
 	private String password; //密码
+	
+	
+	public String getOrganizationId() {
+		return organizationId;
+	}
+	public void setOrganizationId(String organizationId) {
+		this.organizationId = organizationId;
+	}
 	public String getUserId() {
 		return userId;
 	}
@@ -21,7 +30,7 @@ public class User {
 		return userName;
 	}
 	public void setUserName(String userName) {
-		this.userName = userName;
+		this.userName = userName; 
 	}
 	public String getWechartNum() {
 		return wechartNum;
@@ -41,18 +50,22 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	@Override
-	public String toString() {
-		return "User [userId=" + userId + ", userName=" + userName + ", wechartNum=" + wechartNum
-				+ ", organizationName=" + organizationName + ", password=" + password + "]";
-	}
-	public User(String userId, String userName, String wechartNum, String organizationName, String password) {
+	
+	public User(String userId, String userName, String wechartNum, String organizationName, String organizationId,
+			String password) {
 		super();
 		this.userId = userId;
 		this.userName = userName;
 		this.wechartNum = wechartNum;
 		this.organizationName = organizationName;
+		this.organizationId = organizationId;
 		this.password = password;
+	}
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", userName=" + userName + ", wechartNum=" + wechartNum
+				+ ", organizationName=" + organizationName + ", organizationId=" + organizationId + ", password="
+				+ password + "]";
 	}
 	public User() {
 		super();

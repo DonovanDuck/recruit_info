@@ -135,5 +135,87 @@ public class UserServiceImpl implements IUserService {
 		return iUserDao.getUserByIdAndPs(userId, password);
 	}
 
+	@Override
+	public void modifyuser(User user) {
+		// TODO Auto-generated method stub
+		iUserDao.modifyUser(user);
+	}
+	public List<Apply> applyList(String recruitId) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyList(recruitId);
+	}
+
+	@Override
+	public Integer applyNum(String recruitId) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNum(recruitId);
+	}
+
+	@Override
+	public Integer applyNumToday(String recruitId, String dateString) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumToday(recruitId,dateString);
+	}
+
+	@Override
+	public Integer applyNumDoctor(String recruitId) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumDoctor(recruitId);
+	}
+
+	@Override
+	public Integer applyNumMaster(String recruitId) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumMaster(recruitId);
+	}
+
+	@Override
+	public Integer applyNumBachelor(String recruitId) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumBachelor(recruitId);
+	}
+
+	@Override
+	public Integer applyNumDoubleOne(String recruitId) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumDoubleOne(recruitId);
+	}
+
+	@Override
+	public Integer applyNumInSide(String recruitId) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumInSide(recruitId);
+	}
+
+	@Override
+	public Integer applyNumDoctorToday(String recruitId, String dateString) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumDoctorToday(recruitId, dateString);
+	}
+
+	@Override
+	public Integer applyNumMasterToday(String recruitId, String dateString) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumMasterToday(recruitId, dateString);
+	}
+
+	@Override
+	public Integer applyNumBachelorToday(String recruitId, String dateString) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumBachelorToday(recruitId, dateString);
+	}
+
+	@Override
+	public Integer applyNumDoubleOneToday(String recruitId, String dateString) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumDoubleOneToday(recruitId, dateString);
+	}
+
+	@Override
+	public Integer applyNumInSideToday(String recruitId, String dateString) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumInSideToday(recruitId, dateString);
+	}
+
 
 }
