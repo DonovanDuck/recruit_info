@@ -141,4 +141,62 @@
 	update user set organization_name=#{organizationName} , user_name = #{userName} where user_id=#{userId};
 </update>
 	
+	<select id="applyList" parameterType="String"
+		resultMap="applyMap">
+		SELECT * from apply where recruit_id = #{recruitId};
+	</select>
+	<select id="applyNum" parameterType="String"
+		resultType="java.lang.Integer">
+		SELECT count(*) from apply where recruit_id = #{recruitId};
+	</select>
+	<select id="applyNumToday" 
+		resultType="java.lang.Integer">
+		SELECT count(*) from apply where recruit_id = #{recruitId} and submit_time = #{dateString} ;
+	</select>
+
+	
+	<select id="applyNumDoctor" 
+		resultType="java.lang.Integer">
+		SELECT count(*) from apply where recruit_id = #{recruitId} and  doctoral_degree_and_major is not null ;
+	</select>
+	<select id="applyNumMaster" 
+		resultType="java.lang.Integer">
+		SELECT count(*) from apply where recruit_id = #{recruitId} and graduate_school_and_major is not null ;
+	</select>
+	<select id="applyNumBachelor" 
+		resultType="java.lang.Integer">
+		SELECT count(*) from apply where recruit_id = #{recruitId} and bachelor_degree_and_major is not null ;
+	</select>
+	<select id="applyNumDoubleOne" 
+		resultType="java.lang.Integer">
+		SELECT count(*) from apply where recruit_id = #{recruitId} and bachelor_degree_and_major is not null ;
+	</select>
+	<select id="applyNumInSide" 
+		resultType="java.lang.Integer">
+		SELECT count(*) from apply 
+		<where>
+			 recruit_id = #{recruitId}
+                AND native_place LIKE '%${'新疆'}%'
+		</where>;
+	</select>
+	<select id="applyNumDoctorToday" 
+		resultType="java.lang.Integer">
+		SELECT count(*) from apply where recruit_id = #{recruitId} and submit_time = #{dateString} and doctoral_degree_and_major is not null ;
+	</select>
+	<select id="applyNumMasterToday" 
+		resultType="java.lang.Integer">
+		SELECT count(*) from apply where recruit_id = #{recruitId} and submit_time = #{dateString} and graduate_school_and_major is not null ;
+	</select>
+	<select id="applyNumBachelorToday" 
+		resultType="java.lang.Integer">
+		SELECT count(*) from apply where recruit_id = #{recruitId} and submit_time = #{dateString} and bachelor_degree_and_major is not null  ;
+	</select>
+	<select id="applyNumDoubleOneToday" 
+		resultType="java.lang.Integer">
+		SELECT count(*) from apply where recruit_id = #{recruitId} and submit_time = #{dateString} and bachelor_degree_and_major is not null  ;
+	</select>
+	<select id="applyNumInSideToday" 
+		resultType="java.lang.Integer">
+		SELECT count(*) from apply <where> recruit_id = #{recruitId} and submit_time = #{dateString} and native_place LIKE '%${'新疆'}%'</where> ;
+	</select>
 </mapper>

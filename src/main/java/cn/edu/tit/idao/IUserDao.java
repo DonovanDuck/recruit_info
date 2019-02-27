@@ -87,4 +87,21 @@ public interface IUserDao {
 	 * @param user
 	 */
 	public void modifyUser(User user);
+	public List<Apply> applyList(String recruitId);
+	public Integer applyNum(String recruitId);
+
+	public Integer applyNumToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString);
+
+	public Integer applyNumDoctor(@Param("recruitId")String recruitId);
+	public Integer applyNumMaster(@Param("recruitId")String recruitId);
+	public Integer applyNumBachelor(@Param("recruitId")String recruitId);
+	public Integer applyNumDoubleOne(@Param("recruitId")String recruitId);
+	public Integer applyNumInSide(@Param("recruitId")String recruitId);
+
+	public Integer applyNumDoctorToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString);
+	public Integer applyNumMasterToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString);
+	public Integer applyNumBachelorToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString);
+	public Integer applyNumDoubleOneToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString);
+	public Integer applyNumInSideToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString);
+	
 }
