@@ -242,6 +242,12 @@
 			<artifactId>httpmime</artifactId>
 			<version>4.3.2</version>
 		</dependency>
+		<!-- 分页组件 -->
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper</artifactId>
+			<version>5.0.1</version>
+		</dependency>
 
 		<!-- 操作EXCEL文件需要的包*******结束 -->
 		<!-- aspose在线预览控件包 -->

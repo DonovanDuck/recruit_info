@@ -3,15 +3,16 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.tit.idao.IUserDao">
 
-<resultMap type="cn.edu.tit.bean.User" id="userMap">
+	<resultMap type="cn.edu.tit.bean.User" id="userMap">
 		<id column="user_id" property="userId" />
 		<result column="user_name" property="userName" />
 		<result column="wechart_num" property="wechartNum" />
 		<result column="organization_name" property="organizationName" />
+		<result column="organization_id" property="organizationId" />
 		<result column="password" property="password" />
-</resultMap>
+	</resultMap>
 
-<resultMap type="cn.edu.tit.bean.Apply" id="applyMap">
+	<resultMap type="cn.edu.tit.bean.Apply" id="applyMap">
 		<id column="apply_id" property="applyId" />
 		<result column="apply_user_name" property="applyUserName" />
 		<result column="gender" property="gender" />
@@ -22,27 +23,37 @@
 		<result column="is_marry" property="isMarry" />
 		<result column="speciality" property="speciality" />
 		<result column="telephone" property="telephone" />
-		<result column="bachelor_degree_and_major" property="bachelorDegreeAndMajor" />
-		<result column="undergraduate_graduation_time" property="undergraduateGraduationTime" />
-		<result column="graduate_school_and_major" property="graduateSchoolAndMajor" />
+		<result column="bachelor_degree_and_major"
+			property="bachelorDegreeAndMajor" />
+		<result column="undergraduate_graduation_time"
+			property="undergraduateGraduationTime" />
+		<result column="graduate_school_and_major"
+			property="graduateSchoolAndMajor" />
 		<result column="graduate_time" property="graduateTime" />
-		<result column="doctoral_degree_and_major" property="doctoralDegreeAndMajor" />
-		<result column="doctoral_graduation_time" property="doctoralGraduationTime" />
+		<result column="doctoral_degree_and_major"
+			property="doctoralDegreeAndMajor" />
+		<result column="doctoral_graduation_time"
+			property="doctoralGraduationTime" />
 		<result column="work_organization" property="workOrganization" />
 		<result column="position" property="position" />
-		<result column="telephone_organizatino" property="telephoneOriganization" />
-		<result column="professional_and_technical_qualification" property="professionalAndTechnicalQualification" />
-		<result column="practicing_requirements" property="practicingRequirements" />
+		<result column="telephone_organizatino"
+			property="telephoneOriganization" />
+		<result column="professional_and_technical_qualification"
+			property="professionalAndTechnicalQualification" />
+		<result column="practicing_requirements"
+			property="practicingRequirements" />
 		<result column="mailing_address" property="mailingAddress" />
 		<result column="postal_address" property="postalAddress" />
 		<result column="e-mail" property="eMail" />
-		<result column="application_organization" property="applicationOrganization" />
+		<result column="application_organization"
+			property="applicationOrganization" />
 		<result column="major_applicant" property="majorApplicant" />
 		<result column="work_experience" property="workExperience" />
 		<result column="occupation_applicant" property="occupationApplicant" />
 		<result column="recruit_id" property="recruitId" />
 		<result column="submit_time" property="submitTime" />
 </resultMap>
+	
 
 
 	<!-- 结果集映射 -->
@@ -58,32 +69,45 @@
 		<result column="publish_time" property="publishTime" />
 	</resultMap>
 
+	<!-- 结果集映射 -->
+	<resultMap type="cn.edu.tit.bean.Position" id="position">
+		<id column="id" property="id" />
+		<result column="position_name" property="positonName" />
+		<result column="recruit_id" property="recruitId" />
+		<result column="organization" property="organization" />
+	</resultMap>
 
 <!-- 添加用户信息 -->
 <insert id="addUser" parameterType="cn.edu.tit.bean.User">
-	insert into user(user_id, user_name, wechart_num, organization_name, password) 
-		values(#{userId},#{userName},#{wechartNum},#{organizationName},#{password});
+	insert into user(user_id, user_name, wechart_num, organization_name, password, organization_id) 
+		values(#{userId},#{userName},#{wechartNum},#{organizationName},#{password},#{organizationId});
 </insert>
 
-<!-- 查询所有用户 -->
-<select id="getUser" resultMap="userMap">
-	select * from user;
-</select>
+	<!-- 查询所有用户 -->
+	<select id="getUser" resultMap="userMap">
+		select * from user;
+	</select>
 
-<!-- 修改用户信息 -->
+<!-- 修改用户密码 -->
 <update id="modifyPassword">
 	update user set password=#{password} where user_id=#{userId};
 </update>
 
 <!-- 根据id，密码查询用户 -->
-<select id="checkPassword" resultMap="userMap">
+<select id="getUserByIdAndPs" resultMap="userMap">
 	select * from user where user_id = #{userId} and password = #{password};
 </select>
 
-<!-- 根据报名id获取表明表 -->
-<select id="getApplyById" resultMap="applyMap">
-	select * from apply where apply_id = #{applyId};
-</select>
+	<!-- 根据报名id获取表明表 -->
+	<select id="getApplyById" resultMap="applyMap">
+		select * from apply where
+		apply_id = #{applyId};
+	</select>
+
+	<select id="getPosition" resultMap="position">
+		select * from position where
+		organization = #{string};
+	</select>
 
 	<!-- 添加资源到资源库 -->
 	<insert id="publishRcruit"
@@ -121,75 +145,79 @@
 		<if test="publisherId != null">where publisher = #{publisherId}</if>
 		;
 	</select>
-	<select id="searchRecruit" parameterType="String"
-		resultMap="recruitInfo">
-		SELECT recruit_id,
-		recruit_info,
-		accessory,
-		organization,
-		publisher,
-		start_time,
-		end_time,
-		publish_time,
-		recruit_info from recruit_info where organization = #{search}
-		;
+	<select id="getUserById" parameterType="String"
+		resultMap="userMap">
+		SELECT
+		user_id,
+		user_name,
+		wechart_num,
+		organization_name,
+		password,
+		organization_id
+		FROM user where user_id = #{employeeNum};
 	</select>
+	
+	<!-- 修改用户信息 -->
+	<update id="modifyUser">
+	update user set organization_name=#{organizationName} , user_name = #{userName} where user_id=#{userId};
+</update>
+	
 	<select id="applyList" parameterType="String"
 		resultMap="applyMap">
 		SELECT * from apply where recruit_id = #{recruitId};
 	</select>
 	<select id="applyNum" parameterType="String"
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply where recruit_id = #{recruitId};
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName} ;
 	</select>
 	<select id="applyNumToday" 
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply where recruit_id = #{recruitId} and submit_time = #{dateString} ;
+		SELECT count(*) from apply where recruit_id = #{recruitId} and submit_time = #{dateString} and occupation_applicant = #{positonName} ;
 	</select>
 
 	
 	<select id="applyNumDoctor" 
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply where recruit_id = #{recruitId} and  doctoral_degree_and_major is not null ;
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and  doctoral_degree_and_major is not null ;
 	</select>
 	<select id="applyNumMaster" 
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply where recruit_id = #{recruitId} and graduate_school_and_major is not null ;
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and graduate_school_and_major is not null ;
 	</select>
 	<select id="applyNumBachelor" 
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply where recruit_id = #{recruitId} and bachelor_degree_and_major is not null ;
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and bachelor_degree_and_major is not null ;
 	</select>
 	<select id="applyNumDoubleOne" 
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply where recruit_id = #{recruitId} and bachelor_degree_and_major is not null ;
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and bachelor_degree_and_major is not null ;
 	</select>
 	<select id="applyNumInSide" 
 		resultType="java.lang.Integer">
 		SELECT count(*) from apply 
 		<where>
 			 recruit_id = #{recruitId}
-                AND native_place LIKE '%${'新疆'}%'
+                AND native_place LIKE '%${'新疆'}%' and occupation_applicant = #{positonName} 
 		</where>;
 	</select>
 	<select id="applyNumDoctorToday" 
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply where recruit_id = #{recruitId} and submit_time = #{dateString} and doctoral_degree_and_major is not null ;
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and submit_time = #{dateString} and doctoral_degree_and_major is not null ;
 	</select>
 	<select id="applyNumMasterToday" 
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply where recruit_id = #{recruitId} and submit_time = #{dateString} and graduate_school_and_major is not null ;
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and submit_time = #{dateString} and graduate_school_and_major is not null ;
 	</select>
 	<select id="applyNumBachelorToday" 
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply where recruit_id = #{recruitId} and submit_time = #{dateString} and bachelor_degree_and_major is not null  ;
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and submit_time = #{dateString} and bachelor_degree_and_major is not null  ;
 	</select>
 	<select id="applyNumDoubleOneToday" 
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply where recruit_id = #{recruitId} and submit_time = #{dateString} and bachelor_degree_and_major is not null  ;
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and submit_time = #{dateString} and bachelor_degree_and_major is not null  ;
 	</select>
 	<select id="applyNumInSideToday" 
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply <where> recruit_id = #{recruitId} and submit_time = #{dateString} and native_place LIKE '%${'新疆'}%'</where> ;
+		SELECT count(*) from apply <where> recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and submit_time = #{dateString} and native_place LIKE '%${'新疆'}%'</where> ;
 	</select>
 </mapper>

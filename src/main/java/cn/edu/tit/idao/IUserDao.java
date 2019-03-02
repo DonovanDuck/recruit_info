@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import cn.edu.tit.bean.Apply;
+import cn.edu.tit.bean.Position;
 import cn.edu.tit.bean.User;
 import cn.edu.tit.bean.RecruitInfo;
 
@@ -74,26 +75,42 @@ public interface IUserDao {
 	public List<RecruitInfo> getRecruitInfo(@Param("publisherId")String publisherId);
 
 	/**
-	 * @author LiMing
-	 * @param 单位名
-	 * @return 按照单位名查找招聘信息
+	 *@author LiMing
+	 * @param organizationId
+	 * @return 获取单位职位
+	 */
+	public List<Position> getPosition(@Param("string")String string);
+
+	/**
+	 *@author LiMing
+	 * @param employeeNum
+	 * @return 返回用户实体
 	 */
 	public List<RecruitInfo> searchRecruit(@Param("search")String search);
-	public List<Apply> applyList(String recruitId);
-	public Integer applyNum(String recruitId);
-
-	public Integer applyNumToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString);
-
-	public Integer applyNumDoctor(@Param("recruitId")String recruitId);
-	public Integer applyNumMaster(@Param("recruitId")String recruitId);
-	public Integer applyNumBachelor(@Param("recruitId")String recruitId);
-	public Integer applyNumDoubleOne(@Param("recruitId")String recruitId);
-	public Integer applyNumInSide(@Param("recruitId")String recruitId);
-
-	public Integer applyNumDoctorToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString);
-	public Integer applyNumMasterToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString);
-	public Integer applyNumBachelorToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString);
-	public Integer applyNumDoubleOneToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString);
-	public Integer applyNumInSideToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString);
 	
+	
+	
+	/**
+	 * 修改用户信息
+	 * @param user
+	 */
+	public void modifyUser(User user);
+	public List<Apply> applyList(String recruitId);
+	public Integer applyNum(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+
+	public Integer applyNumToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString,@Param("positonName")String positonName);
+
+	public Integer applyNumDoctor(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+	public Integer applyNumMaster(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+	public Integer applyNumBachelor(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+	public Integer applyNumDoubleOne(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+	public Integer applyNumInSide(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+
+	public Integer applyNumDoctorToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString,@Param("positonName")String positonName);
+	public Integer applyNumMasterToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString,@Param("positonName")String positonName);
+	public Integer applyNumBachelorToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString,@Param("positonName")String positonName);
+	public Integer applyNumDoubleOneToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString,@Param("positonName")String positonName);
+	public Integer applyNumInSideToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString,@Param("positonName")String positonName);
+	
+	public User getUserById(@Param("employeeNum")String employeeNum);
 }
