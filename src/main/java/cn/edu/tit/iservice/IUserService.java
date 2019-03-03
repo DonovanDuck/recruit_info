@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.tit.bean.Apply;
+import cn.edu.tit.bean.Material;
 import cn.edu.tit.bean.Position;
 import cn.edu.tit.bean.RecruitInfo;
 import cn.edu.tit.bean.User;
@@ -111,4 +112,28 @@ public interface IUserService {
 	 * @return 返回用户实体
 	 */
 	public User getUserById(String employeeNum);
+	
+	/**
+	 * 重置密码
+	 * @param userId
+	 */
+	public void rePassword(String userId);
+	
+	/**
+	 * 通过招聘信息获取相应职位信息
+	 * @return
+	 */
+	public List<Position> getPositionByRecruitId(String recruitId);
+	
+	/**
+	 * 提交申请
+	 * @param apply
+	 */
+	public void submitApply(Apply apply);
+	
+	/**
+	 * 存储报名材料
+	 * @param material
+	 */
+	public void saveMaterial(Material material);
 }

@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -29,6 +30,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSON;
 
 import cn.edu.tit.bean.Apply;
+import cn.edu.tit.bean.Material;
+import cn.edu.tit.bean.Position;
 import cn.edu.tit.bean.RecruitInfo;
 import cn.edu.tit.bean.User;
 import cn.edu.tit.common.Common;
@@ -193,6 +196,11 @@ public class WxTeacherController {
 		try {
 			//获取招聘信息
 			list = userService.searchRecruit(search);
+			for(RecruitInfo re : list){ // 获取每次招聘的相关职位信息
+				List<Position> positionList = new ArrayList<>();
+				positionList = userService.getPositionByRecruitId(re.getRecruitId());
+				re.setPosition(positionList);
+			}
 			ret.put("list",list);
 			ret.put("status", "OK");
 		} catch (Exception e) {
@@ -234,6 +242,54 @@ public class WxTeacherController {
 		}
 		return ret;
 	}
+	
+	/**
+	 * 提交报名申请
+	 * */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value="submitApplyAndAcc")
+	public Map<String, Object> submitApply(HttpServletRequest request) throws Exception {
+		Map<String, Object> ret = new HashMap<String, Object>();
+		try {
+			String applyId = Common.uuid();
+			Object[] obj = Common.fileFactory(request,applyId);
+			Map<String, Object> formdata = (Map<String, Object>) obj[1];
+			List<File> returnFileList = (List<File>) obj[0]; // 要返回的文件集合
+			Apply apply = new Apply(applyId, (String) (String)formdata.get("applyUserName"), (String)formdata.get("gender"), (String)formdata.get("nation"), (String)formdata.get("politicsStatus"),
+					(String)formdata.get("nativePlace"), (String)formdata.get("identityNum"), (String)formdata.get("isMarry"), 
+					(String)formdata.get("speciality"), (String)formdata.get("telephone"), (String)formdata.get("bachelorDegreeAndMajor"), (String)formdata.get("undergraduateGraduationTime"), 
+					(String)formdata.get("graduateSchoolAndMajor"), (String)formdata.get("graduateTime"), 
+					(String)formdata.get("doctoralDegreeAndMajor"), (String)formdata.get("doctoralGraduationTime"), (String)formdata.get("workOrganization"), 
+					(String)formdata.get("position"), (String)formdata.get("telephoneOriganization"), 
+					(String)formdata.get("professionalAndTechnicalQualification"), (String)formdata.get("practicingRequirements"), (String)formdata.get("mailingAddress"), 
+					(String)formdata.get("postalAddress"), (String)formdata.get("eMail"), (String)formdata.get("applicationOrganization"), 
+					(String)formdata.get("majorApplicant"), (String)formdata.get("workExperience"), (String)formdata.get("occupationApplicant"), (String)formdata.get("recruitId"), 
+					(Date)formdata.get("submitTime"), (Integer)formdata.get("undergraduateIsFirstSchool"), (Integer)formdata.get("undergraduateIsFirstMajor"), 
+					(Integer)formdata.get("graduateIsFirstSchool"), (Integer)formdata.get("graduateIsFirstMajor"), (Integer)formdata.get("doctorIsFirstSchool"), 
+					(Integer)formdata.get("doctorIsFirstMajor"), (String)formdata.get("professionalOrientation"), (String)formdata.get("compilationNature"));
+			apply.setSubmitTime(new Date());
+			//存储获取的报名信息（文本信息）
+			userService.submitApply(apply);
+			if(!returnFileList.isEmpty())
+			{
+				for(File f : returnFileList){
+					//存储报名材料(附件)
+					Material material = new Material();
+					material.setApplyId(apply.getApplyId());
+					material.setMaterialId(Common.uuid());
+					material.setAccessory(f.getPath());
+					userService.saveMaterial(material);
+				}
+			}
+			ret.put("status", "OK");
+		} catch (Exception e) {
+			e.printStackTrace();
+			ret.put("status", "ERROR");
+		}
+		return ret;
+	}
+	
+	
 	
 	/** @author Liming
 	 * @param 前台获取的时间格式 

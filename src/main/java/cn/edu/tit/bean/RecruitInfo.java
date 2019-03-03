@@ -5,6 +5,7 @@ package cn.edu.tit.bean;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * 招聘信息表
@@ -19,7 +20,16 @@ public class RecruitInfo {
 	private String publisher; //发布人
 	private Timestamp publishTime; //发布时间
 	
+	private List<Position> position; //招聘职位信息
 	
+	
+	
+	public List<Position> getPosition() {
+		return position;
+	}
+	public void setPosition(List<Position> position) {
+		this.position = position;
+	}
 	public String getRecruitId() {
 		return recruitId;
 	}
