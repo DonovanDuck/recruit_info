@@ -106,6 +106,53 @@
 						<!-- 内容start -->
 						<div class="main">
 							<!-- 页头 -->
+							<div class="main">
+			<!-- 页头 -->
+			<div class="titleMain">
+				<h1 style="text-align:center">太原工业学院招聘信息</h1>
+				<h3><strong> 招聘单位:</strong><strong> 太员工业学院招生办</strong></h3>
+				<c:forEach items="${occupationApplicantLsit }" var ="occupationApplicant">
+					<a <c:if test="${requestScope.offset+status.index}==0"> class="active"</c:if> target="myclass" href="${pageContext.request.contextPath}/user/toStatistics?positonName=${occupationApplicant.positonName }" class="btn btn-primary btn-lg " role="button">${occupationApplicant.positonName }</a>
+				</c:forEach>
+				
+			</div>
+			<div class="context_signIn">
+				<iframe name="myclass" onload="this.height=this.contentWindow.document.body.scrollHeight" src="${pageContext.request.contextPath}/user/toStatistics?positonName=${occupationApplicantLsit[0].positonName }"
+				 width="100%" frameborder="0" border="0"></iframe>
+			</div>
+
+		</div>
+		<script>
+		$('a').on('click', function() {
+			$(this).removeClass('active');
+			$(this).addClass('active');
+		});
+			var iframes = document.getElementsByTagName('iframe');
+			
+			for (var i = 0, j = iframes.length; i < j; ++i) {
+				// 放在闭包中，防止iframe触发load事件的时候下标不匹配
+				(function(_i) {
+					iframes[_i].onload = function() {
+						this.style.visibility = 'hidden';
+						// this.style.display = 'none';
+			
+						// 提前还原高度
+						this.setAttribute('height', 'auto'); // 或设为''
+			
+						// 再在下一轮事件循环中设置新高度
+						setTimeout(function() {
+							iframes[_i].setAttribute('height', iframes[_i].contentWindow.document.body.scrollHeight);
+			
+							iframes[_i].style.visibility = 'visible';
+							// iframes[_i].style.display = 'block';
+						}, 0);
+					}
+				})(i);
+			}
+		</script>
+							
+							
+							
 							<div class="jumbotron">
 								<h1>Hello, world!</h1>
 								<p>...</p>
@@ -115,50 +162,7 @@
 								</p>
 							</div>
 							<!-- 汇总信息 -->
-							<div class="alert alert-info" role="alert">
-
-								<h3>
-									当前报名总人数：<strong>${numAll }</strong>人
-								</h3>
-								其中博士<strong>${numDoctor }</strong>人、硕士<strong>${numMaster }</strong>人、学士<strong>${numBachelor }</strong>人，疆内户籍<strong>${numInSide }</strong>人，双一流院校<strong>1000</strong>人，双一流学科<strong>1000</strong>人。
-								<h3>
-									当日报名<strong>${numAllToday }</strong>人
-								</h3>
-								今日报名博士<strong>${numDoctorToday }</strong>人、硕士<strong>${numMasterToday }</strong>人、学士<strong>${numBachelorToday }</strong>人，疆内户籍<strong>${numBachelorToday }</strong>人，双一流院校<strong>100</strong>人，双一流学科<strong>100</strong>人。
-
-							</div>
-
-						<table class="table table-hover">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>报名号</th>
-          <th>报名人</th>
-          <th>报名职业</th>
-          <th>手机号码</th>
-          <th>学历</th>
-          <th>E-mail</th>
-          <th>工作经历</th>
-          <th>身份证</th>
-        </tr>
-      </thead>
-      <tbody>
-      <c:forEach items="${applList }" var="apply"  varStatus="status"></c:forEach>
-        <tr>
-          <th scope="row">${requestScope.offset+status.index}</th>
-          <td>${apply.applyId }</td>
-          <td>${apply.applyUserName }</td>
-          <td>${apply.occupationApplicant }</td>
-          <td>${apply.telephone }</td>
-          <td>学历</td>
-          <td>${apply.eMail }</td>
-          <td>${apply.workExperience }</td>
-           <td>${apply.identityNum }</td>
-        </tr>
-        
-      </tbody>
-    </table>
-
+						
 						<!-- 内容end -->
 					</div>
 				</div>

@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
 import cn.edu.tit.bean.Apply;
 import cn.edu.tit.bean.Position;
@@ -355,11 +356,24 @@ public class UserController {
 		} 
 		return ts;
 	}
-	@RequestMapping(value = "toSignInInfo")
+	@RequestMapping(value="toSignInInfo")
 	public ModelAndView toSignInInfo(HttpServletRequest request,@RequestParam(value="recruitId")String recruitId) {
+		ModelAndView mv = new ModelAndView();
+		request.getSession().setAttribute("recruitId", recruitId);
+		List<Position> occupationApplicantLsit = new ArrayList<Position>();
+		occupationApplicantLsit = userService.getPosition(recruitId);//该招聘信息对应的所有职位对象
+		mv.addObject("occupationApplicantLsit", occupationApplicantLsit);
+		mv.setViewName("/jsp/application_status");
+		return mv;
+		
+	}
+	@RequestMapping(value = "toStatistics")
+	public ModelAndView toStatistics(HttpServletRequest request,@RequestParam(value="positonName")String positonName) {
 		
 		ModelAndView mv = new ModelAndView();
+		String recruitId = (String) request.getSession().getAttribute("recruitId");
 		List<Apply> applList = new ArrayList<Apply>();
+		List<Position> occupationApplicantLsit = new ArrayList<Position>();
 		Integer numAll, numAllToday ,numDoctor,numDoctorToday,numMaster,numMasterToday,numBachelor,numBachelorToday,numInSide,numInSideToday;
 		//获取今日时间
 		Date date = new Date();// 取时间
@@ -369,18 +383,18 @@ public class UserController {
 		date = calendar.getTime(); // 这个时间就是日期往后推一天的结果
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String dateString = formatter.format(date);
-		numAllToday = userService.applyNumToday(recruitId,dateString); //今天报名人数
-		numAll = userService.applyNum(recruitId);//总报名人数
-		numBachelor = userService.applyNumBachelor(recruitId);
-		numBachelorToday = userService.applyNumBachelorToday(recruitId, dateString);
-		numMaster = userService.applyNumMaster(recruitId);
-		numMasterToday = userService.applyNumMasterToday(recruitId, dateString);
-		numDoctor = userService.applyNumDoctor(recruitId);
-		numDoctorToday = userService.applyNumDoctorToday(recruitId, dateString);
-		numInSide = userService.applyNumInSide(recruitId);
-		numInSideToday = userService.applyNumInSideToday(recruitId, dateString);
-		applList = userService.applyList(recruitId);//报名表
 		
+		numAllToday = userService.applyNumToday(recruitId,dateString,positonName); //今天报名人数
+		numAll = userService.applyNum(recruitId,positonName);//总报名人数
+		numBachelor = userService.applyNumBachelor(recruitId,positonName);//总学士人数
+		numBachelorToday = userService.applyNumBachelorToday(recruitId, dateString,positonName);//今日总学士人数
+		numMaster = userService.applyNumMaster(recruitId,positonName);//总硕士人数
+		numMasterToday = userService.applyNumMasterToday(recruitId, dateString,positonName);//今日总硕士人数
+		numDoctor = userService.applyNumDoctor(recruitId,positonName);//总博士人数
+		numDoctorToday = userService.applyNumDoctorToday(recruitId, dateString,positonName);//今日总博士人数
+		numInSide = userService.applyNumInSide(recruitId,positonName);//疆内人数
+		numInSideToday = userService.applyNumInSideToday(recruitId, dateString,positonName);//今日疆内人数
+		applList = userService.applyList(recruitId);//报名表
 		mv.addObject("applList",applList);
 		mv.addObject("numInSideToday",numInSideToday);
 		mv.addObject("numInSide",numInSide);
@@ -391,7 +405,7 @@ public class UserController {
 		mv.addObject("numBachelor",numBachelor);
 		mv.addObject("numAll",numAll);
 		mv.addObject("numAllToday",numAllToday);
-		mv.setViewName("/jsp/application_status");
+		mv.setViewName("/jsp/signIn_iframe");
 		return mv;
 		
 	}

@@ -193,57 +193,57 @@
 	</select>
 	<select id="applyNum" parameterType="String"
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply where recruit_id = #{recruitId};
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName} ;
 	</select>
 	<select id="applyNumToday" 
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply where recruit_id = #{recruitId} and submit_time = #{dateString} ;
+		SELECT count(*) from apply where recruit_id = #{recruitId} and submit_time = #{dateString} and occupation_applicant = #{positonName} ;
 	</select>
 
 	
 	<select id="applyNumDoctor" 
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply where recruit_id = #{recruitId} and  doctoral_degree_and_major is not null ;
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and  doctoral_degree_and_major is not null ;
 	</select>
 	<select id="applyNumMaster" 
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply where recruit_id = #{recruitId} and graduate_school_and_major is not null ;
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and graduate_school_and_major is not null ;
 	</select>
 	<select id="applyNumBachelor" 
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply where recruit_id = #{recruitId} and bachelor_degree_and_major is not null ;
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and bachelor_degree_and_major is not null ;
 	</select>
 	<select id="applyNumDoubleOne" 
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply where recruit_id = #{recruitId} and bachelor_degree_and_major is not null ;
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and bachelor_degree_and_major is not null ;
 	</select>
 	<select id="applyNumInSide" 
 		resultType="java.lang.Integer">
 		SELECT count(*) from apply 
 		<where>
 			 recruit_id = #{recruitId}
-                AND native_place LIKE '%${'新疆'}%'
+                AND native_place LIKE '%${'新疆'}%' and occupation_applicant = #{positonName} 
 		</where>;
 	</select>
 	<select id="applyNumDoctorToday" 
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply where recruit_id = #{recruitId} and submit_time = #{dateString} and doctoral_degree_and_major is not null ;
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and submit_time = #{dateString} and doctoral_degree_and_major is not null ;
 	</select>
 	<select id="applyNumMasterToday" 
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply where recruit_id = #{recruitId} and submit_time = #{dateString} and graduate_school_and_major is not null ;
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and submit_time = #{dateString} and graduate_school_and_major is not null ;
 	</select>
 	<select id="applyNumBachelorToday" 
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply where recruit_id = #{recruitId} and submit_time = #{dateString} and bachelor_degree_and_major is not null  ;
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and submit_time = #{dateString} and bachelor_degree_and_major is not null  ;
 	</select>
 	<select id="applyNumDoubleOneToday" 
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply where recruit_id = #{recruitId} and submit_time = #{dateString} and bachelor_degree_and_major is not null  ;
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and submit_time = #{dateString} and bachelor_degree_and_major is not null  ;
 	</select>
 	<select id="applyNumInSideToday" 
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply <where> recruit_id = #{recruitId} and submit_time = #{dateString} and native_place LIKE '%${'新疆'}%'</where> ;
+		SELECT count(*) from apply <where> recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and submit_time = #{dateString} and native_place LIKE '%${'新疆'}%'</where> ;
 	</select>
 	
 	<!-- 重置密码 -->
