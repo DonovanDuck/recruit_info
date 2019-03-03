@@ -13,7 +13,7 @@ import java.util.List;
 public class RecruitInfo {
 	private String recruitId; //id
 	private String organization; //单位
-	private String recruitInfo; //招聘信息
+	private String recruitInfo; //
 	private String accessory; //附件
 	private Timestamp startTime; //开始时间
 	private Timestamp endTime; //截止时间

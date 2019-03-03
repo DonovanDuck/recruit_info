@@ -128,7 +128,7 @@
 												<td class="text-center" style="padding-top: 1%;">${list.endTime }</td>
 												<td class="text-center" style="padding-top: 1%;">张三</td>
 												<td class="text-center"><a
-													href="${pageContext.request.contextPath}/.."
+													href="${pageContext.request.contextPath}/user/toSignInInfo?recruitId=${list.recruitId}"
 													class="waves-effect waves-dark" style="font-size: 20px">
 														<button type="button" class="btn btn-default btn-lg"
 															style="padding-top: 4%;">

@@ -96,7 +96,8 @@ public interface IUserDao {
 	 * @param user
 	 */
 	public void modifyUser(User user);
-	public List<Apply> applyList(String recruitId);
+	public List<Apply> applyList(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+	public List<Apply> applyListAll(@Param("recruitId")String recruitId);
 	public Integer applyNum(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
 
 	public Integer applyNumToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString,@Param("positonName")String positonName);
@@ -139,6 +140,22 @@ public interface IUserDao {
 	 * @param material
 	 */
 	public void saveMaterial(Material material);
+
+	public Integer undergraduateIsFirstSchool(@Param("applyId")String applyId);
+
+	public Integer graduateIsFirstSchool(@Param("applyId")String applyId);
+
+	public Integer doctorIsFirstSchool(@Param("applyId")String applyId);
+
+	public Integer undergraduateIsFirstMajor(@Param("applyId")String applyId);
+
+	public Integer graduateIsFirstMajor(@Param("applyId")String applyId);
+
+	public Integer doctorIsFirstMajor(@Param("applyId")String applyId);
+
+	public RecruitInfo getRecruitInfoById(@Param("recruitId")String recruitId);
+
+
 	
 	
 }

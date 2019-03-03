@@ -102,21 +102,23 @@
           <th>身份证</th>
         </tr>
       </thead>
+       <c:forEach items="${applList }" var="apply"  varStatus="status">
       <tbody>
-      <c:forEach items="${applList }" var="apply"  varStatus="status"></c:forEach>
+     
         <tr>
           <th scope="row">${requestScope.offset+status.index}</th>
           <td>${apply.applyId }</td>
           <td>${apply.applyUserName }</td>
           <td>${apply.occupationApplicant }</td>
           <td>${apply.telephone }</td>
-          <td>学历</td>
+          <td>${apply.education }</td>
           <td>${apply.eMail }</td>
           <td>${apply.workExperience }</td>
            <td>${apply.identityNum }</td>
         </tr>
         
       </tbody>
+      </c:forEach>
     </table>
 	
 </body>

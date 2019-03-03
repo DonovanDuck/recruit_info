@@ -89,7 +89,8 @@ public interface IUserService {
 	 * @param user
 	 */
 	public void modifyuser(User user);
-	public List<Apply> applyList(String recruitId);
+	public List<Apply> applyList(String recruitId,String positonName);
+	public List<Apply> applyListAll(String recruitId);
 	public Integer applyNum(String recruitId,String positonName);
 	public Integer applyNumDoctor(String recruitId,String positonName);
 	public Integer applyNumMaster(String recruitId,String positonName);
@@ -130,10 +131,15 @@ public interface IUserService {
 	 * @param apply
 	 */
 	public void submitApply(Apply apply);
+	public RecruitInfo getRecruitInfoById(String recruitId);
 	
 	/**
 	 * 存储报名材料
 	 * @param material
 	 */
 	public void saveMaterial(Material material);
+
+	public boolean isFirstSchool(String applyId);
+
+	public boolean isFirstMajor(String applyId);
 }

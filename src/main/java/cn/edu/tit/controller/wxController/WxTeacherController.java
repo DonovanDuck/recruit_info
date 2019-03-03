@@ -255,27 +255,27 @@ public class WxTeacherController {
 			Object[] obj = Common.fileFactory(request,applyId);
 			Map<String, Object> formdata = (Map<String, Object>) obj[1];
 			List<File> returnFileList = (List<File>) obj[0]; // 要返回的文件集合
-			Apply apply = new Apply(applyId, (String) (String)formdata.get("applyUserName"), (String)formdata.get("gender"), (String)formdata.get("nation"), (String)formdata.get("politicsStatus"),
-					(String)formdata.get("nativePlace"), (String)formdata.get("identityNum"), (String)formdata.get("isMarry"), 
-					(String)formdata.get("speciality"), (String)formdata.get("telephone"), (String)formdata.get("bachelorDegreeAndMajor"), (String)formdata.get("undergraduateGraduationTime"), 
-					(String)formdata.get("graduateSchoolAndMajor"), (String)formdata.get("graduateTime"), 
-					(String)formdata.get("doctoralDegreeAndMajor"), (String)formdata.get("doctoralGraduationTime"), (String)formdata.get("workOrganization"), 
-					(String)formdata.get("position"), (String)formdata.get("telephoneOriganization"), 
-					(String)formdata.get("professionalAndTechnicalQualification"), (String)formdata.get("practicingRequirements"), (String)formdata.get("mailingAddress"), 
-					(String)formdata.get("postalAddress"), (String)formdata.get("eMail"), (String)formdata.get("applicationOrganization"), 
-					(String)formdata.get("majorApplicant"), (String)formdata.get("workExperience"), (String)formdata.get("occupationApplicant"), (String)formdata.get("recruitId"), 
-					(Date)formdata.get("submitTime"), (Integer)formdata.get("undergraduateIsFirstSchool"), (Integer)formdata.get("undergraduateIsFirstMajor"), 
-					(Integer)formdata.get("graduateIsFirstSchool"), (Integer)formdata.get("graduateIsFirstMajor"), (Integer)formdata.get("doctorIsFirstSchool"), 
-					(Integer)formdata.get("doctorIsFirstMajor"), (String)formdata.get("professionalOrientation"), (String)formdata.get("compilationNature"));
-			apply.setSubmitTime(new Date());
+//			Apply apply = new Apply(applyId, (String) (String)formdata.get("applyUserName"), (String)formdata.get("gender"), (String)formdata.get("nation"), (String)formdata.get("politicsStatus"),
+//					(String)formdata.get("nativePlace"), (String)formdata.get("identityNum"), (String)formdata.get("isMarry"), 
+//					(String)formdata.get("speciality"), (String)formdata.get("telephone"), (String)formdata.get("bachelorDegreeAndMajor"), (String)formdata.get("undergraduateGraduationTime"), 
+//					(String)formdata.get("graduateSchoolAndMajor"), (String)formdata.get("graduateTime"), 
+//					(String)formdata.get("doctoralDegreeAndMajor"), (String)formdata.get("doctoralGraduationTime"), (String)formdata.get("workOrganization"), 
+//					(String)formdata.get("position"), (String)formdata.get("telephoneOriganization"), 
+//					(String)formdata.get("professionalAndTechnicalQualification"), (String)formdata.get("practicingRequirements"), (String)formdata.get("mailingAddress"), 
+//					(String)formdata.get("postalAddress"), (String)formdata.get("eMail"), (String)formdata.get("applicationOrganization"), 
+//					(String)formdata.get("majorApplicant"), (String)formdata.get("workExperience"), (String)formdata.get("occupationApplicant"), (String)formdata.get("recruitId"), 
+//					(Date)formdata.get("submitTime"), (Integer)formdata.get("undergraduateIsFirstSchool"), (Integer)formdata.get("undergraduateIsFirstMajor"), 
+//					(Integer)formdata.get("graduateIsFirstSchool"), (Integer)formdata.get("graduateIsFirstMajor"), (Integer)formdata.get("doctorIsFirstSchool"), 
+//					(Integer)formdata.get("doctorIsFirstMajor"), (String)formdata.get("professionalOrientation"), (String)formdata.get("compilationNature"));
+			//apply.setSubmitTime(new Date());
 			//存储获取的报名信息（文本信息）
-			userService.submitApply(apply);
+			//userService.submitApply(apply);
 			if(!returnFileList.isEmpty())
 			{
 				for(File f : returnFileList){
 					//存储报名材料(附件)
 					Material material = new Material();
-					material.setApplyId(apply.getApplyId());
+					//material.setApplyId(apply.getApplyId());
 					material.setMaterialId(Common.uuid());
 					material.setAccessory(f.getPath());
 					userService.saveMaterial(material);

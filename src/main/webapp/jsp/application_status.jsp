@@ -120,9 +120,13 @@
 				<iframe name="myclass" onload="this.height=this.contentWindow.document.body.scrollHeight" src="${pageContext.request.contextPath}/user/toStatistics?positonName=${occupationApplicantLsit[0].positonName }"
 				 width="100%" frameborder="0" border="0"></iframe>
 			</div>
+			<button id="js-export" type="button" class="btn btn-primary">导出Excel</button>
 
 		</div>
 		<script>
+		$('#js-export').click(function(){
+            window.location.href="${pageContext.request.contextPath}/user/export";
+		});
 		$('a').on('click', function() {
 			$(this).removeClass('active');
 			$(this).addClass('active');
@@ -153,14 +157,7 @@
 							
 							
 							
-							<div class="jumbotron">
-								<h1>Hello, world!</h1>
-								<p>...</p>
-								<p>
-									<a class="btn btn-primary btn-lg" href="#" role="button">Learn
-										more</a>
-								</p>
-							</div>
+						
 							<!-- 汇总信息 -->
 						
 						<!-- 内容end -->
