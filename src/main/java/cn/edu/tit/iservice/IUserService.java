@@ -89,21 +89,21 @@ public interface IUserService {
 	 */
 	public void modifyuser(User user);
 	public List<Apply> applyList(String recruitId);
-	public Integer applyNum(String recruitId);
-	public Integer applyNumDoctor(String recruitId);
-	public Integer applyNumMaster(String recruitId);
-	public Integer applyNumBachelor(String recruitId);
-	public Integer applyNumDoubleOne(String recruitId);
-	public Integer applyNumInSide(String recruitId);
+	public Integer applyNum(String recruitId,String positonName);
+	public Integer applyNumDoctor(String recruitId,String positonName);
+	public Integer applyNumMaster(String recruitId,String positonName);
+	public Integer applyNumBachelor(String recruitId,String positonName);
+	public Integer applyNumDoubleOne(String recruitId,String positonName);
+	public Integer applyNumInSide(String recruitId,String positonName);
 	
-	public Integer applyNumToday(String recruitId, String dateString);
-	public Integer applyNumDoctorToday(String recruitId, String dateString);
-	public Integer applyNumMasterToday(String recruitId, String dateString);
-	public Integer applyNumBachelorToday(String recruitId, String dateString);
-	public Integer applyNumDoubleOneToday(String recruitId, String dateString);
-	public Integer applyNumInSideToday(String recruitId, String dateString);
+	public Integer applyNumToday(String recruitId, String dateString,String positonName);
+	public Integer applyNumDoctorToday(String recruitId, String dateString,String positonName);
+	public Integer applyNumMasterToday(String recruitId, String dateString,String positonName);
+	public Integer applyNumBachelorToday(String recruitId, String dateString,String positonName);
+	public Integer applyNumDoubleOneToday(String recruitId, String dateString,String positonName);
+	public Integer applyNumInSideToday(String recruitId, String dateString,String positonName);
 	
-	public List<Position> getPosition(String string);
+	public List<Position> getPosition(String recruitId);
 
 	/**
 	 *@author LiMing

@@ -96,21 +96,21 @@ public interface IUserDao {
 	 */
 	public void modifyUser(User user);
 	public List<Apply> applyList(String recruitId);
-	public Integer applyNum(String recruitId);
+	public Integer applyNum(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
 
-	public Integer applyNumToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString);
+	public Integer applyNumToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString,@Param("positonName")String positonName);
 
-	public Integer applyNumDoctor(@Param("recruitId")String recruitId);
-	public Integer applyNumMaster(@Param("recruitId")String recruitId);
-	public Integer applyNumBachelor(@Param("recruitId")String recruitId);
-	public Integer applyNumDoubleOne(@Param("recruitId")String recruitId);
-	public Integer applyNumInSide(@Param("recruitId")String recruitId);
+	public Integer applyNumDoctor(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+	public Integer applyNumMaster(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+	public Integer applyNumBachelor(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+	public Integer applyNumDoubleOne(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+	public Integer applyNumInSide(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
 
-	public Integer applyNumDoctorToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString);
-	public Integer applyNumMasterToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString);
-	public Integer applyNumBachelorToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString);
-	public Integer applyNumDoubleOneToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString);
-	public Integer applyNumInSideToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString);
+	public Integer applyNumDoctorToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString,@Param("positonName")String positonName);
+	public Integer applyNumMasterToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString,@Param("positonName")String positonName);
+	public Integer applyNumBachelorToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString,@Param("positonName")String positonName);
+	public Integer applyNumDoubleOneToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString,@Param("positonName")String positonName);
+	public Integer applyNumInSideToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString,@Param("positonName")String positonName);
 	
 	public User getUserById(@Param("employeeNum")String employeeNum);
 }
