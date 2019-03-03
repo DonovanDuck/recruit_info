@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.tit.bean.Apply;
+import cn.edu.tit.bean.Material;
 import cn.edu.tit.bean.Position;
 import cn.edu.tit.bean.RecruitInfo;
 import cn.edu.tit.bean.User;
@@ -217,6 +218,8 @@ public class UserServiceImpl implements IUserService {
 		}
 		return list;
 	}
+	
+	
 
 	/**
 	 *@author LiMing
@@ -232,7 +235,31 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public List<RecruitInfo> searchRecruit(String search) {
 		// TODO Auto-generated method stub
-		return null;
+		return iUserDao.getRecruitInfo(search);
+	}
+
+	@Override
+	public void rePassword(String userId) {
+		// TODO Auto-generated method stub
+		iUserDao.rePassword(userId);
+	}
+
+	@Override
+	public List<Position> getPositionByRecruitId(String recruitId) {
+		// TODO Auto-generated method stub
+		return iUserDao.getPositionByRecruitId(recruitId);
+	}
+
+	@Override
+	public void submitApply(Apply apply) {
+		// TODO Auto-generated method stub
+		iUserDao.submitApply(apply);
+	}
+
+	@Override
+	public void saveMaterial(Material material) {
+		// TODO Auto-generated method stub
+		iUserDao.saveMaterial(material);
 	}
 
 

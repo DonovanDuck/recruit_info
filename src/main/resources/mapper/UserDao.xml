@@ -10,6 +10,7 @@
 		<result column="organization_name" property="organizationName" />
 		<result column="organization_id" property="organizationId" />
 		<result column="password" property="password" />
+		<result column="authority" property="authority" />
 	</resultMap>
 
 	<resultMap type="cn.edu.tit.bean.Apply" id="applyMap">
@@ -52,8 +53,24 @@
 		<result column="occupation_applicant" property="occupationApplicant" />
 		<result column="recruit_id" property="recruitId" />
 		<result column="submit_time" property="submitTime" />
-</resultMap>
-	
+		<result column="occupation_applicant"
+			property="occupationApplicant" />
+		<result column="undergraduate_is_first_school" property="undergraduateIsFirstSchool" />
+		<result column="undergraduate_is_first_major" property="undergraduateIsFirstMajor" />
+		<result column="graduate_is_first_school" property="graduateIsFirstSchool" />
+		<result column="graduate_is_first_major" property="graduateIsFirstMajor" />
+		<result column="doctor_is_first_school" property="doctorIsFirstSchool" />
+		<result column="doctor_is_first_major" property="doctorIsFirstMajor" />
+		<result column="professional_orientation" property="professionalOrientation" />
+		<result column="compilation_nature" property="compilationNature" />
+		<result column="education" property="education" />
+		<result column="degree" property="degree" />
+		<result column="is_current" property="isCurrent" />
+		<result column="job_performance" property="jobPerformance" />
+		<result column="paper_topic_situation" property="paperTopicSituation" />
+		<result column="sanction_situation" property="sanctionSituation" />
+		<result column="family_relationship" property="familyRelationship" />
+	</resultMap>
 
 
 	<!-- 结果集映射 -->
@@ -75,12 +92,14 @@
 		<result column="position_name" property="positonName" />
 		<result column="recruit_id" property="recruitId" />
 		<result column="organization" property="organization" />
+		<result column="professional_orientation" property="professionalOrientation" />
+		<result column="compilation_nature" property="compilationNature" />
 	</resultMap>
 
 <!-- 添加用户信息 -->
 <insert id="addUser" parameterType="cn.edu.tit.bean.User">
-	insert into user(user_id, user_name, wechart_num, organization_name, password, organization_id) 
-		values(#{userId},#{userName},#{wechartNum},#{organizationName},#{password},#{organizationId});
+	insert into user(user_id, user_name, wechart_num, organization_name, password, organization_id, authority) 
+		values(#{userId},#{userName},#{wechartNum},#{organizationName},#{password},#{organizationId},#{authority});
 </insert>
 
 	<!-- 查询所有用户 -->
@@ -107,6 +126,12 @@
 	<select id="getPosition" resultMap="position">
 		select * from position where
 		organization = #{string};
+	</select>
+	
+	<!-- 通过招聘信息获取相应职位信息 -->
+	<select id="getPositionByRecruitId" resultMap="position">
+		select * from position where
+		recruit_id = #{recruitId};
 	</select>
 
 	<!-- 添加资源到资源库 -->
@@ -220,4 +245,117 @@
 		resultType="java.lang.Integer">
 		SELECT count(*) from apply <where> recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and submit_time = #{dateString} and native_place LIKE '%${'新疆'}%'</where> ;
 	</select>
+	
+	<!-- 重置密码 -->
+	<select id="rePassword">
+		update user set password='123456' where user_id=#{userId};
+	</select>
+	
+	<!-- 查招聘表 -->
+	<select id="searchRecruit" resultMap="recruitInfo">
+		select * from recruit_info where recruit_id = #{search};
+	</select>
+	
+	
+	<!-- 提交申请 -->
+	<insert id="submitApply" parameterType="cn.edu.tit.bean.Apply">
+		insert into apply(
+			apply_id,
+			gender,
+			apply_user_name,
+			nation,
+			politics_status,
+			native_place,
+			identity_num,
+			is_marry,
+			speciality,
+			telephone,
+			undergraduate_and_major,
+			undergraduate_graduation_time,
+			undergraduate_is_first_school,
+			undergraduate_is_first_major,
+			graduate_school_and_major,
+			graduate_time,
+			graduate_is_first_school,
+			graduate_is_first_major,
+			doctoral_degree_and_major,
+			doctoral_graduation_time,
+			doctor_is_first_school,
+			doctor_is_first_major,
+			work_organization,
+			position,
+			telephone_organizatino,
+			professional_and_technical_qualification,
+			practicing_requirements,
+			mailing_address,
+			postal_address,
+			e_mail,
+			application_organization,
+			major_applicant,
+			work_experience,
+			occupation_applicant,
+			recruit_id,
+			submit_time,
+			professional_orientation,
+			compilation_nature,
+			education,
+			degree,
+			is_current,
+			job_performance,
+			paper_topic_situation,
+			sanction_situation,
+			family_relationship
+		) values(
+			 #{applyId}, 
+			 #{gender},
+			 #{applyUserName},
+			 #{nation},
+			 #{politicsStatus},
+			 #{nativePlace},
+			 #{identityNum},
+			 #{isMarry},
+			 #{speciality},
+			 #{telephone},
+			 #{bachelorDegreeAndMajor},
+			 #{undergraduateGraduationTime},
+			#{undergraduateIsFirstSchool},
+			#{undergraduateIsFirstMajor},
+			 #{graduateSchoolAndMajor},
+			 #{graduateTime},
+			#{graduateIsFirstSchool},
+			#{graduateIsFirstMajor},		
+			 #{doctoralDegreeAndMajor},
+			 #{doctoralGraduationTime},
+			#{doctorIsFirstSchool},
+			#{doctorIsFirstMajor},
+			 #{workOrganization},
+			 #{position},
+			 #{telephoneOriganization},
+			 #{professionalAndTechnicalQualification},
+			 #{practicingRequirements},
+			 #{mailingAddress},
+			 #{postalAddress},
+			 #{eMail},
+			 #{applicationOrganization},
+			 #{majorApplicant},
+			 #{workExperience},
+			 #{occupationApplicant},
+			 #{recruitId},
+			#{submitTime},
+			 #{professionalOrientation},
+			 #{compilationNature},
+			 #{education},
+			 #{degree},
+			#{isCurrent},
+			 #{jobPerformance},
+			 #{paperTopicSituation},
+			 #{sanctionSituation},
+			 #{familyRelationship}
+		);
+	</insert>
+	
+	<!-- 存储报名材料 -->
+	<insert id="saveMaterial" parameterType="cn.edu.tit.bean.Material">
+		insert into material(apply_id, material_id, accessory) values(#{applyId},#{materialId},#{accessory});
+	</insert>
 </mapper>

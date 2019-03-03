@@ -12,11 +12,14 @@ public class User {
 	private String organizationName; //单位名
 	private String organizationId;//单位ID
 	private String password; //密码
+	private Integer authority; // 权限 默认可查看用户信息0，可添加信息1
 	
 	
 	
+	
+
 	public User(String userId, String userName, String wechartNum, String organizationName, String organizationId,
-			String password) {
+			String password, Integer authority) {
 		super();
 		this.userId = userId;
 		this.userName = userName;
@@ -24,6 +27,7 @@ public class User {
 		this.organizationName = organizationName;
 		this.organizationId = organizationId;
 		this.password = password;
+		this.authority = authority;
 	}
 
 
@@ -32,7 +36,19 @@ public class User {
 	public String toString() {
 		return "User [userId=" + userId + ", userName=" + userName + ", wechartNum=" + wechartNum
 				+ ", organizationName=" + organizationName + ", organizationId=" + organizationId + ", password="
-				+ password + "]";
+				+ password + ", authority=" + authority + "]";
+	}
+
+
+
+	public Integer getAuthority() {
+		return authority;
+	}
+
+
+
+	public void setAuthority(Integer authority) {
+		this.authority = authority;
 	}
 
 

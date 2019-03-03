@@ -11,8 +11,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.alibaba.fastjson.JSONObject;
 
+import cn.edu.tit.bean.Apply;
+import cn.edu.tit.bean.Material;
 import cn.edu.tit.bean.RecruitInfo;
 import cn.edu.tit.bean.User;
+import cn.edu.tit.common.Common;
 import cn.edu.tit.idao.IUserDao;
 import cn.edu.tit.iservice.IUserService;
 
@@ -30,6 +33,10 @@ public class UserTest {
 
 	@Test
 	public void Test() {
+		Material m = new Material();
+		m.setApplyId("1");
+		m.setMaterialId(Common.uuid());
+		userDao.saveMaterial(m);
 	}
 }
 

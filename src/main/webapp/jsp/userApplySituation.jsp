@@ -16,6 +16,44 @@
 <link
 	href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
 	rel="stylesheet">
+	<link
+	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	rel="stylesheet">
+<link
+	href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
+	rel="stylesheet">
+	<link
+	href="${pageContext.request.contextPath}/css/Admin/font-awesome.css"
+	rel="stylesheet" />
+<link
+	href="${pageContext.request.contextPath}/js/Admin/morris/morris-0.4.3.min.css"
+	rel="stylesheet" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+<link
+	href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/Admin/css/materialize.min.css"
+	media="screen,projection" />
+<link href="${pageContext.request.contextPath}/css/Admin/bootstrap.css"
+	rel="stylesheet">
+<link
+	href="${pageContext.request.contextPath}/css/Admin/custom-styles.css"
+	rel="stylesheet" />
+<link href='http://fonts.googleapis.com/css?family=Open+Sans'
+	rel='stylesheet' type='text/css' />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/Admin/css/cssCharts.css">
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script
+	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script
+	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script
+	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 <script
 	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -57,6 +95,34 @@
 </head>
 
 <body>
+<div id="wrapper">
+		<nav class="navbar navbar-default top-navbar" role="navigation">
+			<div class="text-center">
+				<h2>新疆招聘信息系统</h2>
+			</div>
+		</nav>
+		<!--/. NAV TOP  -->
+		<nav class="navbar-default navbar-side" role="navigation">
+			<div class="sidebar-collapse">
+				<ul class="nav" id="main-menu">
+					<li class="text-left"><a
+						href="${pageContext.request.contextPath}/admin/readTeacherInfo"
+						class="waves-effect waves-dark" style="font-size: 20px">招聘信息</a></li>
+					<li class="text-left"><a
+						href="${pageContext.request.contextPath}/user/toUserInfo"
+						class="waves-effect waves-dark" style="font-size: 20px">用户管理</a></li>
+					<li class="text-left"><a
+						href="${pageContext.request.contextPath}/user/toPersonalInfo"
+						class="waves-effect waves-dark" style="font-size: 20px">个人信息</a></li>
+				</ul>
+			</div>
+		</nav>
+		<!-- /. NAV SIDE  -->
+		<div id="page-wrapper">
+			<div id="page-inner">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-content " style="padding-top: 0%">
 	<div class="apply_main">
 		<div class="apply_head">
 			<h2>${apply.applyUserName }的报名情况</h2>
@@ -170,6 +236,11 @@
 				</tbody>
 			</table>
 		</div>
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
 	</div>
 </body>
 </html>

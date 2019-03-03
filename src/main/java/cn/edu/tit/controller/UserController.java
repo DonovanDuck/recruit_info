@@ -1,7 +1,7 @@
 package cn.edu.tit.controller;
 
 import java.io.File;
-
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -162,6 +162,10 @@ public class UserController {
 			user.setUserName(request.getParameter("userName"));
 			user.setWechartNum(request.getParameter("weChat"));
 			user.setOrganizationId(Common.uuid());
+			if("on".equals(request.getParameter("authority")))
+				user.setAuthority(1);
+			else
+				user.setAuthority(0);
 			userService.addUser(user);
 
 		} catch (Exception e) {
@@ -183,6 +187,25 @@ public class UserController {
 			List<User> userList = userService.getUser();
 			mv.addObject("userList", userList);
 			mv.setViewName("/jsp/userInfo");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return mv;
+	}
+	
+	/**
+	 * 跳转到用户列表
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="toPersonalInfo")
+	public ModelAndView toPersonalInfo(HttpServletRequest request){
+		ModelAndView mv = new ModelAndView();
+		try {
+			User user = (User) request.getSession().getAttribute("user");
+			mv.addObject("user", user);
+			mv.setViewName("/jsp/personalInfo");
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -260,6 +283,34 @@ public class UserController {
 			response.getWriter().println(result);
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	/**
+	 * 重置密码
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="ajaxRePassword")
+	public void ajaxRePassword(HttpServletRequest request, HttpServletResponse response){
+		String result = "";
+		try {
+			//校验密码
+			String userId = request.getParameter("userId");
+			userService.rePassword(userId);
+			result = JSONObject.toJSONString("OK");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			result = JSONObject.toJSONString("ERROR");
+		}
+		try {
+			response.getWriter().println(result);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
