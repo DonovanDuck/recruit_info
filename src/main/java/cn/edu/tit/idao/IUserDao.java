@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import cn.edu.tit.bean.Apply;
+import cn.edu.tit.bean.Material;
 import cn.edu.tit.bean.Position;
 import cn.edu.tit.bean.User;
 import cn.edu.tit.bean.RecruitInfo;
@@ -96,21 +97,48 @@ public interface IUserDao {
 	 */
 	public void modifyUser(User user);
 	public List<Apply> applyList(String recruitId);
-	public Integer applyNum(String recruitId);
+	public Integer applyNum(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
 
-	public Integer applyNumToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString);
+	public Integer applyNumToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString,@Param("positonName")String positonName);
 
-	public Integer applyNumDoctor(@Param("recruitId")String recruitId);
-	public Integer applyNumMaster(@Param("recruitId")String recruitId);
-	public Integer applyNumBachelor(@Param("recruitId")String recruitId);
-	public Integer applyNumDoubleOne(@Param("recruitId")String recruitId);
-	public Integer applyNumInSide(@Param("recruitId")String recruitId);
+	public Integer applyNumDoctor(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+	public Integer applyNumMaster(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+	public Integer applyNumBachelor(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+	public Integer applyNumDoubleOne(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+	public Integer applyNumInSide(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
 
-	public Integer applyNumDoctorToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString);
-	public Integer applyNumMasterToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString);
-	public Integer applyNumBachelorToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString);
-	public Integer applyNumDoubleOneToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString);
-	public Integer applyNumInSideToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString);
+	public Integer applyNumDoctorToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString,@Param("positonName")String positonName);
+	public Integer applyNumMasterToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString,@Param("positonName")String positonName);
+	public Integer applyNumBachelorToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString,@Param("positonName")String positonName);
+	public Integer applyNumDoubleOneToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString,@Param("positonName")String positonName);
+	public Integer applyNumInSideToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString,@Param("positonName")String positonName);
 	
 	public User getUserById(@Param("employeeNum")String employeeNum);
+	
+	/**
+	 * 重置密码
+	 * @param userId
+	 */
+	public void rePassword(String userId);
+	
+	/**
+	 * 通过招聘信息获取相应职位信息
+	 * @return
+	 */
+	public List<Position> getPositionByRecruitId(String recruitId);
+	
+	
+	/**
+	 * 提交申请
+	 * @param apply
+	 */
+	public void submitApply(Apply apply);
+	
+	/**
+	 * 存储报名材料
+	 * @param material
+	 */
+	public void saveMaterial(Material material);
+	
+	
 }

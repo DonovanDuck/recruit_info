@@ -51,19 +51,48 @@
 	.userInfo_head{
 		height: 70px;
    		width: 135px;	
+   		position: relative;
+    left: 248px;
+    top: 29px
 	}
 	.userInfo_addInfo{
 		height: 50px;
     width: 58px;
     position: relative;
-    left: 1045px;
+    left: 90%;
 	}
 	.userInfo_TD{
 		width: 331px;
     	padding-right: 51px;
 	}
 </style>
-
+<script>
+function open1(ob)
+{
+  var id=$(ob).attr("name");
+ //alert(id);
+ var userId = $("#"+id).val();
+ //alert(userId);
+   $.ajax({
+		async:false,
+		cache:false,
+		url:"${pageContext.request.contextPath}/user/ajaxRePassword",
+		data:{'userId':userId},
+		type:"POST",
+		dataType:"text",
+		success:function(result) {
+			//alert(eval(result));
+			if(eval(result) == "OK"){
+				alert("密码重置成功！");
+			}
+			else{
+				alert("密码重置失败！");
+			}
+		}
+	}); 
+   
+}	
+</script>
 </head>
 
 <body>
@@ -84,7 +113,7 @@
 						href="${pageContext.request.contextPath}/user/toUserInfo"
 						class="waves-effect waves-dark" style="font-size: 20px">用户管理</a></li>
 					<li class="text-left"><a
-						href="${pageContext.request.contextPath}/admin/readCategories"
+						href="${pageContext.request.contextPath}/user/toPersonalInfo"
 						class="waves-effect waves-dark" style="font-size: 20px">个人信息</a></li>
 				</ul>
 			</div>
@@ -100,7 +129,7 @@
 			<h2>用户信息</h2>
 		</div>
 		<div class="userInfo_addInfo">
-			<button class="btn btn-success" type="submit">添加用户</button>
+			<a href="${pageContext.request.contextPath}/jsp/addUserInfo.jsp"><button class="btn btn-success" type="button">添加用户</button></a>
 		</div>
 		<div class="userInfo_table">
 			<table class="table table-condensed">
@@ -109,20 +138,24 @@
 						<th>编号</th>
 						<th>单位</th>
 						<th>负责人</th>
-						<th>修改</th>
+						<th style="    padding-left: 42px;">修改</th>
 					</tr>
 				</thead>
 				<tbody>
-				<c:forEach items="${userList }" var="user">
+				<c:forEach items="${userList }" var="user" varStatus="status">
 				<form action="${pageContext.request.contextPath}/user/modifyUser">
 					<tr>
 						<td style="width: 62px;text-align: center;padding-top: 21px;">${requestScope.offset+status.index+1}
-							<input class="form-control" type="hidden" name="userId" value="${user.userId }">
+							<input class="form-control" type="hidden" name="userId" id="${requestScope.offset+status.index+1}" value="${user.userId }">
 						</td>
 						<!-- <td style="width: 62px;">1</td> -->
 						<td class="userInfo_TD"><input class="form-control" type="text" name="organizationName" value="${user.organizationName }"></td>
 						<td class="userInfo_TD"><input class="form-control" type="text" name="userName" value="${user.userName }"></td>
-						<td class="userInfo_TD"><input class="btn btn-default" type="submit" value="修改"></td>
+						<td class="userInfo_TD">
+							<input class="btn btn-default" type="submit" value="修改" style="margin-left: 26px;margin-right: 27px;">
+					    	<input class="btn btn-default" name="${requestScope.offset+status.index+1}" onclick="open1(this)" type="button" value="重置密码" style="margin-right: 0xp;">
+					    	<label style="margin-left: 113px;">原始密码：123456</label>
+						</td>
 					</tr>
 				</form>
 				</c:forEach>

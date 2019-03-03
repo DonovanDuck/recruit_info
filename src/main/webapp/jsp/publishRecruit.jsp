@@ -77,7 +77,7 @@
 						href="${pageContext.request.contextPath}/admin/readStudentInfo"
 						class="waves-effect waves-dark" style="font-size: 20px">用户管理</a></li>
 					<li class="text-left"><a
-						href="${pageContext.request.contextPath}/admin/readCategories"
+						href="${pageContext.request.contextPath}/user/toPersonalInfo"
 						class="waves-effect waves-dark" style="font-size: 20px">个人信息</a></li>
 				</ul>
 			</div>

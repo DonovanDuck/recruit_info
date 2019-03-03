@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.tit.bean.Apply;
+import cn.edu.tit.bean.Material;
 import cn.edu.tit.bean.Position;
 import cn.edu.tit.bean.RecruitInfo;
 import cn.edu.tit.bean.User;
@@ -89,21 +90,21 @@ public interface IUserService {
 	 */
 	public void modifyuser(User user);
 	public List<Apply> applyList(String recruitId);
-	public Integer applyNum(String recruitId);
-	public Integer applyNumDoctor(String recruitId);
-	public Integer applyNumMaster(String recruitId);
-	public Integer applyNumBachelor(String recruitId);
-	public Integer applyNumDoubleOne(String recruitId);
-	public Integer applyNumInSide(String recruitId);
+	public Integer applyNum(String recruitId,String positonName);
+	public Integer applyNumDoctor(String recruitId,String positonName);
+	public Integer applyNumMaster(String recruitId,String positonName);
+	public Integer applyNumBachelor(String recruitId,String positonName);
+	public Integer applyNumDoubleOne(String recruitId,String positonName);
+	public Integer applyNumInSide(String recruitId,String positonName);
 	
-	public Integer applyNumToday(String recruitId, String dateString);
-	public Integer applyNumDoctorToday(String recruitId, String dateString);
-	public Integer applyNumMasterToday(String recruitId, String dateString);
-	public Integer applyNumBachelorToday(String recruitId, String dateString);
-	public Integer applyNumDoubleOneToday(String recruitId, String dateString);
-	public Integer applyNumInSideToday(String recruitId, String dateString);
+	public Integer applyNumToday(String recruitId, String dateString,String positonName);
+	public Integer applyNumDoctorToday(String recruitId, String dateString,String positonName);
+	public Integer applyNumMasterToday(String recruitId, String dateString,String positonName);
+	public Integer applyNumBachelorToday(String recruitId, String dateString,String positonName);
+	public Integer applyNumDoubleOneToday(String recruitId, String dateString,String positonName);
+	public Integer applyNumInSideToday(String recruitId, String dateString,String positonName);
 	
-	public List<Position> getPosition(String string);
+	public List<Position> getPosition(String recruitId);
 
 	/**
 	 *@author LiMing
@@ -111,4 +112,28 @@ public interface IUserService {
 	 * @return 返回用户实体
 	 */
 	public User getUserById(String employeeNum);
+	
+	/**
+	 * 重置密码
+	 * @param userId
+	 */
+	public void rePassword(String userId);
+	
+	/**
+	 * 通过招聘信息获取相应职位信息
+	 * @return
+	 */
+	public List<Position> getPositionByRecruitId(String recruitId);
+	
+	/**
+	 * 提交申请
+	 * @param apply
+	 */
+	public void submitApply(Apply apply);
+	
+	/**
+	 * 存储报名材料
+	 * @param material
+	 */
+	public void saveMaterial(Material material);
 }

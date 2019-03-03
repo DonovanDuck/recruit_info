@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.tit.bean.Apply;
+import cn.edu.tit.bean.Material;
 import cn.edu.tit.bean.Position;
 import cn.edu.tit.bean.RecruitInfo;
 import cn.edu.tit.bean.User;
@@ -129,75 +130,75 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public Integer applyNum(String recruitId) {
+	public Integer applyNum(String recruitId,String positonName) {
 		// TODO Auto-generated method stub
-		return iUserDao.applyNum(recruitId);
+		return iUserDao.applyNum(recruitId,positonName);
 	}
 
 	@Override
-	public Integer applyNumToday(String recruitId, String dateString) {
+	public Integer applyNumToday(String recruitId, String dateString,String positonName) {
 		// TODO Auto-generated method stub
-		return iUserDao.applyNumToday(recruitId,dateString);
+		return iUserDao.applyNumToday(recruitId,dateString,positonName);
 	}
 
 	@Override
-	public Integer applyNumDoctor(String recruitId) {
+	public Integer applyNumDoctor(String recruitId,String positonName) {
 		// TODO Auto-generated method stub
-		return iUserDao.applyNumDoctor(recruitId);
+		return iUserDao.applyNumDoctor(recruitId,positonName);
 	}
 
 	@Override
-	public Integer applyNumMaster(String recruitId) {
+	public Integer applyNumMaster(String recruitId,String positonName) {
 		// TODO Auto-generated method stub
-		return iUserDao.applyNumMaster(recruitId);
+		return iUserDao.applyNumMaster(recruitId,positonName);
 	}
 
 	@Override
-	public Integer applyNumBachelor(String recruitId) {
+	public Integer applyNumBachelor(String recruitId,String positonName) {
 		// TODO Auto-generated method stub
-		return iUserDao.applyNumBachelor(recruitId);
+		return iUserDao.applyNumBachelor(recruitId,positonName);
 	}
 
 	@Override
-	public Integer applyNumDoubleOne(String recruitId) {
+	public Integer applyNumDoubleOne(String recruitId,String positonName) {
 		// TODO Auto-generated method stub
-		return iUserDao.applyNumDoubleOne(recruitId);
+		return iUserDao.applyNumDoubleOne(recruitId,positonName);
 	}
 
 	@Override
-	public Integer applyNumInSide(String recruitId) {
+	public Integer applyNumInSide(String recruitId,String positonName) {
 		// TODO Auto-generated method stub
-		return iUserDao.applyNumInSide(recruitId);
+		return iUserDao.applyNumInSide(recruitId,positonName);
 	}
 
 	@Override
-	public Integer applyNumDoctorToday(String recruitId, String dateString) {
+	public Integer applyNumDoctorToday(String recruitId, String dateString,String positonName) {
 		// TODO Auto-generated method stub
-		return iUserDao.applyNumDoctorToday(recruitId, dateString);
+		return iUserDao.applyNumDoctorToday(recruitId, dateString,positonName);
 	}
 
 	@Override
-	public Integer applyNumMasterToday(String recruitId, String dateString) {
+	public Integer applyNumMasterToday(String recruitId, String dateString,String positonName) {
 		// TODO Auto-generated method stub
-		return iUserDao.applyNumMasterToday(recruitId, dateString);
+		return iUserDao.applyNumMasterToday(recruitId, dateString,positonName);
 	}
 
 	@Override
-	public Integer applyNumBachelorToday(String recruitId, String dateString) {
+	public Integer applyNumBachelorToday(String recruitId, String dateString,String positonName) {
 		// TODO Auto-generated method stub
-		return iUserDao.applyNumBachelorToday(recruitId, dateString);
+		return iUserDao.applyNumBachelorToday(recruitId, dateString,positonName);
 	}
 
 	@Override
-	public Integer applyNumDoubleOneToday(String recruitId, String dateString) {
+	public Integer applyNumDoubleOneToday(String recruitId, String dateString,String positonName) {
 		// TODO Auto-generated method stub
-		return iUserDao.applyNumDoubleOneToday(recruitId, dateString);
+		return iUserDao.applyNumDoubleOneToday(recruitId, dateString,positonName);
 	}
 
 	@Override
-	public Integer applyNumInSideToday(String recruitId, String dateString) {
+	public Integer applyNumInSideToday(String recruitId, String dateString,String positonName) {
 		// TODO Auto-generated method stub
-		return iUserDao.applyNumInSideToday(recruitId, dateString);
+		return iUserDao.applyNumInSideToday(recruitId, dateString,positonName);
 	}
 	/**
 	 *@author LiMing
@@ -217,6 +218,8 @@ public class UserServiceImpl implements IUserService {
 		}
 		return list;
 	}
+	
+	
 
 	/**
 	 *@author LiMing
@@ -232,7 +235,31 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public List<RecruitInfo> searchRecruit(String search) {
 		// TODO Auto-generated method stub
-		return null;
+		return iUserDao.getRecruitInfo(search);
+	}
+
+	@Override
+	public void rePassword(String userId) {
+		// TODO Auto-generated method stub
+		iUserDao.rePassword(userId);
+	}
+
+	@Override
+	public List<Position> getPositionByRecruitId(String recruitId) {
+		// TODO Auto-generated method stub
+		return iUserDao.getPositionByRecruitId(recruitId);
+	}
+
+	@Override
+	public void submitApply(Apply apply) {
+		// TODO Auto-generated method stub
+		iUserDao.submitApply(apply);
+	}
+
+	@Override
+	public void saveMaterial(Material material) {
+		// TODO Auto-generated method stub
+		iUserDao.saveMaterial(material);
 	}
 
 
