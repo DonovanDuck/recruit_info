@@ -44,6 +44,9 @@
 	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <title>用户信息</title>
 <style>
+	input{
+		font-size: 21px;
+	}
 	.userInfo_main{
 		margin: 60px;
 		
@@ -93,6 +96,22 @@ function open1(ob)
    
 }	
 </script>
+
+<script>
+$(function(){
+    
+    //当页面加载完成的时候，自动调用该方法
+    window.onload=function(){
+    	alert(fff);
+    	/* if(${status} == "OK")
+    		alert("修改成功！");
+        if(${status} == "ERROR")
+    		alert("修改失败！"); */
+    };
+});
+</script>
+
+
 </head>
 
 <body>
@@ -107,7 +126,7 @@ function open1(ob)
 			<div class="sidebar-collapse">
 				<ul class="nav" id="main-menu">
 					<li class="text-left"><a
-						href="${pageContext.request.contextPath}/admin/readTeacherInfo"
+						href="${pageContext.request.contextPath}/user/toMainPage"
 						class="waves-effect waves-dark" style="font-size: 20px">招聘信息</a></li>
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toUserInfo"
@@ -138,6 +157,7 @@ function open1(ob)
 						<th>编号</th>
 						<th>单位</th>
 						<th>负责人</th>
+						<th style="position: relative;left: 71px;">权限</th>
 						<th style="    padding-left: 42px;">修改</th>
 					</tr>
 				</thead>
@@ -151,6 +171,12 @@ function open1(ob)
 						<!-- <td style="width: 62px;">1</td> -->
 						<td class="userInfo_TD"><input class="form-control" type="text" name="organizationName" value="${user.organizationName }"></td>
 						<td class="userInfo_TD"><input class="form-control" type="text" name="userName" value="${user.userName }"></td>
+						<c:if test="${user.authority == 1 }">
+						<td class="userInfo_TD"><input class="form-control" type="checkbox" name="authority" checked="${user.authority }" /></td>
+						</c:if>
+						<c:if test="${user.authority == 0 }">
+						<td class="userInfo_TD"><input class="form-control" type="checkbox" name="authority" /></td>
+						</c:if>
 						<td class="userInfo_TD">
 							<input class="btn btn-default" type="submit" value="修改" style="margin-left: 26px;margin-right: 27px;">
 					    	<input class="btn btn-default" name="${requestScope.offset+status.index+1}" onclick="open1(this)" type="button" value="重置密码" style="margin-right: 0xp;">
