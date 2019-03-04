@@ -15,9 +15,6 @@ public class User {
 	private Integer authority; // 权限 默认可查看用户信息0，可添加信息1
 	
 	
-	
-	
-
 	public User(String userId, String userName, String wechartNum, String organizationName, String organizationId,
 			String password, Integer authority) {
 		super();

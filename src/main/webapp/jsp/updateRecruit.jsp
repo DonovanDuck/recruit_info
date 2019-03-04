@@ -100,10 +100,18 @@
 		});
 		$("#addPosition").click(function() {
 			//div 的复制
-			var div = document.getElementById("liContentOne");
-			var div2 = div.cloneNode(true);
-			$("#ulContent").append(div2)
+			var div0 = document.getElementById("liContentZero");
+			var div1 = document.getElementById("liContentOne");
+			var div2 = div1.cloneNode(true);
+			var div3 = div0.cloneNode(true);
+			$("#ulContent").append(div3);
+			$("#ulContent").append(div2);
 		});
+		$("#deleteDiv").click(function() {
+			$(this).parent().css("display","none"); 
+			$(this).parent().next().remove();
+			$.parser.parse($(this).parent());
+		})
 	})
 </script>
 </head>
@@ -142,7 +150,7 @@
 						<form class="form-horizontal"
 							action="${pageContext.request.contextPath}/user/publishRcruit"
 							method="post" enctype="multipart/form-data"
-							style="width: 50%; margin-left: 25%;padding-top: 5%;"
+							style="width: 50%; margin-left: 25%; padding-top: 5%;"
 							name="recruitForm" id="recruitForm">
 							<div class="form-group">
 								<div class="col-md-4 text-right" style="margin-top: 1%">
@@ -151,7 +159,7 @@
 								<div class="col-md-7">
 									<input name="organizationTitle" id="organizationTitle"
 										type="text" id="organization" style='font-size: 18px;'
-										placeholder="招聘标题">
+										value="${recruit.recruitInfo }" placeholder="招聘标题">
 								</div>
 							</div>
 							<div class="form-group">
@@ -174,42 +182,53 @@
 											class="btn btn-success btn-xs btn-block  pull-right"
 											value="添加职位" />
 									</div>
-									<ul class="col-md-12" style="padding: 0" id="ulContent">
-										<li class="col-md-12" style="padding: 0" id="liContent">
-											<div class="col-md-12" style="padding: 0">
-												<div class="col-md-8" style="padding: 0">
-													<input id="position" style='font-size: 18px;'
-														name="position" type="text" placeholder="职业"
-														list="positionlist">
-													<datalist id="positionlist">
-														<c:forEach items="${positionList }" var="list">
-															<option>${list.positonName }</option>
-														</c:forEach>
-													</datalist>
+									<ul class="col-md-12"
+										style="padding: 0; width: 120%; margin-left: -20%;"
+										id="ulContent">
+										<c:forEach items="${positionList }" var="list">
+											<li class="col-md-2 text-right"
+												style="float: left; margin-top: 5%">
+												<button type="button" class="btn btn-danger btn-sm"
+													id="deleteDiv">删除</button>
+											</li>
+											<li class="col-md-10" style="padding: 0; float: left"
+												id="liContent">
+												<div class="col-md-12" style="padding: 0;">
+													<div class="col-md-8" style="padding: 0">
+														<input id="position" style='font-size: 18px;'
+															name="position" type="text" placeholder="职业"
+															value="${list.positonName }" list="positionlist">
+														<datalist id="positionlist">
+															<c:forEach items="${positionName }" var="positionName">
+																<option>${positonName }</option>
+															</c:forEach>
+														</datalist>
+													</div>
+													<div class="col-md-4">
+														<input type="number" value="${list.positionNum }"
+															style='font-size: 18px; padding-top: 7%' placeholder="人数"
+															name="positionNum" id="positionNum" min="0" />
+													</div>
 												</div>
-												<div class="col-md-4">
-													<input type="number"
-														style='font-size: 18px; padding-top: 7%' placeholder="人数"
-														name="positionNum" id="positionNum" min="0" />
+												<div class="col-md-12" style="padding: 0">
+													<div class="col-md-7" style="padding: 0">
+														<input id="professionalOrientation"
+															value="${list.professionalOrientation }"
+															style='font-size: 18px;' name="professionalOrientation"
+															type="text" placeholder="专业及专业方向">
+													</div>
+													<div class="col-md-5">
+														<select class="form-control" id="compilationNatureS"
+															name="compilationNatureS"
+															style="margin-top: 6%; padding: 0">
+															<option>民企</option>
+															<option>国企</option>
+															<option>私企</option>
+														</select>
+													</div>
 												</div>
-											</div>
-											<div class="col-md-12" style="padding: 0">
-												<div class="col-md-7" style="padding: 0">
-													<input id="professionalOrientation"
-														style='font-size: 18px;' name="professionalOrientation"
-														type="text" placeholder="专业及专业方向">
-												</div>
-												<div class="col-md-5">
-													<select class="form-control" id="compilationNatureS"
-														name="compilationNatureS"
-														style="margin-top: 6%; padding: 0">
-														<option>民企</option>
-														<option>国企</option>
-														<option>私企</option>
-													</select>
-												</div>
-											</div>
-										</li>
+											</li>
+										</c:forEach>
 									</ul>
 								</div>
 							</div>
@@ -232,8 +251,8 @@
 									data-date-format="yyyy-mm-dd hh:ii:ss"
 									data-link-field="dtp_input1">
 									<input class="form-control" style='font-size: 18px;' size="16"
-										type="text" value="" id="startTime" name="startTime">
-									<span class="input-group-addon"><span
+										value="${recruit.startTime }" type="text" id="startTime"
+										name="startTime"> <span class="input-group-addon"><span
 										class="glyphicon glyphicon-th"></span></span>
 								</div>
 							</div>
@@ -247,8 +266,8 @@
 									data-date-format="yyyy-mm-dd hh:ii:ss"
 									data-link-field="dtp_input1">
 									<input class="form-control" style='font-size: 18px;' size="16"
-										type="text" value="" id="endTime" name="endTime"> <span
-										class="input-group-addon"><span
+										type="text" value="${recruit.endTime }" id="endTime"
+										name="endTime"> <span class="input-group-addon"><span
 										class="glyphicon glyphicon-th"></span></span>
 								</div>
 							</div>
@@ -278,7 +297,10 @@
 				</div>
 			</div>
 			<ul class="col-md-12" style="padding: 0; display: none">
-				<li class="col-md-12" style="padding: 0" id="liContentOne">
+				<li class="col-md-2 text-right" style="float: left; margin-top: 5%;visibility:hidden" id="liContentZero">
+					<button type="button" class="btn btn-danger btn-sm" id="deleteDiv">删除</button>
+				</li>
+				<li class="col-md-10" style="padding: 0" id="liContentOne">
 					<div class="col-md-12" style="padding: 0">
 						<div class="col-md-8" style="padding: 0">
 							<input id="position" name="position" type="text" placeholder="职业"
@@ -323,6 +345,7 @@
 				format : 'YYYY-MM-DD hh:mm',
 				locale : moment.locale('zh-cn')
 			});
+
 		});
 	</script>
 </body>
