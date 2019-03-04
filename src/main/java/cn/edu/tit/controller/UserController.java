@@ -172,7 +172,7 @@ public class UserController {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-		return toUserInfo(request);
+		return toUserInfo(request, mv);
 	}
 
 	/**
@@ -181,8 +181,9 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value="toUserInfo")
-	public ModelAndView toUserInfo(HttpServletRequest request){
-		ModelAndView mv = new ModelAndView();
+	public ModelAndView toUserInfo(HttpServletRequest request, ModelAndView mv){
+		if(mv == null)
+			 mv = new ModelAndView();
 		try {
 			List<User> userList = userService.getUser();
 			mv.addObject("userList", userList);
@@ -251,14 +252,21 @@ public class UserController {
 			user.setUserId((request.getParameter("userId")));
 			user.setOrganizationName(request.getParameter("organizationName"));
 			user.setUserName(request.getParameter("userName"));
+			String au = request.getParameter("authority");
+			if("on".equals(au))
+				user.setAuthority(1);
+			else
+				user.setAuthority(0);
 			if(!"".equals(user.getUserId())){
 				userService.modifyuser(user);
+				mv.addObject("status","OK");
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			mv.addObject("status","ERROR");
 		}
-		return toUserInfo(request);
+		return toUserInfo(request, mv);
 	}
 	
 

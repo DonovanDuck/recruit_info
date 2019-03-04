@@ -184,7 +184,7 @@
 	
 	<!-- 修改用户信息 -->
 	<update id="modifyUser">
-	update user set organization_name=#{organizationName} , user_name = #{userName} where user_id=#{userId};
+	update user set organization_name=#{organizationName} , user_name = #{userName}, authority = #{authority} where user_id=#{userId};
 </update>
 	
 	<select id="applyList" parameterType="String"

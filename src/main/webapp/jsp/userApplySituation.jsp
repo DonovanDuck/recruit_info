@@ -76,19 +76,37 @@
     left: 1045px;
 	}
 	.apply_TD{
-		width: 331px;
-    	padding-right: 51px;
+		width: 88px;
+    	padding-right: 51px; 
 	}
 	.apply_table{
-		width: 55%;
+		width: 87%;
     position: relative;
-    left: 23%;
+    left: 7%;
 	}
 	.school{
 		width: 18%;
 	}
 	.time{
 		width: 15%;
+	}
+	.info_td{
+		width: 100px;
+	}
+	.advice{
+		width: 100%;
+    height: 50%;
+    position: relative;
+    top: 40px;
+    padding-left: 32px;
+    padding-right: 40px;
+	}
+	.advice ul{
+		width: 100%;
+    height: 21px;
+	}
+	.advice ul li{
+		float: left;
 	}
 </style>
 
@@ -106,7 +124,7 @@
 			<div class="sidebar-collapse">
 				<ul class="nav" id="main-menu">
 					<li class="text-left"><a
-						href="${pageContext.request.contextPath}/admin/readTeacherInfo"
+						href="${pageContext.request.contextPath}/user/toMainPage"
 						class="waves-effect waves-dark" style="font-size: 20px">招聘信息</a></li>
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toUserInfo"
@@ -118,9 +136,9 @@
 			</div>
 		</nav>
 		<!-- /. NAV SIDE  -->
-		<div id="page-wrapper">
+		<div id="page-wrapper" style="height: auto;min-height: 960px;">
 			<div id="page-inner">
-				<div class="col-md-12">
+				<div class="">
 					<div class="card">
 						<div class="card-content " style="padding-top: 0%">
 	<div class="apply_main">
@@ -130,107 +148,163 @@
 		
 		<div class="apply_table">
 			<table class="table table-bordered">
-				<thead>
-					<tr>
-						<th>表项</th>
-						<th>内容</th>
-						
-					</tr>
-				</thead>
+				
 				<tbody>
 				<form action="">
 					<tr>
-						<td style="width: 106px;">姓名</td>
+						<td class="info_td">姓名</td>
 						<td class="apply_TD">${apply.applyUserName }</td>
-					</tr>
-					<tr>
-						<td style="width: 106px;">性别</td>
+						<td class="info_td">性别</td>
 						<td class="apply_TD">${apply.gender }</td>
-					</tr>
-					<tr>
-						<td style="width: 106px;">民族</td>
+						<td class="info_td">民族</td>
 						<td class="apply_TD">${apply.nation }</td>
+						<td rowspan="4">${apply.face }</td>
 					</tr>
+					
 					<tr>
-						<td style="width: 106px;">政治面貌</td>
-						<td class="apply_TD">${apply.politicsStatus }</td>
+						<td class="info_td">政治面貌</td>
+						<td class="apply_TD" colspan="2">${apply.politicsStatus }</td>
+						<td class="info_td">籍贯</td>
+						<td class="apply_TD" colspan="2">${apply.nativePlace }</td>
+						
 					</tr>
+					
 					<tr>
-						<td style="width: 106px;">籍贯</td>
-						<td class="apply_TD">${apply.nativePlace }</td>
+						<td class="info_td">身份证号</td>
+						<td class="apply_TD" colspan="2">${apply.identityNum }</td>
+						<td class="info_td">婚否</td>
+						<td class="apply_TD"colspan="2">${apply.isMarry }</td>
+						
 					</tr>
+					
 					<tr>
-						<td style="width: 106px;">身份证号</td>
-						<td class="apply_TD">${apply.identityNum }</td>
+						<td class="info_td">特长</td>
+						<td class="apply_TD" colspan="2">${apply.speciality }</td>
+						<td class="info_td">联系方式</td>
+						<td class="apply_TD" colspan="2">${apply.telephone }</td>
+						
+						
 					</tr>
-					<tr>
-						<td style="width: 106px;">婚否</td>
-						<td class="apply_TD">${apply.isMarry }</td>
-					</tr>
-					<tr>
-						<td style="width: 106px;">特长</td>
-						<td class="apply_TD">${apply.speciality }</td>
-					</tr>
-					<tr>
-						<td style="width: 106px;">联系方式</td>
-						<td class="apply_TD">${apply.telephone }</td>
-					</tr>
-					<tr>
-						<td style="width: 106px;">毕业院校及专业</td>
-						<td class="apply_TD" style="padding: 0;">
-							<table class="table table-bordered" style="margin-bottom: 0">
-								<tr>
+					
+					
+						<tr>
+							<td class="info_td" rowspan="3">毕业院校及专业</td>
 									<td class="school">本科</td>
-									<td>${apply.bachelorDegreeAndMajor }</td>
+									<td colspan="2">${apply.bachelorDegreeAndMajor }</td>
 									<td class="time">毕业时间</td>
-									<td>${apply.undergraduateGraduationTime }</td>
+									<td colspan="2">${apply.undergraduateGraduationTime }</td>
 								</tr>
 								<tr>
 									<td class="school">硕士研究生</td>
-									<td>${apply.graduateSchoolAndMajor }</td>
+									<td colspan="2">${apply.graduateSchoolAndMajor }</td>
 									<td class="time">毕业时间</td>
-									<td>${apply.graduateTime }</td>
+									<td colspan="2">${apply.graduateTime }</td>
 								</tr>
 								<tr>
 									<td class="school">博士研究生</td>
-									<td>${apply.doctoralDegreeAndMajor }</td>
+									<td colspan="2">${apply.doctoralDegreeAndMajor }</td>
 									<td class="time">毕业时间</td>
-									<td>${apply.doctoralGraduationTime }</td>
+									<td colspan="2">${apply.doctoralGraduationTime }</td>
 								</tr>
-							</table>
+					
+					<tr>
+						<td class="info_td">工作单位及职务</td>
+						<td class="apply_TD" colspan="3">${apply.workOrganization }  ${apply.position }</td>
+						<td class="info_td">工作单位联系方式</td>
+						<td class="apply_TD" colspan="3">${apply.telephoneOriganization }</td>
+					</tr>
+					
+					<tr>
+						<td class="info_td">专业技术资格</td>
+						<td class="apply_TD" colspan="3">${apply.professionalAndTechnicalQualification }</td>
+						<td class="info_td">执业资格</td>
+						<td class="apply_TD" colspan="3">${apply.practicingRequirements }</td>
+					</tr>
+					
+					<tr>
+						<td class="info_td">通讯地址及邮编</td>
+						<td class="apply_TD" colspan="3">${apply.mailingAddress }  ${apply.postalAddress }</td>
+						<td class="info_td">E-mail</td>
+						<td class="apply_TD" colspan="3">${apply.eMail }</td>
+					</tr>
+					<tr>
+						<td class="info_td">报名单位及专业</td>
+						<td class="apply_TD" colspan="6">${apply.applicationOrganization }  ${apply.majorApplicant }</td>
+					</tr>
+					<tr>
+						<td class="info_td">学习和工作经历(由高中填起)</td>
+						<td class="apply_TD" colspan="6">${apply.workExperience }</td>
+					</tr>
+					<tr>
+						<td class="info_td">工作业绩或参加社会实践情况</td>
+						<td class="apply_TD" colspan="6">${apply.jobPerformance }</td>
+					</tr>
+					<tr>
+						<td class="info_td" >论文及课题情况</td>
+						<td class="apply_TD" colspan="6">${apply.paperTopicSituation }</td>
+					</tr>
+					<tr>
+						<td class="info_td">奖惩情况</td>
+						<td class="apply_TD" colspan="6">${apply.sanctionSituation }</td>
+					</tr>
+					<tr>
+						<td>家庭成员及重要社会关系</td>
+						<td>称谓</td>
+						<td>姓名</td>
+						<td>出生年月</td>
+						<td>政治面貌</td>
+						<td colspan="2">工作单位及职务</td>
+					</tr>
+					<tr style="height: 33px;">
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td colspan="2"></td>
+					</tr>
+					<tr style="height: 33px;">
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td colspan="2"></td>
+					</tr>
+					<tr style="height: 33px;">
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td colspan="2"></td>
+					</tr>
+					<tr style="height: 33px;">
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td colspan="2"></td>
+					</tr>
+					<tr style="height: 33px;">
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td colspan="2"></td>
+					</tr>
+					<tr style="height: 80px;">
+						<td class="info_td">招聘组意见</td>
+						<td class="apply_TD" colspan="6">
+							<div class="advice">
+								<ul>
+									<li>签字：</li>
+									<li style="float: right;">年&emsp;&emsp;月&emsp;&emsp;日</li>
+								</ul>
+							</div>
 						</td>
-					</tr>
-					<tr>
-						<td style="width: 106px;">工作单位及职务</td>
-						<td class="apply_TD">${apply.workOrganization } : ${apply.position }</td>
-					</tr>
-					<tr>
-						<td style="width: 106px;">工作单位联系方式</td>
-						<td class="apply_TD">${apply.telephoneOriganization }</td>
-					</tr>
-					<tr>
-						<td style="width: 106px;">专业技术资格</td>
-						<td class="apply_TD">${apply.professionalAndTechnicalQualification }</td>
-					</tr>
-					<tr>
-						<td style="width: 106px;">执业资格</td>
-						<td class="apply_TD">${apply.practicingRequirements }</td>
-					</tr>
-					<tr>
-						<td style="width: 106px;">通讯地址及邮编</td>
-						<td class="apply_TD">${apply.mailingAddress } : ${apply.postalAddress }</td>
-					</tr>
-					<tr>
-						<td style="width: 106px;">E-mail</td>
-						<td class="apply_TD">${apply.eMail }</td>
-					</tr>
-					<tr>
-						<td style="width: 106px;">报名单位及专业</td>
-						<td class="apply_TD">${apply.applicationOrganization } : ${apply.majorApplicant }</td>
-					</tr>
-					<tr>
-						<td style="width: 106px;">学习和工作经历(由高中填起)</td>
-						<td class="apply_TD">${apply.workExperience }</td>
 					</tr>
 				</form>
 				</tbody>
