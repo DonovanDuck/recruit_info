@@ -96,7 +96,7 @@ public class UserController {
 		ModelAndView mv = new ModelAndView();
 		User user = new User();
 		try {
-			user = userService.getUserById(employeeNum);
+			user = userService.getUserByName(employeeNum);
 			if(user ==null||!user.getPassword().equals(password))
 			{
 				mv.setViewName("/jsp/login");//设置返回页面
@@ -104,6 +104,23 @@ public class UserController {
 				request.getSession().setAttribute("User", user);
 				mv = toMainPage(request);
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			mv = null;
+		}
+		return mv;
+	}
+	
+	@RequestMapping(value="toPublishRcruitPage",method= {RequestMethod.GET})
+	public ModelAndView toPublishRcruitPage(HttpServletRequest request)throws Exception {
+		ModelAndView mv = new ModelAndView();
+		try {
+			User user = (User)request.getSession().getAttribute("User");
+			String organizationId = user.getOrganizationId();
+			List<Position> list = new ArrayList<Position>();
+			list = userService.getPosition(organizationId);//根据单位ID找单位的职位
+			mv.addObject("positionList", list);
+			mv.setViewName("/jsp/publishRecruit");
 		} catch (Exception e) {
 			e.printStackTrace();
 			mv = null;
@@ -119,21 +136,51 @@ public class UserController {
 	@RequestMapping(value="publishRcruit",method= {RequestMethod.POST})
 	public ModelAndView publishRcruit(HttpServletRequest request) throws Exception {
 		ModelAndView mv = new ModelAndView();
+		Timestamp ts = new Timestamp(System.currentTimeMillis());
 		try {
-			String recruitId = Common.uuid();
+			String recruitId = Common.uuid();//设置招聘信息的ID
 			Object[] obj = Common.fileFactory(request,recruitId);
 			Map<String, Object> formdata = (Map<String, Object>) obj[1];
 			List<File> returnFileList = (List<File>) obj[0]; // 要返回的文件集合
 			RecruitInfo recruit = new RecruitInfo();
-			recruit.setOrganization((String) formdata.get("organization"));
 			User publisher = (User) request.getSession().getAttribute("User");
 			String publisherId = publisher.getUserId();
-			recruit.setPublisher(publisherId);
-			recruit.setEndTime(timeConverter((String)formdata.get("endTime")));
-			recruit.setPublishTime(new Timestamp(System.currentTimeMillis()));
-			recruit.setRecruitId(recruitId);
-			recruit.setRecruitInfo((String) formdata.get("recruitInfo"));
-			recruit.setStartTime(timeConverter((String)formdata.get("startTime")));
+			
+			recruit.setOrganization(publisher.getOrganizationName());//设置招聘单位
+			recruit.setPublisher(publisherId);//发布者ID
+			ts = Timestamp.valueOf((String)formdata.get("endTime"));  
+			recruit.setEndTime(ts);//设置结束时间
+			recruit.setPublishTime(new Timestamp(System.currentTimeMillis()));//设置发布时间
+			recruit.setRecruitId(recruitId);//设置招聘信息ID
+			recruit.setRecruitInfo((String) formdata.get("organizationTitle"));//设置招聘标题
+			ts = Timestamp.valueOf((String)formdata.get("startTime"));  
+			recruit.setStartTime(ts);//设置开始时间
+			/**
+			 * 处理前台的职位数据，共四个数据
+			 * */
+			String pos = (String)formdata.get("positionContent");
+			String nu =  (String)formdata.get("positionNumber");
+			String pro = (String)formdata.get("positionProfession");
+			String comp = (String)formdata.get("compilationNature");
+			String[] positon = pos.split(",");
+			String[] num = nu.split(",");
+			String[] profetional = pro.split(",");
+			String[] compilationNature = comp.split(",");
+			Position po;
+			List<Position> listPo = new ArrayList<Position>();
+			for (int i = 0; i < positon.length; i++) {
+				po = new Position();
+				po.setCompilationNature(compilationNature[i]);
+				po.setId(Common.uuid());
+				po.setOrganization(publisher.getOrganizationId());
+				po.setPositionNum(Integer.parseInt(num[i]));
+				po.setPositonName(positon[i]);
+				po.setProfessionalOrientation(profetional[i]);
+				po.setRecruitId(recruitId);
+				listPo.add(po);
+			}
+			userService.publishPosition(listPo);//添加职位
+			/**结束*/
 			if(!returnFileList.isEmpty())
 			{
 				recruit.setAccessory(returnFileList.get(0).getPath());
@@ -145,7 +192,6 @@ public class UserController {
 		}
 		return mv;
 	}
-
 	/**
 	 * 添加用户
 	 * @param request
@@ -173,6 +219,33 @@ public class UserController {
 			e.printStackTrace();
 		}
 		return toUserInfo(request, mv);
+	}
+
+	/**
+	 * 添加用户
+	 * @param request
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value="toUpdateRecuit")
+	public ModelAndView toUpdateRecuit(HttpServletRequest request,@RequestParam(value="recuritId")String recuritId) throws Exception{
+		ModelAndView mv = new ModelAndView();
+		List<Position> list = new ArrayList<Position>();
+		List<String> positionName = new ArrayList<String>();
+		try {
+			RecruitInfo r =new RecruitInfo();
+			r = userService.getRecruitInfoById(recuritId);//招聘信息
+			list = userService.getPositionByRecruitId(r.getRecruitId());//单位发布的职位信息
+			positionName = userService.getPositionNameByRecruitId(r.getRecruitId());//单位下的所有职位
+			mv.addObject("recruit", r);
+			mv.addObject("positionList", list);
+			mv.addObject("positionName", positionName);
+			mv.setViewName("/jsp/updateRecruit");
+		} catch (Exception e) {
+			mv = toMainPage(request);
+			e.printStackTrace();
+		}
+		return mv;
 	}
 
 	/**
@@ -345,25 +418,7 @@ public class UserController {
 		}
 		return mv;
 	}
-	/** @author Liming
-	 * @param 前台获取的时间格式 
-	 * 返回 Timestamp 格式时间
-	 * */
-	@SuppressWarnings("unused")
-	private Timestamp timeConverter(String time) throws ParseException {
-		SimpleDateFormat dff = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm",Locale.ENGLISH);//输入的被转化的时间格式
-		SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//需要转化成的时间格式
-		java.util.Date date1 = dff.parse(time);  
-		String str1 = df1.format(date1);
-		Timestamp ts = new Timestamp(System.currentTimeMillis());  
-		try {  
-			ts = Timestamp.valueOf(str1);  
-			System.out.println("获取的时间为----->"+ts);
-		} catch (Exception e) {  
-			e.printStackTrace();  
-		} 
-		return ts;
-	}
+
 	@RequestMapping(value="toSignInInfo")
 	public ModelAndView toSignInInfo(HttpServletRequest request,@RequestParam(value="recruitId")String recruitId) {
 		ModelAndView mv = new ModelAndView();
