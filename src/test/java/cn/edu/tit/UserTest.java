@@ -57,11 +57,12 @@ public class UserTest {
 		//			i.setRecruitInfo("1");
 		//			userDao.publishRcruit(i);
 		//		}
-		List<String> list = new ArrayList<String>();
-		list = userDao.getPositionNameByRecruitId("FAA761275C8F4CC5B9933703FA27B42E");
-		for (String position : list) {
-			System.out.println(position);
-		}
+		//		List<Position> list = new ArrayList<Position>();
+		//		list = userDao.getPositionByRecruitId("FAA761275C8F4CC5B9933703FA27B42E");
+		//		for (Position position : list) {
+		//			System.out.println(position);
+		//		}
+	//	iUserService.deletePosition("1", "2");
 	}
 }
 

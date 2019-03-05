@@ -161,6 +161,21 @@ public interface IUserDao {
 	 * @return
 	 */
 	public List<String> getPositionNameByRecruitId(@Param("recuritId")String recuritId);
+
+	/**
+	 *@author LiMing
+	 * @param recruit
+	 * 更新发布信息
+	 */
+	public void updateRcruit(RecruitInfo recruit);
+
+	/**
+	 *@author LiMing
+	 * @param organizationId
+	 * 删除原职位信息
+	 * @param recruitId 
+	 */
+	public void deletePosition(@Param("organizationId")String organizationId,@Param("recuritId") String recruitId);
 	
 	
 }
