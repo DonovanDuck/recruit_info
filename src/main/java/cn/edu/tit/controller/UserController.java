@@ -378,7 +378,6 @@ public class UserController {
 		mv.addObject("recruitInfo", recruitInfo);
 		mv.setViewName("/jsp/application_status");
 		return mv;
-
 	}
 
 	@RequestMapping(value = "toStatistics")
@@ -390,7 +389,7 @@ public class UserController {
 		List<Apply> applList = new ArrayList<Apply>();
 		List<Position> occupationApplicantLsit = new ArrayList<Position>();
 		Integer numAll, numAllToday, numDoctor, numDoctorToday, numMaster, numMasterToday, numBachelor,
-				numBachelorToday, numInSide, numInSideToday;
+				numBachelorToday, numInSide, numInSideToday,numFirstSchool,numFirstSchoolToday,numFirstMajor,numFirstMajorToday;
 		// 获取今日时间
 		Date date = new Date();// 取时间
 		Calendar calendar = new GregorianCalendar();

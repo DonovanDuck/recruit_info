@@ -28,9 +28,7 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/Admin/css/materialize.min.css"
 	media="screen,projection" />
-<link
-	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	rel="stylesheet">
+
 <link
 	href="${pageContext.request.contextPath}/css/Admin/custom-styles.css"
 	rel="stylesheet" />
@@ -38,6 +36,14 @@
 	rel='stylesheet' type='text/css' />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/Admin/css/cssCharts.css">
+	<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/bootstrap-table.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/index.css" />
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
+<script src="${pageContext.request.contextPath}/js/g2.min.js"
+	type="text/javascript" charset="utf-8"></script>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 <script
 	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -55,24 +61,17 @@
 	src="${pageContext.request.contextPath}/js/Admin/custom-scripts.js"></script>
 <script
 	src="${pageContext.request.contextPath}/js/Admin/moment-with-locales.min.js"></script>
-	
-	
-	
-	
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/index.css" />
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
-<script src="${pageContext.request.contextPath}/js/g2.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="${pageContext.request.contextPath}/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/css/bootstrap-table.min.css" />
 
-<script src="${pageContext.request.contextPath}/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="${pageContext.request.contextPath}/js/bootstrap-table.min.js" type="text/javascript"
-	charset="utf-8"></script>
 
-				
-		
-	
+
+
+
+
+<script>
+	$(document).ready(function() {
+		$("#dataTables-example").dataTable();
+	});
+</script>
 </head>
 <body>
 	<div id="wrapper">
@@ -118,7 +117,7 @@
 			</div>
 			<div class="context_signIn">
 				<iframe name="myclass" onload="this.height=this.contentWindow.document.body.scrollHeight" src="${pageContext.request.contextPath}/user/toStatistics?positonName=${occupationApplicantLsit[0].positonName }"
-				 width="100%" frameborder="0" border="0"></iframe>
+				 scrolling="no"  width="100%" frameborder="0" border="0"></iframe>
 			</div>
 			<button id="js-export" type="button" class="btn btn-primary">导出Excel</button>
 
