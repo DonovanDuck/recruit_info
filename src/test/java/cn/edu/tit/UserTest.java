@@ -35,35 +35,10 @@ public class UserTest {
 
 	@Test
 	public void Test() throws Exception {
-		//		Material m = new Material();
-		//		m.setApplyId("1");
-		//		m.setMaterialId(Common.uuid());
-		//		userDao.saveMaterial(m);
-		//		User user = new User();
-		//		user = iUserService.getUserById("2");
-		//		System.out.println(user.toString());
-		//		List<RecruitInfo> list = new ArrayList<RecruitInfo>();
-		//		list = userDao.getRecruitInfo(null);
-		//		for (RecruitInfo recruitInfo : list) {
-		//			recruitInfo.toString();
-		//		}
-		//		RecruitInfo i;
-		//		for (int j = 0; j < 30; j++) {
-		//			i = new RecruitInfo();
-		//			i.setRecruitId(Common.uuid());
-		//			i.setAccessory("1");
-		//			i.setOrganization("1");
-		//			i.setPublisher("690DCF33E85A41538FD7CC56DA8A1BBC");
-		//			i.setRecruitInfo("1");
-		//			userDao.publishRcruit(i);
-		//		}
-		//		List<Position> list = new ArrayList<Position>();
-		//		list = userDao.getPositionByRecruitId("FAA761275C8F4CC5B9933703FA27B42E");
-		//		for (Position position : list) {
-		//			System.out.println(position);
-		//		}
-	//	iUserService.deletePosition("1", "2");
+		
+		System.out.println(userDao.getApplyFamily("1"));
 	}
-}
+	}
+
 
 

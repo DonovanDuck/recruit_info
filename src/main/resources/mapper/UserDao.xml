@@ -44,7 +44,7 @@
 			property="practicingRequirements" />
 		<result column="mailing_address" property="mailingAddress" />
 		<result column="postal_address" property="postalAddress" />
-		<result column="e-mail" property="eMail" />
+		<result column="e_mail" property="eMail" />
 		<result column="application_organization"
 			property="applicationOrganization" />
 		<result column="major_applicant" property="majorApplicant" />
@@ -79,8 +79,7 @@
 			property="paperTopicSituation" />
 		<result column="sanction_situation"
 			property="sanctionSituation" />
-		<result column="family_relationship"
-			property="familyRelationship" />
+		
 	</resultMap>
 	<!-- 结果集映射 -->
 	<resultMap type="cn.edu.tit.bean.RecruitInfo"
@@ -106,6 +105,20 @@
 		<result column="compilation_nature"
 			property="compilationNature" />
 	</resultMap>
+	
+	<!-- 结果集映射 -->
+	<resultMap type="cn.edu.tit.bean.ApplyFamily" id="applyFamily">
+		<result column="apply_id" property="applyId" />
+		<result column="appellation" property="appellation" />
+		<result column="name" property="name" />
+		<result column="birth" property="birth" />
+		<result column="politics_status"
+			property="politicsStatus" />
+		<result column="organization"
+			property="organization" />
+		<result column="position" property="position" />
+	</resultMap>
+	
 
 	<!-- 添加用户信息 -->
 	<insert id="addUser" parameterType="cn.edu.tit.bean.User">
@@ -216,11 +229,11 @@
 		resultMap="userMap">
 		SELECT * FROM user where user_id = #{userId};
 	</select>
-	<select id="getRecruitInfoById" resultMap="recruitInfo"
+	<!-- <select id="getRecruitInfoById" resultMap="recruitInfo"
 		parameterType="String">
 		SELECT * FROM recruit_info where recruit_id
 		=#{recuritId};
-	</select>
+	</select> -->
 	<!-- 修改用户信息 -->
 	<update id="modifyUser">
 
@@ -424,8 +437,7 @@
 		is_current,
 		job_performance,
 		paper_topic_situation,
-		sanction_situation,
-		family_relationship
+		sanction_situation
 		) values(
 		#{applyId},
 		#{gender},
@@ -470,8 +482,7 @@
 		#{isCurrent},
 		#{jobPerformance},
 		#{paperTopicSituation},
-		#{sanctionSituation},
-		#{familyRelationship}
+		#{sanctionSituation}
 		);
 	</insert>
 
@@ -506,6 +517,12 @@
 			)
 		</foreach>
 	</insert>
+
+<!-- 获取报名人家庭信息 -->
+<select id="getApplyFamily" resultMap="applyFamily">
+	select * from apply_family where apply_id = #{applyId};
+</select>
+
 	<delete id="deletePosition" parameterType="String">
 		delete from position where organization=#{organizationId} and recruit_id =
 		#{recuritId};

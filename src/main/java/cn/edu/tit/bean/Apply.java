@@ -4,6 +4,7 @@
 package cn.edu.tit.bean;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author LiMing
@@ -60,7 +61,7 @@ public class Apply {
 	private String jobPerformance; // 工作业绩
 	private String paperTopicSituation; // 论文和课题情况
 	private String sanctionSituation; // 奖罚情况
-	private String familyRelationship; // 家庭成员及重要社会关系
+	private List<ApplyFamily> familyRelationship; // 家庭成员及重要社会关系
 	public String getApplyId() {
 		return applyId;
 	}
@@ -78,6 +79,12 @@ public class Apply {
 	}
 	public void setApplyUserName(String applyUserName) {
 		this.applyUserName = applyUserName;
+	}
+	public String getFace() {
+		return face;
+	}
+	public void setFace(String face) {
+		this.face = face;
 	}
 	public String getNation() {
 		return nation;
@@ -325,13 +332,13 @@ public class Apply {
 	public void setSanctionSituation(String sanctionSituation) {
 		this.sanctionSituation = sanctionSituation;
 	}
-	public String getFamilyRelationship() {
+	public List<ApplyFamily> getFamilyRelationship() {
 		return familyRelationship;
 	}
-	public void setFamilyRelationship(String familyRelationship) {
+	public void setFamilyRelationship(List<ApplyFamily> familyRelationship) {
 		this.familyRelationship = familyRelationship;
 	}
-	public Apply(String applyId, String gender, String applyUserName, String nation, String politicsStatus,
+	public Apply(String applyId, String gender, String applyUserName, String face, String nation, String politicsStatus,
 			String nativePlace, String identityNum, String isMarry, String speciality, String telephone,
 			String bachelorDegreeAndMajor, String undergraduateGraduationTime, Integer undergraduateIsFirstSchool,
 			Integer undergraduateIsFirstMajor, String graduateSchoolAndMajor, String graduateTime,
@@ -342,12 +349,12 @@ public class Apply {
 			String postalAddress, String eMail, String applicationOrganization, String majorApplicant,
 			String workExperience, String occupationApplicant, String recruitId, Date submitTime,
 			String professionalOrientation, String compilationNature, String education, String degree,
-			Integer isCurrent, String jobPerformance, String paperTopicSituation, String sanctionSituation,
-			String familyRelationship) {
+			Integer isCurrent, String jobPerformance, String paperTopicSituation, String sanctionSituation) {
 		super();
 		this.applyId = applyId;
 		this.gender = gender;
 		this.applyUserName = applyUserName;
+		this.face = face;
 		this.nation = nation;
 		this.politicsStatus = politicsStatus;
 		this.nativePlace = nativePlace;
@@ -389,14 +396,11 @@ public class Apply {
 		this.jobPerformance = jobPerformance;
 		this.paperTopicSituation = paperTopicSituation;
 		this.sanctionSituation = sanctionSituation;
-		this.familyRelationship = familyRelationship;
 	}
 	public Apply() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
 	
 	
 	

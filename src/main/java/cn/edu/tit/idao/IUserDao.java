@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import cn.edu.tit.bean.Apply;
+import cn.edu.tit.bean.ApplyFamily;
 import cn.edu.tit.bean.Material;
 import cn.edu.tit.bean.Position;
 import cn.edu.tit.bean.User;
@@ -24,6 +25,13 @@ public interface IUserDao {
 	 * 更新用户信息
 	 * */
 	public void updateUser() throws Exception;
+	
+	/**
+	 * 获取报名人家庭信息
+	 * @param applyId
+	 * @return
+	 */
+	public List<ApplyFamily> getApplyFamily(String applyId);
 
 	/**
 	 *@author LiMing
@@ -155,7 +163,6 @@ public interface IUserDao {
 
 	public Integer doctorIsFirstMajor(@Param("applyId")String applyId);
 
-	public RecruitInfo getRecruitInfoById(@Param("recruitId")String recruitId);
 
 
 
