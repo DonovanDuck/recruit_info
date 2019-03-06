@@ -28,13 +28,13 @@ public class Apply {
 	
 	private String graduateSchoolAndMajor; //研究生毕业院校及专业
 	private String graduateTime; //研究生毕业时间
-	private Integer graduateIsFirstSchool; // 是否研究生双一流学校 是1，否2   默认没有0
-	private Integer graduateIsFirstMajor; // 是否双一流研究生专业，是1，否2   默认没有0
+	private Integer graduateIsFirstSchool; // 是否研究生双一流学校 是1，否0  
+	private Integer graduateIsFirstMajor; // 是否双一流研究生专业，是1，否 
 	
 	private String doctoralDegreeAndMajor; //博士毕业院校及专业
 	private String doctoralGraduationTime; //博士毕业时间
-	private Integer doctorIsFirstSchool; // 博士，是否双一流院校，是1 否2   默认没有0
-	private Integer doctorIsFirstMajor; // 博士，是否双一流专业，是1 否2   默认没有0
+	private Integer doctorIsFirstSchool; // 博士，是否双一流院校，是1 否   默认没有0
+	private Integer doctorIsFirstMajor; // 博士，是否双一流专业，是1 否0   默认没有0
 	
 	private String workOrganization; //原工作单位
 	private String position; //原单位所任职位
@@ -56,30 +56,28 @@ public class Apply {
 	private String compilationNature; // 编制性质
 	private String education; // 学历
 	private String degree; // 学位
-	private Integer isCurrent; //是否应届
+	private Integer isCurrent; //是否应届,是1否0
 	private String jobPerformance; // 工作业绩
 	private String paperTopicSituation; // 论文和课题情况
 	private String sanctionSituation; // 奖罚情况
 	private String familyRelationship; // 家庭成员及重要社会关系
-	
-	
 	public String getApplyId() {
 		return applyId;
 	}
 	public void setApplyId(String applyId) {
 		this.applyId = applyId;
 	}
-	public String getApplyUserName() {
-		return applyUserName;
-	}
-	public void setApplyUserName(String applyUserName) {
-		this.applyUserName = applyUserName;
-	}
 	public String getGender() {
 		return gender;
 	}
 	public void setGender(String gender) {
 		this.gender = gender;
+	}
+	public String getApplyUserName() {
+		return applyUserName;
+	}
+	public void setApplyUserName(String applyUserName) {
+		this.applyUserName = applyUserName;
 	}
 	public String getNation() {
 		return nation;
@@ -135,6 +133,18 @@ public class Apply {
 	public void setUndergraduateGraduationTime(String undergraduateGraduationTime) {
 		this.undergraduateGraduationTime = undergraduateGraduationTime;
 	}
+	public Integer getUndergraduateIsFirstSchool() {
+		return undergraduateIsFirstSchool;
+	}
+	public void setUndergraduateIsFirstSchool(Integer undergraduateIsFirstSchool) {
+		this.undergraduateIsFirstSchool = undergraduateIsFirstSchool;
+	}
+	public Integer getUndergraduateIsFirstMajor() {
+		return undergraduateIsFirstMajor;
+	}
+	public void setUndergraduateIsFirstMajor(Integer undergraduateIsFirstMajor) {
+		this.undergraduateIsFirstMajor = undergraduateIsFirstMajor;
+	}
 	public String getGraduateSchoolAndMajor() {
 		return graduateSchoolAndMajor;
 	}
@@ -147,6 +157,18 @@ public class Apply {
 	public void setGraduateTime(String graduateTime) {
 		this.graduateTime = graduateTime;
 	}
+	public Integer getGraduateIsFirstSchool() {
+		return graduateIsFirstSchool;
+	}
+	public void setGraduateIsFirstSchool(Integer graduateIsFirstSchool) {
+		this.graduateIsFirstSchool = graduateIsFirstSchool;
+	}
+	public Integer getGraduateIsFirstMajor() {
+		return graduateIsFirstMajor;
+	}
+	public void setGraduateIsFirstMajor(Integer graduateIsFirstMajor) {
+		this.graduateIsFirstMajor = graduateIsFirstMajor;
+	}
 	public String getDoctoralDegreeAndMajor() {
 		return doctoralDegreeAndMajor;
 	}
@@ -158,6 +180,18 @@ public class Apply {
 	}
 	public void setDoctoralGraduationTime(String doctoralGraduationTime) {
 		this.doctoralGraduationTime = doctoralGraduationTime;
+	}
+	public Integer getDoctorIsFirstSchool() {
+		return doctorIsFirstSchool;
+	}
+	public void setDoctorIsFirstSchool(Integer doctorIsFirstSchool) {
+		this.doctorIsFirstSchool = doctorIsFirstSchool;
+	}
+	public Integer getDoctorIsFirstMajor() {
+		return doctorIsFirstMajor;
+	}
+	public void setDoctorIsFirstMajor(Integer doctorIsFirstMajor) {
+		this.doctorIsFirstMajor = doctorIsFirstMajor;
 	}
 	public String getWorkOrganization() {
 		return workOrganization;
@@ -243,42 +277,6 @@ public class Apply {
 	public void setSubmitTime(Date submitTime) {
 		this.submitTime = submitTime;
 	}
-	public Integer getUndergraduateIsFirstSchool() {
-		return undergraduateIsFirstSchool;
-	}
-	public void setUndergraduateIsFirstSchool(Integer undergraduateIsFirstSchool) {
-		this.undergraduateIsFirstSchool = undergraduateIsFirstSchool;
-	}
-	public Integer getUndergraduateIsFirstMajor() {
-		return undergraduateIsFirstMajor;
-	}
-	public void setUndergraduateIsFirstMajor(Integer undergraduateIsFirstMajor) {
-		this.undergraduateIsFirstMajor = undergraduateIsFirstMajor;
-	}
-	public Integer getGraduateIsFirstSchool() {
-		return graduateIsFirstSchool;
-	}
-	public void setGraduateIsFirstSchool(Integer graduateIsFirstSchool) {
-		this.graduateIsFirstSchool = graduateIsFirstSchool;
-	}
-	public Integer getGraduateIsFirstMajor() {
-		return graduateIsFirstMajor;
-	}
-	public void setGraduateIsFirstMajor(Integer graduateIsFirstMajor) {
-		this.graduateIsFirstMajor = graduateIsFirstMajor;
-	}
-	public Integer getDoctorIsFirstSchool() {
-		return doctorIsFirstSchool;
-	}
-	public void setDoctorIsFirstSchool(Integer doctorIsFirstSchool) {
-		this.doctorIsFirstSchool = doctorIsFirstSchool;
-	}
-	public Integer getDoctorIsFirstMajor() {
-		return doctorIsFirstMajor;
-	}
-	public void setDoctorIsFirstMajor(Integer doctorIsFirstMajor) {
-		this.doctorIsFirstMajor = doctorIsFirstMajor;
-	}
 	public String getProfessionalOrientation() {
 		return professionalOrientation;
 	}
@@ -291,41 +289,65 @@ public class Apply {
 	public void setCompilationNature(String compilationNature) {
 		this.compilationNature = compilationNature;
 	}
-	@Override
-	public String toString() {
-		return "Apply [applyId=" + applyId + ", applyUserName=" + applyUserName + ", gender=" + gender + ", nation="
-				+ nation + ", politicsStatus=" + politicsStatus + ", nativePlace=" + nativePlace + ", identityNum="
-				+ identityNum + ", isMarry=" + isMarry + ", speciality=" + speciality + ", telephone=" + telephone
-				+ ", bachelorDegreeAndMajor=" + bachelorDegreeAndMajor + ", undergraduateGraduationTime="
-				+ undergraduateGraduationTime + ", graduateSchoolAndMajor=" + graduateSchoolAndMajor + ", graduateTime="
-				+ graduateTime + ", doctoralDegreeAndMajor=" + doctoralDegreeAndMajor + ", doctoralGraduationTime="
-				+ doctoralGraduationTime + ", workOrganization=" + workOrganization + ", position=" + position
-				+ ", telephoneOriganization=" + telephoneOriganization + ", professionalAndTechnicalQualification="
-				+ professionalAndTechnicalQualification + ", practicingRequirements=" + practicingRequirements
-				+ ", mailingAddress=" + mailingAddress + ", postalAddress=" + postalAddress + ", eMail=" + eMail
-				+ ", applicationOrganization=" + applicationOrganization + ", majorApplicant=" + majorApplicant
-				+ ", workExperience=" + workExperience + ", occupationApplicant=" + occupationApplicant + ", recruitId="
-				+ recruitId + ", submitTime=" + submitTime + ", undergraduateIsFirstSchool="
-				+ undergraduateIsFirstSchool + ", undergraduateIsFirstMajor=" + undergraduateIsFirstMajor
-				+ ", graduateIsFirstSchool=" + graduateIsFirstSchool + ", graduateIsFirstMajor=" + graduateIsFirstMajor
-				+ ", doctorIsFirstSchool=" + doctorIsFirstSchool + ", doctorIsFirstMajor=" + doctorIsFirstMajor
-				+ ", professionalOrientation=" + professionalOrientation + ", compilationNature=" + compilationNature
-				+ "]";
+	public String getEducation() {
+		return education;
 	}
-	public Apply(String applyId, String applyUserName, String gender, String nation, String politicsStatus,
+	public void setEducation(String education) {
+		this.education = education;
+	}
+	public String getDegree() {
+		return degree;
+	}
+	public void setDegree(String degree) {
+		this.degree = degree;
+	}
+	public Integer getIsCurrent() {
+		return isCurrent;
+	}
+	public void setIsCurrent(Integer isCurrent) {
+		this.isCurrent = isCurrent;
+	}
+	public String getJobPerformance() {
+		return jobPerformance;
+	}
+	public void setJobPerformance(String jobPerformance) {
+		this.jobPerformance = jobPerformance;
+	}
+	public String getPaperTopicSituation() {
+		return paperTopicSituation;
+	}
+	public void setPaperTopicSituation(String paperTopicSituation) {
+		this.paperTopicSituation = paperTopicSituation;
+	}
+	public String getSanctionSituation() {
+		return sanctionSituation;
+	}
+	public void setSanctionSituation(String sanctionSituation) {
+		this.sanctionSituation = sanctionSituation;
+	}
+	public String getFamilyRelationship() {
+		return familyRelationship;
+	}
+	public void setFamilyRelationship(String familyRelationship) {
+		this.familyRelationship = familyRelationship;
+	}
+	public Apply(String applyId, String gender, String applyUserName, String nation, String politicsStatus,
 			String nativePlace, String identityNum, String isMarry, String speciality, String telephone,
-			String bachelorDegreeAndMajor, String undergraduateGraduationTime, String graduateSchoolAndMajor,
-			String graduateTime, String doctoralDegreeAndMajor, String doctoralGraduationTime, String workOrganization,
-			String position, String telephoneOriganization, String professionalAndTechnicalQualification,
-			String practicingRequirements, String mailingAddress, String postalAddress, String eMail,
-			String applicationOrganization, String majorApplicant, String workExperience, String occupationApplicant,
-			String recruitId, Date submitTime, Integer undergraduateIsFirstSchool, Integer undergraduateIsFirstMajor,
-			Integer graduateIsFirstSchool, Integer graduateIsFirstMajor, Integer doctorIsFirstSchool,
-			Integer doctorIsFirstMajor, String professionalOrientation, String compilationNature) {
+			String bachelorDegreeAndMajor, String undergraduateGraduationTime, Integer undergraduateIsFirstSchool,
+			Integer undergraduateIsFirstMajor, String graduateSchoolAndMajor, String graduateTime,
+			Integer graduateIsFirstSchool, Integer graduateIsFirstMajor, String doctoralDegreeAndMajor,
+			String doctoralGraduationTime, Integer doctorIsFirstSchool, Integer doctorIsFirstMajor,
+			String workOrganization, String position, String telephoneOriganization,
+			String professionalAndTechnicalQualification, String practicingRequirements, String mailingAddress,
+			String postalAddress, String eMail, String applicationOrganization, String majorApplicant,
+			String workExperience, String occupationApplicant, String recruitId, Date submitTime,
+			String professionalOrientation, String compilationNature, String education, String degree,
+			Integer isCurrent, String jobPerformance, String paperTopicSituation, String sanctionSituation,
+			String familyRelationship) {
 		super();
 		this.applyId = applyId;
-		this.applyUserName = applyUserName;
 		this.gender = gender;
+		this.applyUserName = applyUserName;
 		this.nation = nation;
 		this.politicsStatus = politicsStatus;
 		this.nativePlace = nativePlace;
@@ -335,10 +357,16 @@ public class Apply {
 		this.telephone = telephone;
 		this.bachelorDegreeAndMajor = bachelorDegreeAndMajor;
 		this.undergraduateGraduationTime = undergraduateGraduationTime;
+		this.undergraduateIsFirstSchool = undergraduateIsFirstSchool;
+		this.undergraduateIsFirstMajor = undergraduateIsFirstMajor;
 		this.graduateSchoolAndMajor = graduateSchoolAndMajor;
 		this.graduateTime = graduateTime;
+		this.graduateIsFirstSchool = graduateIsFirstSchool;
+		this.graduateIsFirstMajor = graduateIsFirstMajor;
 		this.doctoralDegreeAndMajor = doctoralDegreeAndMajor;
 		this.doctoralGraduationTime = doctoralGraduationTime;
+		this.doctorIsFirstSchool = doctorIsFirstSchool;
+		this.doctorIsFirstMajor = doctorIsFirstMajor;
 		this.workOrganization = workOrganization;
 		this.position = position;
 		this.telephoneOriganization = telephoneOriganization;
@@ -353,19 +381,22 @@ public class Apply {
 		this.occupationApplicant = occupationApplicant;
 		this.recruitId = recruitId;
 		this.submitTime = submitTime;
-		this.undergraduateIsFirstSchool = undergraduateIsFirstSchool;
-		this.undergraduateIsFirstMajor = undergraduateIsFirstMajor;
-		this.graduateIsFirstSchool = graduateIsFirstSchool;
-		this.graduateIsFirstMajor = graduateIsFirstMajor;
-		this.doctorIsFirstSchool = doctorIsFirstSchool;
-		this.doctorIsFirstMajor = doctorIsFirstMajor;
 		this.professionalOrientation = professionalOrientation;
 		this.compilationNature = compilationNature;
+		this.education = education;
+		this.degree = degree;
+		this.isCurrent = isCurrent;
+		this.jobPerformance = jobPerformance;
+		this.paperTopicSituation = paperTopicSituation;
+		this.sanctionSituation = sanctionSituation;
+		this.familyRelationship = familyRelationship;
 	}
 	public Apply() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 	
 	
 	

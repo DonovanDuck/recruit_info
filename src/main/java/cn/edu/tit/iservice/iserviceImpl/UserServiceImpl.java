@@ -129,9 +129,9 @@ public class UserServiceImpl implements IUserService {
 		// TODO Auto-generated method stub
 		iUserDao.modifyUser(user);
 	}
-	public List<Apply> applyList(String recruitId) {
+	public List<Apply> applyList(String recruitId,String positonName) {
 		// TODO Auto-generated method stub
-		return iUserDao.applyList(recruitId);
+		return iUserDao.applyList(recruitId,positonName);
 	}
 
 	@Override
@@ -278,6 +278,50 @@ public class UserServiceImpl implements IUserService {
 		iUserDao.saveMaterial(material);
 	}
 
+
+	@Override
+	public List<Apply> applyListAll(String recruitId) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyListAll(recruitId);
+	}
+
+	@Override
+	public boolean isFirstSchool(String applyId) {
+		// TODO Auto-generated method stub
+		Integer undergraduateIsFirstSchool = iUserDao.undergraduateIsFirstSchool(applyId);
+		Integer graduateIsFirstSchool =  iUserDao.graduateIsFirstSchool(applyId);
+		Integer doctorIsFirstSchool =  iUserDao.doctorIsFirstSchool(applyId);
+		if((undergraduateIsFirstSchool!=null||graduateIsFirstSchool!=null||doctorIsFirstSchool!=null)&&(undergraduateIsFirstSchool==1||graduateIsFirstSchool ==1||doctorIsFirstSchool == 1)) {
+			return true;
+		}else {
+			
+			return false;	
+		}
+		
+	}
+
+	@Override
+	public boolean isFirstMajor(String applyId) {
+		// TODO Auto-generated method stub
+		Integer undergraduateIsFirstMajor = iUserDao.undergraduateIsFirstMajor(applyId);
+		Integer graduateIsFirstMajor =  iUserDao.graduateIsFirstMajor(applyId);
+		Integer doctorIsFirstMajor  =  iUserDao.doctorIsFirstMajor(applyId);
+		if((undergraduateIsFirstMajor!=null||graduateIsFirstMajor!=null||doctorIsFirstMajor!=null)&&(undergraduateIsFirstMajor ==1||graduateIsFirstMajor ==1||doctorIsFirstMajor ==1 )) {
+			
+			return true;
+		}else {
+			return false;
+		}
+		
+	}
+
+	@Override
+	public RecruitInfo getRecruitInfoById(String recruitId) {
+		// TODO Auto-generated method stub
+		return iUserDao.getRecruitInfoById(recruitId);
+	}
+
+
 	/**
 	 *@author LiMing
 	 * @param 职位对象集合
@@ -296,6 +340,7 @@ public class UserServiceImpl implements IUserService {
 		// TODO Auto-generated method stub
 		return iUserDao.getRecruitInfoById(recuritId);
 	}
+
 
 	/* (non-Javadoc)
 	 * @see cn.edu.tit.iservice.IUserService#getPositionNameByRecruitId(java.lang.String)

@@ -136,6 +136,7 @@ $(function(){
 												<td class="text-center" style="padding-top: 1%;">${list.startTime }</td>
 												<td class="text-center" style="padding-top: 1%;">${list.endTime }</td>
 												<td class="text-center" style="padding-top: 1%;">${list.endTime }</td>
+
 												<td class="text-center" style="padding-top: 1%;">${list.publisher }</td>
 												<td class="text-center"><c:if
 														test="${sessionScope.User.authority == 0}">
@@ -159,6 +160,7 @@ $(function(){
 															</button>
 														</a>
 													</c:if> <a href="${pageContext.request.contextPath}/.."
+
 													class="waves-effect waves-dark" style="font-size: 20px">
 														<button type="button" class="btn btn-default btn-lg"
 															style="padding-top: 4%;">
