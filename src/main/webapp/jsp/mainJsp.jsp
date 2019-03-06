@@ -130,7 +130,7 @@ $(function(){
 										</tr>
 									</thead>
 									<tbody id="asds">
-										<c:forEach items="${list }" var="list" varStatus="status">
+										<c:forEach items="${list }" var="list"  begin = "1" varStatus="status">
 											<tr>
 												<td class="text-center" style="padding-top: 1%;">${requestScope.offset+status.index+1}</td>
 												<td class="text-center" style="padding-top: 1%;">${list.recruitInfo }</td>
@@ -161,7 +161,8 @@ $(function(){
 																<small>编辑</small>
 															</button>
 														</a>
-													</c:if> <a href="${pageContext.request.contextPath}/.."
+													</c:if>
+													 <a href="${pageContext.request.contextPath}/user/toSignInInfo?recruitId=${list.recruitId }"
 
 													class="waves-effect waves-dark" style="font-size: 20px">
 														<button type="button" class="btn btn-default btn-lg"

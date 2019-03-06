@@ -543,7 +543,7 @@ public class UserController {
 		RecruitInfo recruitInfo = new RecruitInfo();
 		request.getSession().setAttribute("recruitId", recruitId);
 		List<Position> occupationApplicantLsit = new ArrayList<Position>();
-		occupationApplicantLsit = userService.getPosition(recruitId);// 该招聘信息对应的所有职位对象
+		occupationApplicantLsit = userService.getPositionByRecruitId(recruitId);// 该招聘信息对应的所有职位对象
 		recruitInfo = userService.getRecruitInfoById(recruitId);
 		mv.addObject("occupationApplicantLsit", occupationApplicantLsit);
 		mv.addObject("recruitInfo", recruitInfo);
