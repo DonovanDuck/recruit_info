@@ -259,7 +259,7 @@
 		WHERE recruit_id = #{recruitId};
 	</update>
 
-	<select id="applyList" parameterType="String"
+
 
     <select id="applyList" 
 		resultMap="applyMap">
