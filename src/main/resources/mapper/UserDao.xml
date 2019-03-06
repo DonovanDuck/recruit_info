@@ -99,6 +99,7 @@
 		<id column="id" property="id" />
 		<result column="position_name" property="positonName" />
 		<result column="recruit_id" property="recruitId" />
+		<result column="position_num" property="positionNum" />
 		<result column="organization" property="organization" />
 		<result column="professional_orientation"
 			property="professionalOrientation" />
@@ -222,8 +223,27 @@
 	</select>
 	<!-- 修改用户信息 -->
 	<update id="modifyUser">
-	update user set organization_name=#{organizationName} , user_name = #{userName}, authority = #{authority} where user_id=#{userId};
-</update>
+		update user set organization_name=#{organizationName}
+		, user_name =
+		#{userName}, authority = #{authority} where
+		user_id=#{userId};
+	</update>
+
+	<!--更新发布的信息 -->
+	<update id="updateRcruit"
+		parameterType="cn.edu.tit.bean.RecruitInfo">
+		UPDATE recruit_info
+		<set>
+			<if test="organization != null">organization = #{organization},</if>
+			<if test="recruitInfo != null">recruit_info = #{recruitInfo},</if>
+			<if test="accessory != null">accessory = #{accessory},</if>
+			<if test="startTime != null">start_time = #{startTime},</if>
+			<if test="endTime != null">end_time = #{endTime},</if>
+			<if test="publisher != null">publisher = #{publisher},</if>
+			<if test="publishTime != null">publish_time = #{publishTime},</if>
+		</set>
+		WHERE recruit_id = #{recruitId};
+	</update>
 
 	<select id="applyList" parameterType="String"
 		resultMap="applyMap">
@@ -445,5 +465,8 @@
 			)
 		</foreach>
 	</insert>
-
+	<delete id="deletePosition" parameterType="String">
+		delete from position where organization=#{organizationId} and recruit_id =
+		#{recuritId};
+	</delete>
 </mapper>

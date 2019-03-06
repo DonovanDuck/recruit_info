@@ -164,4 +164,19 @@ public interface IUserService {
 	 * @return
 	 */
 	public List<String> getPositionNameByRecruitId(String recruitId);
+
+	/**
+	 *@author LiMing
+	 * @param recruit
+	 * 更新发布信息
+	 */
+	public void updateRcruit(RecruitInfo recruit);
+
+	/**
+	 *@author LiMing
+	 * @param organizationId
+	 * 删除原职位信息
+	 * @param recruitId 
+	 */
+	public void deletePosition(String organizationId, String recruitId);
 }

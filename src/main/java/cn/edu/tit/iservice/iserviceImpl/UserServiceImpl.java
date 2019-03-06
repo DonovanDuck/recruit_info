@@ -306,5 +306,23 @@ public class UserServiceImpl implements IUserService {
 		return iUserDao.getPositionNameByRecruitId(recruitId);
 	}
 
+	/**
+	 *@author LiMing
+	 * @param recruit
+	 * 更新发布信息
+	 */
+	@Override
+	public void updateRcruit(RecruitInfo recruit) {
+		iUserDao.updateRcruit(recruit);
+	}
 
+	/**
+	 *@author LiMing
+	 * @param organizationId
+	 * 删除原职位信息
+	 */
+	@Override
+	public void deletePosition(String organizationId,String recruitId) {
+		iUserDao.deletePosition(organizationId,recruitId);	
+	}
 }
