@@ -122,9 +122,11 @@
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toMainPage"
 						class="waves-effect waves-dark">招聘信息</a></li>
+					<c:if test="${sessionScope.User.authority == 2 }">
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toUserInfo"
 						class="waves-effect waves-dark">用户管理</a></li>
+					</c:if>
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toPersonalInfo"
 						class="waves-effect waves-dark">个人信息</a></li>
@@ -232,7 +234,7 @@
 									data-date-format="yyyy-mm-dd hh:ii:ss"
 									data-link-field="dtp_input1">
 									<input class="form-control" style='font-size: 18px;' size="16"
-										type="text" value="" id="startTime" name="startTime">
+										type="text" value="" id="startTime" name="startTime" readonly="true">
 									<span class="input-group-addon"><span
 										class="glyphicon glyphicon-th"></span></span>
 								</div>
@@ -247,7 +249,7 @@
 									data-date-format="yyyy-mm-dd hh:ii:ss"
 									data-link-field="dtp_input1">
 									<input class="form-control" style='font-size: 18px;' size="16"
-										type="text" value="" id="endTime" name="endTime"> <span
+										type="text" value="" id="endTime" name="endTime" readonly="true"> <span
 										class="input-group-addon"><span
 										class="glyphicon glyphicon-th"></span></span>
 								</div>

@@ -13,7 +13,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Type"
 	content="multipart/form-data; charset=UTF-8">
-<title>教师信息管理</title>
+<title>招聘系统</title>
 <link
 	href="${pageContext.request.contextPath}/css/Admin/font-awesome.css"
 	rel="stylesheet" />
@@ -85,9 +85,11 @@ $(function(){
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toMainPage"
 						class="waves-effect waves-dark">招聘信息</a></li>
+					<c:if test="${sessionScope.User.authority == 2 }">
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toUserInfo"
 						class="waves-effect waves-dark">用户管理</a></li>
+					</c:if>
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toPersonalInfo"
 						class="waves-effect waves-dark">个人信息</a></li>
@@ -128,7 +130,7 @@ $(function(){
 										</tr>
 									</thead>
 									<tbody id="asds">
-										<c:forEach items="${list }" var="list" varStatus="status">
+										<c:forEach items="${list }" var="list"  begin = "1" varStatus="status">
 											<tr>
 												<td class="text-center" style="padding-top: 1%;">${requestScope.offset+status.index+1}</td>
 												<td class="text-center" style="padding-top: 1%;">${list.recruitInfo }</td>
@@ -136,6 +138,7 @@ $(function(){
 												<td class="text-center" style="padding-top: 1%;">${list.startTime }</td>
 												<td class="text-center" style="padding-top: 1%;">${list.endTime }</td>
 												<td class="text-center" style="padding-top: 1%;">${list.endTime }</td>
+
 												<td class="text-center" style="padding-top: 1%;">${list.publisher }</td>
 												<td class="text-center"><c:if
 														test="${sessionScope.User.authority == 0}">
@@ -158,7 +161,9 @@ $(function(){
 																<small>编辑</small>
 															</button>
 														</a>
-													</c:if> <a href="${pageContext.request.contextPath}/.."
+													</c:if>
+													 <a href="${pageContext.request.contextPath}/user/toSignInInfo?recruitId=${list.recruitId }"
+
 													class="waves-effect waves-dark" style="font-size: 20px">
 														<button type="button" class="btn btn-default btn-lg"
 															style="padding-top: 4%;">

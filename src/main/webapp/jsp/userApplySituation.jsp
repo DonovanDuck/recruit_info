@@ -80,9 +80,9 @@
     	padding-right: 51px; 
 	}
 	.apply_table{
-		width: 87%;
+		width: 78%;
     position: relative;
-    left: 7%;
+    left: 13%;
 	}
 	.school{
 		width: 18%;
@@ -126,9 +126,11 @@
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toMainPage"
 						class="waves-effect waves-dark">招聘信息</a></li>
+				<c:if test="${sessionScope.User.authority == 2 }">
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toUserInfo"
 						class="waves-effect waves-dark">用户管理</a></li>
+					</c:if>
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toPersonalInfo"
 						class="waves-effect waves-dark">个人信息</a></li>
@@ -192,19 +194,19 @@
 									<td class="school">本科</td>
 									<td colspan="2">${apply.bachelorDegreeAndMajor }</td>
 									<td class="time">毕业时间</td>
-									<td colspan="2">${apply.undergraduateGraduationTime }</td>
+									<td colspan="2">${undergraduateGraduationTime }</td>
 								</tr>
 								<tr>
 									<td class="school">硕士研究生</td>
 									<td colspan="2">${apply.graduateSchoolAndMajor }</td>
 									<td class="time">毕业时间</td>
-									<td colspan="2">${apply.graduateTime }</td>
+									<td colspan="2">${graduateTime }</td>
 								</tr>
 								<tr>
 									<td class="school">博士研究生</td>
 									<td colspan="2">${apply.doctoralDegreeAndMajor }</td>
 									<td class="time">毕业时间</td>
-									<td colspan="2">${apply.doctoralGraduationTime }</td>
+									<td colspan="2">${doctoralGraduationTime }</td>
 								</tr>
 					
 					<tr>
@@ -255,7 +257,17 @@
 						<td>政治面貌</td>
 						<td colspan="2">工作单位及职务</td>
 					</tr>
+					<c:forEach items="${apply.familyRelationship }" var="family" varStatus="status">
 					<tr style="height: 33px;">
+						<td>${requestScope.offset+status.index+1}</td>
+						<td>${family.appellation }</td>
+						<td>${family.name }</td>
+						<td>${birthList[status.index] }</td>
+						<td>${family.politicsStatus }</td>
+						<td colspan="2">${family.organization }&emsp;&emsp;${family.position }</td>
+					</tr>
+					</c:forEach>
+					<!-- <tr style="height: 33px;">
 						<td></td>
 						<td></td>
 						<td></td>
@@ -286,15 +298,7 @@
 						<td></td>
 						<td></td>
 						<td colspan="2"></td>
-					</tr>
-					<tr style="height: 33px;">
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td colspan="2"></td>
-					</tr>
+					</tr> -->
 					<tr style="height: 80px;">
 						<td class="info_td">招聘组意见</td>
 						<td class="apply_TD" colspan="6">

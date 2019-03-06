@@ -23,7 +23,7 @@
 		<result column="is_marry" property="isMarry" />
 		<result column="speciality" property="speciality" />
 		<result column="telephone" property="telephone" />
-		<result column="bachelor_degree_and_major"
+		<result column="undergraduate_and_major"
 			property="bachelorDegreeAndMajor" />
 		<result column="undergraduate_graduation_time"
 			property="undergraduateGraduationTime" />
@@ -44,7 +44,7 @@
 			property="practicingRequirements" />
 		<result column="mailing_address" property="mailingAddress" />
 		<result column="postal_address" property="postalAddress" />
-		<result column="e-mail" property="eMail" />
+		<result column="e_mail" property="eMail" />
 		<result column="application_organization"
 			property="applicationOrganization" />
 		<result column="major_applicant" property="majorApplicant" />
@@ -79,8 +79,7 @@
 			property="paperTopicSituation" />
 		<result column="sanction_situation"
 			property="sanctionSituation" />
-		<result column="family_relationship"
-			property="familyRelationship" />
+		
 	</resultMap>
 	<!-- 结果集映射 -->
 	<resultMap type="cn.edu.tit.bean.RecruitInfo"
@@ -106,6 +105,20 @@
 		<result column="compilation_nature"
 			property="compilationNature" />
 	</resultMap>
+	
+	<!-- 结果集映射 -->
+	<resultMap type="cn.edu.tit.bean.ApplyFamily" id="applyFamily">
+		<result column="apply_id" property="applyId" />
+		<result column="appellation" property="appellation" />
+		<result column="name" property="name" />
+		<result column="birth" property="birth" />
+		<result column="politics_status"
+			property="politicsStatus" />
+		<result column="organization"
+			property="organization" />
+		<result column="position" property="position" />
+	</resultMap>
+	
 
 	<!-- 添加用户信息 -->
 	<insert id="addUser" parameterType="cn.edu.tit.bean.User">
@@ -216,13 +229,14 @@
 		resultMap="userMap">
 		SELECT * FROM user where user_id = #{userId};
 	</select>
-	<select id="getRecruitInfoById" resultMap="recruitInfo"
+	<!-- <select id="getRecruitInfoById" resultMap="recruitInfo"
 		parameterType="String">
 		SELECT * FROM recruit_info where recruit_id
 		=#{recuritId};
-	</select>
+	</select> -->
 	<!-- 修改用户信息 -->
 	<update id="modifyUser">
+
 		update user set organization_name=#{organizationName}
 		, user_name =
 		#{userName}, authority = #{authority} where
@@ -245,7 +259,12 @@
 		WHERE recruit_id = #{recruitId};
 	</update>
 
-	<select id="applyList" parameterType="String"
+
+    <select id="applyList" 
+		resultMap="applyMap">
+		SELECT * from apply where recruit_id = #{recruitId} and occupation_applicant =#{positonName};
+	</select>
+	<select id="applyListAll" 
 		resultMap="applyMap">
 		SELECT * from apply where recruit_id = #{recruitId};
 	</select>
@@ -271,16 +290,15 @@
 		apply where recruit_id = #{recruitId} and occupation_applicant =
 		#{positonName} and graduate_school_and_major is not null ;
 	</select>
-	<select id="applyNumBachelor" resultType="java.lang.Integer">
-		SELECT count(*) from
-		apply where recruit_id = #{recruitId} and occupation_applicant =
-		#{positonName} and bachelor_degree_and_major is not null ;
-	</select>
 
-	<select id="applyNumDoubleOne" resultType="java.lang.Integer">
-		SELECT count(*) from
-		apply where recruit_id = #{recruitId} and occupation_applicant =
-		#{positonName} and bachelor_degree_and_major is not null ;
+	<select id="applyNumBachelor" 
+		resultType="java.lang.Integer">
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and undergraduate_and_major is not null ;
+	</select>
+	<select id="applyNumDoubleOne" 
+		resultType="java.lang.Integer">
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and undergraduate_and_major is not null ;
+
 	</select>
 	<select id="applyNumInSide" resultType="java.lang.Integer">
 		SELECT count(*) from apply
@@ -306,15 +324,15 @@
 	</select>
 	<select id="applyNumBachelorToday"
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply where recruit_id = #{recruitId}
-		and occupation_applicant = #{positonName} and submit_time =
-		#{dateString} and bachelor_degree_and_major is not null ;
+
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and submit_time = #{dateString} and undergraduate_and_major is not null  ;
+
 	</select>
 	<select id="applyNumDoubleOneToday"
 		resultType="java.lang.Integer">
-		SELECT count(*) from apply where recruit_id = #{recruitId}
-		and occupation_applicant = #{positonName} and submit_time =
-		#{dateString} and bachelor_degree_and_major is not null ;
+
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and submit_time = #{dateString} and undergraduate_and_major is not null  ;
+
 	</select>
 	<select id="applyNumInSideToday" resultType="java.lang.Integer">
 		SELECT count(*) from apply
@@ -336,6 +354,41 @@
 		where recruit_id = #{search};
 	</select>
 
+	<!-- 查本科是否双一流学校 -->
+	<select id="undergraduateIsFirstSchool"  resultType="java.lang.Integer">
+		select undergraduate_is_first_school from apply where apply_id = #{applyId};
+	</select>
+	<!-- 查研究生是否双一流学校-->
+	<select id="graduateIsFirstSchool" resultType="java.lang.Integer">
+		select graduate_is_first_school from apply where  apply_id = #{applyId};
+	</select>
+	<!-- 查博士是否双一流学校 -->
+	<select id="doctorIsFirstSchool"  resultType="java.lang.Integer">
+		select doctor_is_first_school from apply where  apply_id = #{applyId};
+	</select>
+	
+	
+	<!-- 查本科是否双一流专业 -->
+	<select id="undergraduateIsFirstMajor"  resultType="java.lang.Integer">
+		select undergraduate_is_first_major from apply where apply_id = #{applyId};
+	</select>
+	<!-- 查研究生是否双一流专业-->
+	<select id="graduateIsFirstMajor" resultType="java.lang.Integer">
+		select graduate_is_first_major from apply where  apply_id = #{applyId};
+	</select>
+	<!-- 查博士是否双一流专业 -->
+	<select id="doctorIsFirstMajor"  resultType="java.lang.Integer">
+		select doctor_is_first_major from apply where  apply_id = #{applyId};
+	</select>
+	
+	
+	<!-- 根据招聘信息id找招聘信息 -->
+	<select id="getRecruitInfoById"  resultMap="recruitInfo">
+		select * from recruit_info  where recruit_id = #{recruitId};
+	</select>
+	
+	
+	
 
 	<!-- 提交申请 -->
 	<insert id="submitApply" parameterType="cn.edu.tit.bean.Apply">
@@ -383,8 +436,7 @@
 		is_current,
 		job_performance,
 		paper_topic_situation,
-		sanction_situation,
-		family_relationship
+		sanction_situation
 		) values(
 		#{applyId},
 		#{gender},
@@ -429,8 +481,7 @@
 		#{isCurrent},
 		#{jobPerformance},
 		#{paperTopicSituation},
-		#{sanctionSituation},
-		#{familyRelationship}
+		#{sanctionSituation}
 		);
 	</insert>
 
@@ -465,6 +516,12 @@
 			)
 		</foreach>
 	</insert>
+
+<!-- 获取报名人家庭信息 -->
+<select id="getApplyFamily" resultMap="applyFamily">
+	select * from apply_family where apply_id = #{applyId};
+</select>
+
 	<delete id="deletePosition" parameterType="String">
 		delete from position where organization=#{organizationId} and recruit_id =
 		#{recuritId};

@@ -28,9 +28,7 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/Admin/css/materialize.min.css"
 	media="screen,projection" />
-<link
-	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	rel="stylesheet">
+
 <link
 	href="${pageContext.request.contextPath}/css/Admin/custom-styles.css"
 	rel="stylesheet" />
@@ -38,6 +36,14 @@
 	rel='stylesheet' type='text/css' />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/Admin/css/cssCharts.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/bootstrap-table.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/index.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" />
+<script src="${pageContext.request.contextPath}/js/g2.min.js"
+	type="text/javascript" charset="utf-8"></script>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 <script
 	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -55,24 +61,17 @@
 	src="${pageContext.request.contextPath}/js/Admin/custom-scripts.js"></script>
 <script
 	src="${pageContext.request.contextPath}/js/Admin/moment-with-locales.min.js"></script>
-	
-	
-	
-	
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/index.css" />
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
-<script src="${pageContext.request.contextPath}/js/g2.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="${pageContext.request.contextPath}/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/css/bootstrap-table.min.css" />
 
-<script src="${pageContext.request.contextPath}/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="${pageContext.request.contextPath}/js/bootstrap-table.min.js" type="text/javascript"
-	charset="utf-8"></script>
 
-				
-		
-	
+
+
+
+
+<script>
+	$(document).ready(function() {
+		$("#dataTables-example").dataTable();
+	});
+</script>
 </head>
 <body>
 	<div id="wrapper">
@@ -88,9 +87,11 @@
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toMainPage"
 						class="waves-effect waves-dark">招聘信息</a></li>
+					<c:if test="${sessionScope.User.authority == 2 }">
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toUserInfo"
 						class="waves-effect waves-dark">用户管理</a></li>
+					</c:if>
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toPersonalInfo"
 						class="waves-effect waves-dark">个人信息</a></li>
@@ -99,121 +100,91 @@
 		</nav>
 		<!-- /. NAV SIDE  -->
 		<div id="page-wrapper">
-			<div id="page-inner">
+			<div id="page-inner" style="margin-left: 18px">
 				<div class="col-md-12">
 					<!-- Advanced Tables -->
 					<div class="card">
-						<!-- 内容start -->
-						<div class="main">
-							<!-- 页头 -->
+						<div class="card-content">
+							<!-- 内容start -->
 							<div class="main">
-			<!-- 页头 -->
-			<div class="titleMain">
-				<h1 style="text-align:center">太原工业学院招聘信息</h1>
-				<h3><strong> 招聘单位:</strong><strong> 太员工业学院招生办</strong></h3>
-				<c:forEach items="${occupationApplicantLsit }" var ="occupationApplicant">
-					<a <c:if test="${requestScope.offset+status.index}==0"> class="active"</c:if> target="myclass" href="${pageContext.request.contextPath}/user/toStatistics?positonName=${occupationApplicant.positonName }" class="btn btn-primary btn-lg " role="button">${occupationApplicant.positonName }</a>
-				</c:forEach>
-				
-			</div>
-			<div class="context_signIn">
-				<iframe name="myclass" onload="this.height=this.contentWindow.document.body.scrollHeight" src="${pageContext.request.contextPath}/user/toStatistics?positonName=${occupationApplicantLsit[0].positonName }"
-				 width="100%" frameborder="0" border="0"></iframe>
-			</div>
+								<!-- 页头 -->
+								<!-- 页头 -->
+								<div class="titleMain">
+									<h3 style="text-align: center">太原工业学院招聘信息</h3>
+									<h3>
+										<strong> 招聘单位:</strong><strong> 太员工业学院招生办</strong>
+									</h3>
+									<div style="height: 18px;width: 100%"></div>
+									<c:forEach items="${occupationApplicantLsit }"
+										var="occupationApplicant"  varStatus="status">
+										<a
+											<c:if test="${status.first}">  class="btn btn-primary btn-lg active " </c:if>
+											target="myclass"
+											href="${pageContext.request.contextPath}/user/toStatistics?positonName=${occupationApplicant.positonName }"
+											class=" btn btn-primary btn-lg" role="button">   ${occupationApplicant.positonName }</a>
+									</c:forEach>
 
-		</div>
-		<script>
-		$('a').on('click', function() {
-			$(this).removeClass('active');
-			$(this).addClass('active');
-		});
-			var iframes = document.getElementsByTagName('iframe');
-			
-			for (var i = 0, j = iframes.length; i < j; ++i) {
-				// 放在闭包中，防止iframe触发load事件的时候下标不匹配
-				(function(_i) {
-					iframes[_i].onload = function() {
-						this.style.visibility = 'hidden';
-						// this.style.display = 'none';
-			
-						// 提前还原高度
-						this.setAttribute('height', 'auto'); // 或设为''
-			
-						// 再在下一轮事件循环中设置新高度
-						setTimeout(function() {
-							iframes[_i].setAttribute('height', iframes[_i].contentWindow.document.body.scrollHeight);
-			
-							iframes[_i].style.visibility = 'visible';
-							// iframes[_i].style.display = 'block';
-						}, 0);
-					}
-				})(i);
-			}
-		</script>
-							
-							
-							
-							<div class="jumbotron">
-								<h1>Hello, world!</h1>
-								<p>...</p>
-								<p>
-									<a class="btn btn-primary btn-lg" href="#" role="button">Learn
-										more</a>
-								</p>
+								</div>
+								<div class="context_signIn">
+									<iframe name="myclass"
+										onload="this.height=this.contentWindow.document.body.scrollHeight"
+										src="${pageContext.request.contextPath}/user/toStatistics?positonName=${occupationApplicantLsit[0].positonName }"
+										scrolling="no" width="100%" frameborder="0" border="0"></iframe>
+								</div>
+								<button id="js-export" type="button" class="btn btn-primary">导出Excel</button>
+
+								<script>
+									$('#js-export')
+											.click(
+													function() {
+														window.location.href = "${pageContext.request.contextPath}/user/export";
+													});
+									$('a').on('click', function() {
+										$(this).removeClass('active');
+										$(this).addClass('active');
+									});
+									var iframes = document
+											.getElementsByTagName('iframe');
+
+									for (var i = 0, j = iframes.length; i < j; ++i) {
+										// 放在闭包中，防止iframe触发load事件的时候下标不匹配
+										(function(_i) {
+											iframes[_i].onload = function() {
+												this.style.visibility = 'hidden';
+												// this.style.display = 'none';
+
+												// 提前还原高度
+												this.setAttribute('height',
+														'auto'); // 或设为''
+
+												// 再在下一轮事件循环中设置新高度
+												setTimeout(
+														function() {
+															iframes[_i]
+																	.setAttribute(
+																			'height',
+																			iframes[_i].contentWindow.document.body.scrollHeight);
+
+															iframes[_i].style.visibility = 'visible';
+															// iframes[_i].style.display = 'block';
+														}, 0);
+											}
+										})(i);
+									}
+								</script>
+
+
+
+
+								<!-- 汇总信息 -->
+
+								<!-- 内容end -->
 							</div>
-							<!-- 汇总信息 -->
-						
-						<!-- 内容end -->
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="modal" id="Edit" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="myModalLabel">编辑教师信息</h4>
-				</div>
-				<div class="modal-body">
-					<div class="modal-body">
-						<form role="form" id="updateInfo"
-							action="${pageContext.request.contextPath}/.."
-							onsubmit="return checkTwo()">
-							<div class="form-group">
-								<label for="teacherId" class="control-label">教师工号</label> <input
-									type="text" class="form-control" id="teacherId"
-									name="teacherId"> <input type="text"
-									style="display: none" id="teacherIdB" name="teacherIdB" />
-							</div>
-							<div class="form-group">
-								<label for="teacherName" class="control-label">教师姓名</label> <input
-									type="text" class="form-control" id="teacherName"
-									name="teacherName">
-							</div>
-							<div class="form-group">
-								<label class="control-label">教师性别</label> <select
-									class="form-control" id="select" name="select">
-									<option>男</option>
-									<option>女</option>
-								</select>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default"
-									data-dismiss="modal" style="margin-left: 2%">关闭</button>
-								<button type="submit" class="btn btn-primary" id="submitButton">提交</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal -->
 </body>
 
 </html>

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.tit.bean.Apply;
+import cn.edu.tit.bean.ApplyFamily;
 import cn.edu.tit.bean.Material;
 import cn.edu.tit.bean.Position;
 import cn.edu.tit.bean.RecruitInfo;
@@ -89,7 +90,8 @@ public interface IUserService {
 	 * @param user
 	 */
 	public void modifyuser(User user);
-	public List<Apply> applyList(String recruitId);
+	public List<Apply> applyList(String recruitId,String positonName);
+	public List<Apply> applyListAll(String recruitId);
 	public Integer applyNum(String recruitId,String positonName);
 	public Integer applyNumDoctor(String recruitId,String positonName);
 	public Integer applyNumMaster(String recruitId,String positonName);
@@ -137,12 +139,17 @@ public interface IUserService {
 	 * @param apply
 	 */
 	public void submitApply(Apply apply);
+	public RecruitInfo getRecruitInfoById(String recruitId);
 	
 	/**
 	 * 存储报名材料
 	 * @param material
 	 */
 	public void saveMaterial(Material material);
+
+	public boolean isFirstSchool(String applyId);
+
+	public boolean isFirstMajor(String applyId);
 
 	/**
 	 *@author LiMing
@@ -151,19 +158,20 @@ public interface IUserService {
 	 */
 	public void publishPosition(List<Position> po);
 
-	/**
-	 *@author LiMing
-	 * @param recuritId
-	 * @return
-	 */
-	public RecruitInfo getRecruitInfoById(String recuritId);
-
+	
 	/**
 	 *@author LiMing
 	 * @param recruitId
 	 * @return
 	 */
 	public List<String> getPositionNameByRecruitId(String recruitId);
+	
+	/**
+	 * 获取报名人家庭信息
+	 * @param applyId
+	 * @return
+	 */
+	public List<ApplyFamily> getApplyFamily(String applyId);
 
 	/**
 	 *@author LiMing
@@ -179,4 +187,5 @@ public interface IUserService {
 	 * @param recruitId 
 	 */
 	public void deletePosition(String organizationId, String recruitId);
+
 }
