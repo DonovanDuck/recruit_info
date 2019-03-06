@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.tit.bean.Apply;
+import cn.edu.tit.bean.ApplyFamily;
 import cn.edu.tit.bean.Material;
 import cn.edu.tit.bean.Position;
 import cn.edu.tit.bean.RecruitInfo;
@@ -164,4 +165,11 @@ public interface IUserService {
 	 * @return
 	 */
 	public List<String> getPositionNameByRecruitId(String recruitId);
+	
+	/**
+	 * 获取报名人家庭信息
+	 * @param applyId
+	 * @return
+	 */
+	public List<ApplyFamily> getApplyFamily(String applyId);
 }

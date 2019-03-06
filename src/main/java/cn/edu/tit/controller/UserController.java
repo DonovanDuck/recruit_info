@@ -29,6 +29,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
 import cn.edu.tit.bean.Apply;
+import cn.edu.tit.bean.ApplyFamily;
 import cn.edu.tit.bean.Position;
 import cn.edu.tit.bean.RecruitInfo;
 import cn.edu.tit.bean.User;
@@ -222,7 +223,7 @@ public class UserController {
 	}
 
 	/**
-	 * 添加用户
+	 * 添加招聘信息
 	 * @param request
 	 * @return
 	 * @throws Exception 
@@ -269,7 +270,7 @@ public class UserController {
 	}
 	
 	/**
-	 * 跳转到用户列表
+	 * 跳转到个人信息
 	 * @param request
 	 * @return
 	 */
@@ -397,19 +398,35 @@ public class UserController {
 	}
 
 	/**
-	 * 读取用户报名表
+	 * 跳转用户报名表页
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="readApply")
-	public ModelAndView readApply(HttpServletRequest request){
+	@RequestMapping(value="toUserApply")
+	public ModelAndView toUserApply(HttpServletRequest request){
 		ModelAndView mv = new ModelAndView();
 		String applyId = request.getParameter("applyId");
 		try {
 			//通过applyId获取报名表
 			Apply apply = userService.getApplyById("1");
 			if(apply != null){
+				String undergraduateGraduationTime =  apply.getUndergraduateGraduationTime().toString().substring(0, 10);
+				String graduateTime =  apply.getGraduateTime().toString().substring(0, 10);
+				String doctoralGraduationTime =  apply.getDoctoralGraduationTime().toString().substring(0, 10);
+				request.setAttribute("undergraduateGraduationTime", undergraduateGraduationTime);
+				request.setAttribute("graduateTime", graduateTime);
+				request.setAttribute("doctoralGraduationTime", doctoralGraduationTime);
+				//获取报名人家庭信息
+				List<ApplyFamily> familyList = userService.getApplyFamily(apply.getApplyId());
+				List<String> birthList = new ArrayList<>();
+				for(ApplyFamily f : familyList){
+					if(f.getBirth() != null){
+						birthList.add(f.getBirth().toString().substring(0, 10));
+					}
+				}
+				apply.setFamilyRelationship(familyList);
 				request.setAttribute("apply",apply);
+				request.setAttribute("birthList", birthList);
 			}
 			mv.setViewName("/jsp/userApplySituation");
 		} catch (Exception e) {
@@ -472,5 +489,6 @@ public class UserController {
 		return mv;
 		
 	}
-
+	
+	
 }

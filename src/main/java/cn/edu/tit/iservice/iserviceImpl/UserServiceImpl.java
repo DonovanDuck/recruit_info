@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.tit.bean.Apply;
+import cn.edu.tit.bean.ApplyFamily;
 import cn.edu.tit.bean.Material;
 import cn.edu.tit.bean.Position;
 import cn.edu.tit.bean.RecruitInfo;
@@ -304,6 +305,12 @@ public class UserServiceImpl implements IUserService {
 	public List<String> getPositionNameByRecruitId(String recruitId) {
 		// TODO Auto-generated method stub
 		return iUserDao.getPositionNameByRecruitId(recruitId);
+	}
+
+	@Override
+	public List<ApplyFamily> getApplyFamily(String applyId) {
+		// TODO Auto-generated method stub
+		return iUserDao.getApplyFamily(applyId);
 	}
 
 

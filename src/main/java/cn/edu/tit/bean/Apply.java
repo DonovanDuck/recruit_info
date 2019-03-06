@@ -4,6 +4,7 @@
 package cn.edu.tit.bean;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author LiMing
@@ -60,9 +61,57 @@ public class Apply {
 	private String jobPerformance; // 工作业绩
 	private String paperTopicSituation; // 论文和课题情况
 	private String sanctionSituation; // 奖罚情况
-	private String familyRelationship; // 家庭成员及重要社会关系
+	private List<ApplyFamily> familyRelationship; // 家庭成员及重要社会关系
 	
 	
+	public String getFace() {
+		return face;
+	}
+	public void setFace(String face) {
+		this.face = face;
+	}
+	public String getEducation() {
+		return education;
+	}
+	public void setEducation(String education) {
+		this.education = education;
+	}
+	public String getDegree() {
+		return degree;
+	}
+	public void setDegree(String degree) {
+		this.degree = degree;
+	}
+	public Integer getIsCurrent() {
+		return isCurrent;
+	}
+	public void setIsCurrent(Integer isCurrent) {
+		this.isCurrent = isCurrent;
+	}
+	public String getJobPerformance() {
+		return jobPerformance;
+	}
+	public void setJobPerformance(String jobPerformance) {
+		this.jobPerformance = jobPerformance;
+	}
+	public String getPaperTopicSituation() {
+		return paperTopicSituation;
+	}
+	public void setPaperTopicSituation(String paperTopicSituation) {
+		this.paperTopicSituation = paperTopicSituation;
+	}
+	public String getSanctionSituation() {
+		return sanctionSituation;
+	}
+	public void setSanctionSituation(String sanctionSituation) {
+		this.sanctionSituation = sanctionSituation;
+	}
+	public List<ApplyFamily> getFamilyRelationship() {
+		return familyRelationship;
+	}
+	public void setFamilyRelationship(List<ApplyFamily> familyRelationship) {
+		this.familyRelationship = familyRelationship;
+	}
 	public String getApplyId() {
 		return applyId;
 	}
