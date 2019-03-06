@@ -248,6 +248,12 @@
 			<artifactId>pagehelper</artifactId>
 			<version>5.0.1</version>
 		</dependency>
+		<!-- 导出excel文件 -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.6</version>
+		</dependency>
 
 		<!-- 操作EXCEL文件需要的包*******结束 -->
 		<!-- aspose在线预览控件包 -->

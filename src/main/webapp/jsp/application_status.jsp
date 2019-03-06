@@ -28,9 +28,7 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/Admin/css/materialize.min.css"
 	media="screen,projection" />
-<link
-	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	rel="stylesheet">
+
 <link
 	href="${pageContext.request.contextPath}/css/Admin/custom-styles.css"
 	rel="stylesheet" />
@@ -38,6 +36,14 @@
 	rel='stylesheet' type='text/css' />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/Admin/css/cssCharts.css">
+	<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/bootstrap-table.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/index.css" />
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
+<script src="${pageContext.request.contextPath}/js/g2.min.js"
+	type="text/javascript" charset="utf-8"></script>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 <script
 	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -55,24 +61,17 @@
 	src="${pageContext.request.contextPath}/js/Admin/custom-scripts.js"></script>
 <script
 	src="${pageContext.request.contextPath}/js/Admin/moment-with-locales.min.js"></script>
-	
-	
-	
-	
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/index.css" />
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
-<script src="${pageContext.request.contextPath}/js/g2.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="${pageContext.request.contextPath}/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/css/bootstrap-table.min.css" />
 
-<script src="${pageContext.request.contextPath}/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="${pageContext.request.contextPath}/js/bootstrap-table.min.js" type="text/javascript"
-	charset="utf-8"></script>
 
-				
-		
-	
+
+
+
+
+<script>
+	$(document).ready(function() {
+		$("#dataTables-example").dataTable();
+	});
+</script>
 </head>
 <body>
 	<div id="wrapper">
@@ -87,13 +86,13 @@
 				<ul class="nav" id="main-menu">
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toMainPage"
-						class="waves-effect waves-dark" style="font-size: 20px">招聘信息</a></li>
+						class="waves-effect waves-dark">招聘信息</a></li>
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toUserInfo"
-						class="waves-effect waves-dark" style="font-size: 20px">用户管理</a></li>
+						class="waves-effect waves-dark">用户管理</a></li>
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toPersonalInfo"
-						class="waves-effect waves-dark" style="font-size: 20px">个人信息</a></li>
+						class="waves-effect waves-dark">个人信息</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -118,11 +117,15 @@
 			</div>
 			<div class="context_signIn">
 				<iframe name="myclass" onload="this.height=this.contentWindow.document.body.scrollHeight" src="${pageContext.request.contextPath}/user/toStatistics?positonName=${occupationApplicantLsit[0].positonName }"
-				 width="100%" frameborder="0" border="0"></iframe>
+				 scrolling="no"  width="100%" frameborder="0" border="0"></iframe>
 			</div>
+			<button id="js-export" type="button" class="btn btn-primary">导出Excel</button>
 
 		</div>
 		<script>
+		$('#js-export').click(function(){
+            window.location.href="${pageContext.request.contextPath}/user/export";
+		});
 		$('a').on('click', function() {
 			$(this).removeClass('active');
 			$(this).addClass('active');
@@ -153,14 +156,7 @@
 							
 							
 							
-							<div class="jumbotron">
-								<h1>Hello, world!</h1>
-								<p>...</p>
-								<p>
-									<a class="btn btn-primary btn-lg" href="#" role="button">Learn
-										more</a>
-								</p>
-							</div>
+						
 							<!-- 汇总信息 -->
 						
 						<!-- 内容end -->

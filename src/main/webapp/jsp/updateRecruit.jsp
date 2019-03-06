@@ -107,12 +107,11 @@
 			$("#ulContent").append(div3);
 			$("#ulContent").append(div2);
 		});
-		$("#deleteDiv").click(function() {
-			$(this).parent().css("display","none"); 
-			$(this).parent().next().remove();
-			$.parser.parse($(this).parent());
-		})
-	})
+	});	
+	/**删除DIV*/
+		function removeLi(name){
+			$("li[name="+name+"]").remove();
+		}
 </script>
 </head>
 <body>
@@ -131,7 +130,7 @@
 						href="${pageContext.request.contextPath}/user/toMainPage"
 						class="waves-effect waves-dark">招聘信息</a></li>
 					<li class="text-left"><a
-						href="${pageContext.request.contextPath}/admin/readStudentInfo"
+						href="${pageContext.request.contextPath}/user/toUserInfo"
 						class="waves-effect waves-dark">用户管理</a></li>
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toPersonalInfo"
@@ -148,7 +147,7 @@
 							<h2>发布招聘信息</h2>
 						</div>
 						<form class="form-horizontal"
-							action="${pageContext.request.contextPath}/user/publishRcruit"
+							action="${pageContext.request.contextPath}/user/updateRcruit?recruitId=${recruit.recruitId }"
 							method="post" enctype="multipart/form-data"
 							style="width: 50%; margin-left: 25%; padding-top: 5%;"
 							name="recruitForm" id="recruitForm">
@@ -185,14 +184,17 @@
 									<ul class="col-md-12"
 										style="padding: 0; width: 120%; margin-left: -20%;"
 										id="ulContent">
-										<c:forEach items="${positionList }" var="list">
+										<c:forEach items="${positionList }" var="list"
+											varStatus="status">
 											<li class="col-md-2 text-right"
-												style="float: left; margin-top: 5%">
+												style="float: left; margin-top: 5%"
+												name="${requestScope.offset+status.index+1}">
 												<button type="button" class="btn btn-danger btn-sm"
-													id="deleteDiv">删除</button>
+													id="deleteDiv"
+													onclick="removeLi(${requestScope.offset+status.index+1})">删除</button>
 											</li>
 											<li class="col-md-10" style="padding: 0; float: left"
-												id="liContent">
+												id="liContent" name="${requestScope.offset+status.index+1}">
 												<div class="col-md-12" style="padding: 0;">
 													<div class="col-md-8" style="padding: 0">
 														<input id="position" style='font-size: 18px;'
@@ -274,7 +276,7 @@
 							<div class="form-group">
 								<div class="col-sm-offset-3">
 									<button type="button" class="btn btn-primary"
-										onclick="submitButton()">发布</button>
+										onclick="submitButton()">提交</button>
 									<button type="reset" class="btn btn-primary"
 										onclick="history.go(-1)" style="margin-left: 47%">取消</button>
 								</div>
@@ -297,7 +299,9 @@
 				</div>
 			</div>
 			<ul class="col-md-12" style="padding: 0; display: none">
-				<li class="col-md-2 text-right" style="float: left; margin-top: 5%;visibility:hidden" id="liContentZero">
+				<li class="col-md-2 text-right"
+					style="float: left; margin-top: 5%; visibility: hidden"
+					id="liContentZero">
 					<button type="button" class="btn btn-danger btn-sm" id="deleteDiv">删除</button>
 				</li>
 				<li class="col-md-10" style="padding: 0" id="liContentOne">

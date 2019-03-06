@@ -104,7 +104,8 @@ public interface IUserDao {
 	 * @param user
 	 */
 	public void modifyUser(User user);
-	public List<Apply> applyList(String recruitId);
+	public List<Apply> applyList(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+	public List<Apply> applyListAll(@Param("recruitId")String recruitId);
 	public Integer applyNum(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
 
 	public Integer applyNumToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString,@Param("positonName")String positonName);
@@ -149,6 +150,22 @@ public interface IUserDao {
 	 */
 	public void saveMaterial(Material material);
 
+
+	public Integer undergraduateIsFirstSchool(@Param("applyId")String applyId);
+
+	public Integer graduateIsFirstSchool(@Param("applyId")String applyId);
+
+	public Integer doctorIsFirstSchool(@Param("applyId")String applyId);
+
+	public Integer undergraduateIsFirstMajor(@Param("applyId")String applyId);
+
+	public Integer graduateIsFirstMajor(@Param("applyId")String applyId);
+
+	public Integer doctorIsFirstMajor(@Param("applyId")String applyId);
+
+
+
+
 	/**
 	 *@author LiMing
 	 * @param 职位对象集合
@@ -169,6 +186,21 @@ public interface IUserDao {
 	 * @return
 	 */
 	public List<String> getPositionNameByRecruitId(@Param("recuritId")String recuritId);
-	
+
+	/**
+	 *@author LiMing
+	 * @param recruit
+	 * 更新发布信息
+	 */
+	public void updateRcruit(RecruitInfo recruit);
+
+	/**
+	 *@author LiMing
+	 * @param organizationId
+	 * 删除原职位信息
+	 * @param recruitId 
+	 */
+	public void deletePosition(@Param("organizationId")String organizationId,@Param("recuritId") String recruitId);
+
 	
 }
