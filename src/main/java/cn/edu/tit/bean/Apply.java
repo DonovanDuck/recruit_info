@@ -13,6 +13,7 @@ public class Apply {
 	private String applyId; //ID
 	private String gender;
 	private String applyUserName; //姓名
+	private String face; //图片
 	private String nation; //民族
 	private String politicsStatus; //政治面貌
 	private String nativePlace; //籍贯

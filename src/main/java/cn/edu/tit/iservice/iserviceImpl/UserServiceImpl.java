@@ -72,6 +72,11 @@ public class UserServiceImpl implements IUserService {
 		List<RecruitInfo> list =new ArrayList<RecruitInfo>();
 		try {
 			list = iUserDao.getRecruitInfo(publisherId);
+			for (RecruitInfo recruitInfo : list) {
+				String publisher = recruitInfo.getPublisher();
+				User user = iUserDao.getUserById(publisher);
+				recruitInfo.setPublisher(user.getUserName());
+			}
 			System.out.println("getRecruitInfo-------------执行成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -206,10 +211,10 @@ public class UserServiceImpl implements IUserService {
 	 * @return 获取单位职位
 	 */
 	@Override
-	public List<Position> getPosition(String string) {
+	public List<Position> getPosition(String organizationId) {
 		List<Position> list =new ArrayList<Position>();
 		try {
-			list = iUserDao.getPosition(string);
+			list = iUserDao.getPosition(organizationId);
 			System.out.println("getPosition-------------执行成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -227,9 +232,20 @@ public class UserServiceImpl implements IUserService {
 	 * @return 返回用户实体
 	 */
 	@Override
-	public User getUserById(String employeeNum) {
+	public User getUserByName(String employeeNum) {
 		// TODO Auto-generated method stub
-		return iUserDao.getUserById(employeeNum);
+		return iUserDao.getUserByName(employeeNum);
+	}
+	
+	/**
+	 *@author LiMing
+	 * @param employeeNum
+	 * @return 返回用户实体
+	 */
+	@Override
+	public User getUserById(String userId) {
+		// TODO Auto-generated method stub
+		return iUserDao.getUserById(userId);
 	}
 
 	@Override
@@ -261,6 +277,7 @@ public class UserServiceImpl implements IUserService {
 		// TODO Auto-generated method stub
 		iUserDao.saveMaterial(material);
 	}
+
 
 	@Override
 	public List<Apply> applyListAll(String recruitId) {
@@ -305,4 +322,52 @@ public class UserServiceImpl implements IUserService {
 	}
 
 
+	/**
+	 *@author LiMing
+	 * @param 职位对象集合
+	 * 添加职位
+	 */
+	@Override
+	public void publishPosition(List<Position> po) {
+		iUserDao.publishPosition(po);
+	}
+
+	/* (non-Javadoc)
+	 * @see cn.edu.tit.iservice.IUserService#getRecruitInfoById(java.lang.String)
+	 */
+	@Override
+	public RecruitInfo getRecruitInfoById(String recuritId) {
+		// TODO Auto-generated method stub
+		return iUserDao.getRecruitInfoById(recuritId);
+	}
+
+
+	/* (non-Javadoc)
+	 * @see cn.edu.tit.iservice.IUserService#getPositionNameByRecruitId(java.lang.String)
+	 */
+	@Override
+	public List<String> getPositionNameByRecruitId(String recruitId) {
+		// TODO Auto-generated method stub
+		return iUserDao.getPositionNameByRecruitId(recruitId);
+	}
+
+	/**
+	 *@author LiMing
+	 * @param recruit
+	 * 更新发布信息
+	 */
+	@Override
+	public void updateRcruit(RecruitInfo recruit) {
+		iUserDao.updateRcruit(recruit);
+	}
+
+	/**
+	 *@author LiMing
+	 * @param organizationId
+	 * 删除原职位信息
+	 */
+	@Override
+	public void deletePosition(String organizationId,String recruitId) {
+		iUserDao.deletePosition(organizationId,recruitId);	
+	}
 }

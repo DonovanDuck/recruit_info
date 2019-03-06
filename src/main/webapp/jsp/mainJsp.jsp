@@ -59,6 +59,15 @@
 	$(document).ready(function() {
 		$("#dataTables-example").dataTable();
 	});
+
+</script>
+<script type="text/javascript">
+$(function(){
+	if(${sessionScope.User.authority }==1)//如果报错，为正常，不影响功能
+	{
+	$("#addButton").css("display","block");
+	}
+})
 </script>
 </head>
 <body>
@@ -74,14 +83,14 @@
 			<div class="sidebar-collapse">
 				<ul class="nav" id="main-menu">
 					<li class="text-left"><a
-						href="${pageContext.request.contextPath}/admin/readTeacherInfo"
-						class="waves-effect waves-dark" style="font-size: 20px">招聘信息</a></li>
+						href="${pageContext.request.contextPath}/user/toMainPage"
+						class="waves-effect waves-dark">招聘信息</a></li>
 					<li class="text-left"><a
-						href="${pageContext.request.contextPath}/admin/readStudentInfo"
-						class="waves-effect waves-dark" style="font-size: 20px">用户管理</a></li>
+						href="${pageContext.request.contextPath}/user/toUserInfo"
+						class="waves-effect waves-dark">用户管理</a></li>
 					<li class="text-left"><a
-						href="${pageContext.request.contextPath}/admin/readCategories"
-						class="waves-effect waves-dark" style="font-size: 20px">个人信息</a></li>
+						href="${pageContext.request.contextPath}/user/toPersonalInfo"
+						class="waves-effect waves-dark">个人信息</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -95,7 +104,8 @@
 						</div>
 						<div class="card-content">
 							<div class="table-responsive" style="overflow-x: hidden;">
-								<div class="col-md-7">
+								<div class="col-md-7" style="display: none" id="addButton"
+									name=“addButton”>
 									<a
 										href="${pageContext.request.contextPath}/user/toPublishRcruitPage"
 										style="font-size: 20px">
@@ -120,15 +130,37 @@
 									<tbody id="asds">
 										<c:forEach items="${list }" var="list" varStatus="status">
 											<tr>
-												<td class="text-center" style="padding-top: 1%;">${requestScope.offset+status.index}</td>
-												<td class="text-center" style="padding-top: 1%;">标题</td>
+												<td class="text-center" style="padding-top: 1%;">${requestScope.offset+status.index+1}</td>
+												<td class="text-center" style="padding-top: 1%;">${list.recruitInfo }</td>
 												<td class="text-center" style="padding-top: 1%;">${list.organization }</td>
 												<td class="text-center" style="padding-top: 1%;">${list.startTime }</td>
 												<td class="text-center" style="padding-top: 1%;">${list.endTime }</td>
 												<td class="text-center" style="padding-top: 1%;">${list.endTime }</td>
-												<td class="text-center" style="padding-top: 1%;">张三</td>
-												<td class="text-center"><a
-													href="${pageContext.request.contextPath}/user/toSignInInfo?recruitId=${list.recruitId}"
+
+												<td class="text-center" style="padding-top: 1%;">${list.publisher }</td>
+												<td class="text-center"><c:if
+														test="${sessionScope.User.authority == 0}">
+														<a
+															href="${pageContext.request.contextPath}/user/toConsultRecuit?recuritId=${list.recruitId }"
+															class="waves-effect waves-dark" style="font-size: 20px">
+															<button type="button" class="btn btn-default btn-lg"
+																id="consultRecurit" name="consultRecurit"
+																style="padding-top: 4%;">
+																<small>查看</small>
+															</button>
+														</a>
+													</c:if> <c:if test="${sessionScope.User.authority==1 }">
+														<a
+															href="${pageContext.request.contextPath}/user/toUpdateRecuit?recuritId=${list.recruitId }"
+															class="waves-effect waves-dark" style="font-size: 20px">
+															<button type="button" class="btn btn-default btn-lg"
+																id="editRecurit" name="editRecurit"
+																style="padding-top: 4%;">
+																<small>编辑</small>
+															</button>
+														</a>
+													</c:if> <a href="${pageContext.request.contextPath}/.."
+
 													class="waves-effect waves-dark" style="font-size: 20px">
 														<button type="button" class="btn btn-default btn-lg"
 															style="padding-top: 4%;">

@@ -105,14 +105,21 @@ public interface IUserService {
 	public Integer applyNumDoubleOneToday(String recruitId, String dateString,String positonName);
 	public Integer applyNumInSideToday(String recruitId, String dateString,String positonName);
 	
-	public List<Position> getPosition(String recruitId);
+	
+	/**
+	 *@author LiMing
+	 * @param organizationId
+	 * @return 返回职位集合
+	 */
+	public List<Position> getPosition(String organizationId);
 
 	/**
 	 *@author LiMing
 	 * @param employeeNum
 	 * @return 返回用户实体
 	 */
-	public User getUserById(String employeeNum);
+	public User getUserByName(String employeeNum);
+	public User getUserById(String userId);
 	
 	/**
 	 * 重置密码
@@ -142,4 +149,41 @@ public interface IUserService {
 	public boolean isFirstSchool(String applyId);
 
 	public boolean isFirstMajor(String applyId);
+
+	/**
+	 *@author LiMing
+	 * @param 职位对象集合
+	 * 添加职位
+	 */
+	public void publishPosition(List<Position> po);
+
+	/**
+	 *@author LiMing
+	 * @param recuritId
+	 * @return
+	 */
+	public RecruitInfo getRecruitInfoById(String recuritId);
+
+	/**
+	 *@author LiMing
+	 * @param recruitId
+	 * @return
+	 */
+	public List<String> getPositionNameByRecruitId(String recruitId);
+
+	/**
+	 *@author LiMing
+	 * @param recruit
+	 * 更新发布信息
+	 */
+	public void updateRcruit(RecruitInfo recruit);
+
+	/**
+	 *@author LiMing
+	 * @param organizationId
+	 * 删除原职位信息
+	 * @param recruitId 
+	 */
+	public void deletePosition(String organizationId, String recruitId);
+
 }

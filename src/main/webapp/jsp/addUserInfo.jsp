@@ -75,14 +75,14 @@
 			<div class="sidebar-collapse">
 				<ul class="nav" id="main-menu">
 					<li class="text-left"><a
-						href="${pageContext.request.contextPath}/admin/readTeacherInfo"
-						class="waves-effect waves-dark" style="font-size: 20px">招聘信息</a></li>
+						href="${pageContext.request.contextPath}/user/toMainPage"
+						class="waves-effect waves-dark">招聘信息</a></li>
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toUserInfo"
-						class="waves-effect waves-dark" style="font-size: 20px">用户管理</a></li>
+						class="waves-effect waves-dark">用户管理</a></li>
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toPersonalInfo"
-						class="waves-effect waves-dark" style="font-size: 20px">个人信息</a></li>
+						class="waves-effect waves-dark">个人信息</a></li>
 				</ul>
 			</div>
 		</nav>

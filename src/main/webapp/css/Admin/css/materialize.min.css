@@ -2275,10 +2275,10 @@ input {
     line-height: normal
 }
 
-input[type="checkbox"], input[type="radio"] {
+/* input[type="checkbox"], input[type="radio"] {
     box-sizing: border-box;
     padding: 0
-}
+} */
 
 input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
     height: auto
@@ -5053,11 +5053,11 @@ button.btn-floating {
     line-height: inherit
 }
 
-.input-field.col .dropdown-content [type="checkbox"] + label {
+/* .input-field.col .dropdown-content [type="checkbox"] + label {
     top: 1px;
     left: 0;
     height: 18px
-}
+} */
 
 /*!
  * Waves v0.6.0
@@ -5838,24 +5838,24 @@ form p:last-child {
     margin-bottom: 0
 }
 
-[type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+/* [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
     position: absolute;
     left: -9999px;
     opacity: 0
-}
+} */
 
-[type="checkbox"] + label {
+/* [type="checkbox"] + label {
     position: relative;
     padding-left: 35px;
     cursor: pointer;
     display: inline-block;
     height: 25px;
-    line-height: 25px; /* font-size:1rem; */
+    line-height: 25px; font-size:1rem;
     -webkit-user-select: none;
     -moz-user-select: none;
     -khtml-user-select: none;
     -ms-user-select: none;
-}
+} */
 
 [type="checkbox"] + label:before, [type="checkbox"]:not(.filled-in) + label:after {
     content: '';

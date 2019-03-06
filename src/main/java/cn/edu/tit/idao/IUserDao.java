@@ -80,7 +80,7 @@ public interface IUserDao {
 	 * @param organizationId
 	 * @return 获取单位职位
 	 */
-	public List<Position> getPosition(@Param("string")String string);
+	public List<Position> getPosition(@Param("organizationId")String organizationId);
 
 	/**
 	 *@author LiMing
@@ -114,7 +114,8 @@ public interface IUserDao {
 	public Integer applyNumDoubleOneToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString,@Param("positonName")String positonName);
 	public Integer applyNumInSideToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString,@Param("positonName")String positonName);
 	
-	public User getUserById(@Param("employeeNum")String employeeNum);
+	public User getUserByName(@Param("employeeNum")String employeeNum);
+	public User getUserById(@Param("userId")String userId);
 	
 	/**
 	 * 重置密码
@@ -126,7 +127,7 @@ public interface IUserDao {
 	 * 通过招聘信息获取相应职位信息
 	 * @return
 	 */
-	public List<Position> getPositionByRecruitId(String recruitId);
+	public List<Position> getPositionByRecruitId(@Param("recruitId")String recruitId);
 	
 	
 	/**
@@ -140,6 +141,7 @@ public interface IUserDao {
 	 * @param material
 	 */
 	public void saveMaterial(Material material);
+
 
 	public Integer undergraduateIsFirstSchool(@Param("applyId")String applyId);
 
@@ -156,6 +158,42 @@ public interface IUserDao {
 	public RecruitInfo getRecruitInfoById(@Param("recruitId")String recruitId);
 
 
+
+	/**
+	 *@author LiMing
+	 * @param 职位对象集合
+	 * 添加职位
+	 */
+	public void publishPosition(List<Position> po);
+
+	/**
+	 *@author LiMing
+	 * @param recuritId
+	 * @return
+	 */
+	public RecruitInfo getRecruitInfoById(@Param("recuritId")String recuritId);
 	
+	/**
+	 *@author LiMing
+	 * @param recruitId
+	 * @return
+	 */
+	public List<String> getPositionNameByRecruitId(@Param("recuritId")String recuritId);
+
+	/**
+	 *@author LiMing
+	 * @param recruit
+	 * 更新发布信息
+	 */
+	public void updateRcruit(RecruitInfo recruit);
+
+	/**
+	 *@author LiMing
+	 * @param organizationId
+	 * 删除原职位信息
+	 * @param recruitId 
+	 */
+	public void deletePosition(@Param("organizationId")String organizationId,@Param("recuritId") String recruitId);
+
 	
 }
