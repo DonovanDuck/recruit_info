@@ -13,7 +13,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Type"
 	content="multipart/form-data; charset=UTF-8">
-<title>教师信息管理</title>
+<title>招聘系统</title>
 <link
 	href="${pageContext.request.contextPath}/css/Admin/font-awesome.css"
 	rel="stylesheet" />
@@ -85,9 +85,11 @@ $(function(){
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toMainPage"
 						class="waves-effect waves-dark">招聘信息</a></li>
+					<c:if test="${sessionScope.User.authority == 2 }">
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toUserInfo"
 						class="waves-effect waves-dark">用户管理</a></li>
+					</c:if>
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toPersonalInfo"
 						class="waves-effect waves-dark">个人信息</a></li>

@@ -129,9 +129,11 @@
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toMainPage"
 						class="waves-effect waves-dark">招聘信息</a></li>
+					<c:if test="${sessionScope.User.authority == 2 }">
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toUserInfo"
 						class="waves-effect waves-dark">用户管理</a></li>
+					</c:if>
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toPersonalInfo"
 						class="waves-effect waves-dark">个人信息</a></li>
@@ -144,7 +146,7 @@
 				<div class="col-md-12">
 					<div class="card" style="height: 100%">
 						<div class="col-md-12 text-center">
-							<h2>发布招聘信息</h2>
+							<h2>更新招聘信息</h2>
 						</div>
 						<form class="form-horizontal"
 							action="${pageContext.request.contextPath}/user/updateRcruit?recruitId=${recruit.recruitId }"
@@ -254,7 +256,7 @@
 									data-link-field="dtp_input1">
 									<input class="form-control" style='font-size: 18px;' size="16"
 										value="${recruit.startTime }" type="text" id="startTime"
-										name="startTime"> <span class="input-group-addon"><span
+										name="startTime" readonly="true"> <span class="input-group-addon"><span
 										class="glyphicon glyphicon-th"></span></span>
 								</div>
 							</div>
@@ -269,7 +271,7 @@
 									data-link-field="dtp_input1">
 									<input class="form-control" style='font-size: 18px;' size="16"
 										type="text" value="${recruit.endTime }" id="endTime"
-										name="endTime"> <span class="input-group-addon"><span
+										name="endTime" readonly="true"> <span class="input-group-addon"><span
 										class="glyphicon glyphicon-th"></span></span>
 								</div>
 							</div>
