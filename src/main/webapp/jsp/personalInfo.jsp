@@ -58,7 +58,6 @@
     left: 26%;
 	}
 	.personalInfo_main{
-		margin: 60px;
 		
 	}
 	.personalInfo_form{
@@ -127,9 +126,11 @@
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toMainPage"
 						class="waves-effect waves-dark">招聘信息</a></li>
+					<c:if test="${sessionScope.User.authority == 2 }">
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toUserInfo"
 						class="waves-effect waves-dark">用户管理</a></li>
+					</c:if>
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toPersonalInfo"
 						class="waves-effect waves-dark">个人信息</a></li>
@@ -144,24 +145,24 @@
 						<div class="card-content " style="padding-top: 0%">
 	<div class="personalInfo_main">
 		<div class="personalInfo_head">
-			<h2>${user.userName }个人信息</h2>
+			<h2>${sessionScope.User.userName }个人信息</h2>
 		</div>
 		<div class="personalInfo_form">
-			<form class="form-horizontal">
+			<form class="form-horizontal" action="${pageContext.request.contextPath}/user/modifyPassword">
 				<div class="form-group">
-				    <label for="password" class="col-sm-2 control-label" style="padding-right: 31px;">原密码</label>
+				    <label for="password" class="col-sm-2 control-label" style="padding-right: 31px;color: #000">原密码</label>
 				    <div class="col-sm-10">
 				      <input type="password" class="form-control" id="password" placeholder="原密码">
 				    </div>
   				</div>
   				<div class="form-group">
-				    <label for="newPassword" class="col-sm-2 control-label" style="padding-right: 31px;">新密码</label>
+				    <label for="newPassword" class="col-sm-2 control-label" style="padding-right: 31px;color: #000">新密码</label>
 				    <div class="col-sm-10">
 				      <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="新密码">
 				    </div>
   				</div>
   				<div class="form-group">
-				    <label for="confirmNewPassword" class="col-sm-2 control-label">确认密码</label>
+				    <label for="confirmNewPassword" class="col-sm-2 control-label" style="color: #000">确认密码</label>
 				    <div class="col-sm-10">
 				      <input type="password" class="form-control" id="confirmNewPassword" placeholder="确认密码">
 				    </div>

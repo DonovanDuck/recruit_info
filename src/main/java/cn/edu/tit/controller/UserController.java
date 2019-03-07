@@ -55,9 +55,9 @@ public class UserController {
 	public ModelAndView toMainPage(HttpServletRequest request) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		List<RecruitInfo> list = new ArrayList<RecruitInfo>();
-		User publisher = (User) request.getSession().getAttribute("User");
-		String publisherId = publisher.getUserId();
 		try {
+			User publisher = (User) request.getSession().getAttribute("User");
+			String publisherId = publisher.getUserId();
 			// 获取招聘信息
 			list = userService.getRecruitInfo(publisherId);
 			if(publisher.getAuthority()==0)
@@ -68,7 +68,7 @@ public class UserController {
 			mv.setViewName("/jsp/mainJsp");//设置返回页面
 		} catch (Exception e) {
 			e.printStackTrace();
-			mv = null;
+			mv.setViewName("/jsp/login");
 		}
 		return mv;
 	}
@@ -81,7 +81,7 @@ public class UserController {
 		ModelAndView mv = new ModelAndView();
 		User user = new User();
 		try {
-			user = userService.getUserById(employeeNum);
+			user = userService.getUserByName(employeeNum);
 			if (user == null || !user.getPassword().equals(password)) {
 				mv.setViewName("/jsp/login");// 设置返回页面
 			} else {
@@ -289,10 +289,7 @@ public class UserController {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * 添加招聘信息
-=======
->>>>>>> bfcba72d496947e7120a1fda08ca2d26d1c40ecf
 	 * @param request
 	 * @return
 	 * @throws Exception 
@@ -400,10 +397,12 @@ public class UserController {
 		String password = "";
 		try {
 			// 获取用户id
-			userId = (String) request.getSession().getAttribute("userId");
+			User user = (User) request.getSession().getAttribute("User");
+			userId = user.getUserId();
 			password = request.getParameter("newPassword");
-			if (!"".equals(userId) || !"".equals(password)) {
+			if (!"".equals(userId) && !"".equals(password)) {
 				userService.modifyPassword(userId, password);
+				mv.setViewName("jsp/login");
 			}
 		} catch (Exception e) {
 			// TODO: handle exception

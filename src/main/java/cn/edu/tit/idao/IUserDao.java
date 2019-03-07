@@ -178,7 +178,7 @@ public interface IUserDao {
 	 * @param recuritId
 	 * @return
 	 */
-	public RecruitInfo getRecruitInfoById(@Param("recruitId")String recruitId);
+	public RecruitInfo getRecruitInfoById(@Param("recruitId")String recuritId);
 	
 	/**
 	 *@author LiMing

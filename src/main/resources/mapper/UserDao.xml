@@ -260,7 +260,6 @@
 	</update>
 
 
-
     <select id="applyList" 
 		resultMap="applyMap">
 		SELECT * from apply where recruit_id = #{recruitId} and occupation_applicant =#{positonName};
