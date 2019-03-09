@@ -20,10 +20,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -42,6 +44,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 
 @Component
 public  class  Common {
@@ -313,4 +319,64 @@ public  class  Common {
 					}
 					return null;
 				}
+		
+		
+		//json转map,这个小工具是我从网上找的,谢谢作者
+		public static Map<String, Object> parseJSON2Map(JSONObject json) {
+		        Map<String, Object> map = new HashMap<String, Object>();
+		        // 最外层解析
+		        for (String k : getAllKeys(json)) {
+		            Object v = json.get(k);
+		            // 如果内层还是数组的话，继续解析
+		            if (v instanceof JSONArray) {
+		                List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+						Iterator<Object> it = ((JSONArray) v).iterator();
+		                while (it.hasNext()) {
+		                    JSONObject json2 = (JSONObject)it.next();
+		                    list.add(parseJSON2Map(json2));
+		                }
+		                map.put(k.toString(), list);
+		            } else {
+		                map.put(k.toString(), v);
+		            }
+		        }
+		        return map;
+		} 
+		
+		/**
+		 * 得到JSONObject里的所有key
+		 * @param jsonObject JSONObject实例对象
+		 * @return Set
+		 */
+		public static Set<String> getAllKeys(JSONObject jsonObject) {
+			return getAllKeys(jsonObject.toString());
+		}
+		 
+		/**
+		 * 从JSON字符串里得到所有key
+		 * @param jsonString json字符串
+		 * @return Set
+		 */
+		public static Set<String> getAllKeys(String jsonString) {
+			Set<String> set = new HashSet<>();
+			//按照","将json字符串分割成String数组
+			String[] keyValue = jsonString.split(",");
+			for(int i=0; i<keyValue.length; i++) {
+				String s = keyValue[i];
+				//找到":"所在的位置，然后截取
+				int index = s.indexOf(":");
+				//第一个字符串因带有json的"{"，需要特殊处理
+				if(i==0) {
+					set.add(s.substring(2, index-1));
+				} else {
+					set.add(s.substring(1, index-1));
+				}
+			}
+			return set;
+		}
+
+		
+		
+		
+
 }

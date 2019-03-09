@@ -126,7 +126,7 @@ public interface IUserService {
 	 * 重置密码
 	 * @param userId
 	 */
-	public void rePassword(String userId);
+	public void rePassword(String userId, String password);
 	
 	/**
 	 * 通过招聘信息获取相应职位信息

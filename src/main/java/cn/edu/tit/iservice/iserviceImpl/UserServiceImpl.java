@@ -256,9 +256,9 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public void rePassword(String userId) {
+	public void rePassword(String userId,String password) {
 		// TODO Auto-generated method stub
-		iUserDao.rePassword(userId);
+		iUserDao.rePassword(userId, password);
 	}
 
 	@Override

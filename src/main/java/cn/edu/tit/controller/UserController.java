@@ -82,6 +82,7 @@ public class UserController {
 		User user = new User();
 		try {
 			user = userService.getUserByName(employeeNum);
+			password = Common.eccryptMD5(password);
 			if (user == null || !user.getPassword().equals(password)) {
 				mv.setViewName("/jsp/login");// 设置返回页面
 			} else {
@@ -270,7 +271,7 @@ public class UserController {
 		try {
 			User user = new User();
 			user.setUserId(Common.uuid());
-			user.setPassword("123456");
+			user.setPassword(Common.eccryptMD5("123456"));
 			user.setOrganizationName(request.getParameter("organization"));
 			user.setUserName(request.getParameter("userName"));
 			user.setWechartNum(request.getParameter("weChat"));
@@ -361,12 +362,7 @@ public class UserController {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * 跳转到个人信息
-=======
-	 * 跳转到用户列表
-	 * 
->>>>>>> bfcba72d496947e7120a1fda08ca2d26d1c40ecf
 	 * @param request
 	 * @return
 	 */
@@ -401,6 +397,7 @@ public class UserController {
 			userId = user.getUserId();
 			password = request.getParameter("newPassword");
 			if (!"".equals(userId) && !"".equals(password)) {
+				password = Common.eccryptMD5(password);
 				userService.modifyPassword(userId, password);
 				mv.setViewName("jsp/login");
 			}
@@ -454,11 +451,12 @@ public class UserController {
 	public void ajaxCheckPassword(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			// 校验密码
-			// String userId = (String) request.getSession().getAttribute("userId");
-			String userId = "1";
+			 User user = (User) request.getSession().getAttribute("User");
+//			String userId = "1";
 			String password = request.getParameter("password");
+			password = Common.eccryptMD5(password);
 			String result = "";
-			Boolean isRight = userService.checkPassword(userId, password);
+			Boolean isRight = userService.checkPassword(user.getUserId(), password);
 			if (isRight)
 				result = JSONObject.toJSONString("OK");
 			else
@@ -483,7 +481,7 @@ public class UserController {
 		try {
 			// 校验密码
 			String userId = request.getParameter("userId");
-			userService.rePassword(userId);
+			userService.rePassword(userId, Common.eccryptMD5("123456"));
 			result = JSONObject.toJSONString("OK");
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -509,7 +507,7 @@ public class UserController {
 		String applyId = request.getParameter("applyId");
 		try {
 			// 通过applyId获取报名表
-			Apply apply = userService.getApplyById("1");
+			Apply apply = userService.getApplyById(applyId);
 			if(apply != null){
 				String undergraduateGraduationTime =  apply.getUndergraduateGraduationTime().toString().substring(0, 10);
 				String graduateTime =  apply.getGraduateTime().toString().substring(0, 10);

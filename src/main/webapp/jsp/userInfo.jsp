@@ -68,6 +68,13 @@
 		width: 331px;
     	padding-right: 51px;
 	}
+	.au_admin{
+		    color: #000;
+    font-size: 18px;
+    position: relative;
+    left: 77px;
+    top: 12px;
+	}
 </style>
 <script>
 function open1(ob)
@@ -110,7 +117,12 @@ $(function(){
     };
 });
 </script>
+<script>
+	$(document).ready(function() {
+		$("#dataTables-example").dataTable();
+	});
 
+</script>
 
 </head>
 
@@ -153,13 +165,14 @@ $(function(){
 			<a href="${pageContext.request.contextPath}/jsp/addUserInfo.jsp"><button class="btn btn-success" type="button">添加用户</button></a>
 		</div>
 		<div class="userInfo_table">
-			<table class="table table-condensed">
+			<table class="table table table-striped table-bordered table-hover"
+									id="dataTables-example">
 				<thead>
 					<tr>
 						<th>编号</th>
 						<th>单位</th>
 						<th>负责人</th>
-						<th style="position: relative;left: 71px;">权限</th>
+						<th style="position: relative;left: 86px;">权限</th>
 						<th style="    padding-left: 42px;">修改</th>
 					</tr>
 				</thead>
@@ -178,6 +191,9 @@ $(function(){
 						</c:if>
 						<c:if test="${user.authority == 0 }">
 						<td class="userInfo_TD"><input class="form-control" type="checkbox" name="authority" /></td>
+						</c:if>
+						<c:if test="${user.authority == 2 }">
+						<td class="userInfo_TD"><label class="au_admin">管理员</label></td>
 						</c:if>
 						<td class="userInfo_TD">
 							<input class="btn btn-default" type="submit" value="修改" style="margin-left: 26px;margin-right: 27px;">

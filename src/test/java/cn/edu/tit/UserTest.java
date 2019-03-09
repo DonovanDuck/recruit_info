@@ -36,7 +36,8 @@ public class UserTest {
 	@Test
 	public void Test() throws Exception {
 		
-		System.out.println(userDao.getApplyFamily("1"));
+		iUserService.rePassword("0", "a");
+		
 	}
 	}
 

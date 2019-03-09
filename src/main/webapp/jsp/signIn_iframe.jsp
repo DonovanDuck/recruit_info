@@ -78,11 +78,11 @@
 		<h3>
 			当前报名总人数：<strong>${numAll }</strong>人
 		</h3>
-		其中博士<strong>${numDoctor }</strong>人、硕士<strong>${numMaster }</strong>人、学士<strong>${numBachelor }</strong>人，疆内户籍<strong>${numInSide }</strong>人，双一流院校<strong>1000</strong>人，双一流学科<strong>1000</strong>人。
+		其中博士<strong>${numDoctor }</strong>人、硕士<strong>${numMaster }</strong>人、学士<strong>${numBachelor }</strong>人，疆内户籍<strong>${numInSide }</strong>人，双一流院校<strong>0</strong>人，双一流学科<strong>0</strong>人。
 		<h3>
 			当日报名<strong>${numAllToday }</strong>人
 		</h3>
-		今日报名博士<strong>${numDoctorToday }</strong>人、硕士<strong>${numMasterToday }</strong>人、学士<strong>${numBachelorToday }</strong>人，疆内户籍<strong>${numBachelorToday }</strong>人，双一流院校<strong>100</strong>人，双一流学科<strong>100</strong>人。
+		今日报名博士<strong>${numDoctorToday }</strong>人、硕士<strong>${numMasterToday }</strong>人、学士<strong>${numBachelorToday }</strong>人，疆内户籍<strong>${numBachelorToday }</strong>人，双一流院校<strong>0</strong>人，双一流学科<strong>0</strong>人。
 
 	</div>
 

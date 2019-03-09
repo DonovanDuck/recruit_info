@@ -112,7 +112,8 @@
 
 </head>
 
-<body>
+<body bgcolor='white' style='font-family:SimSun; height:100%;'
+	screen_capture_injected='true' ryt11773='1'>
 <div id="wrapper">
 		<nav class="navbar navbar-default top-navbar" role="navigation">
 			<div class="text-center">
