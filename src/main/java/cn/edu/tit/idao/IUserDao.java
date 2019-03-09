@@ -115,12 +115,25 @@ public interface IUserDao {
 	public Integer applyNumBachelor(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
 	public Integer applyNumDoubleOne(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
 	public Integer applyNumInSide(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+	public Integer applyNumFirstSchoolInUndergraduate(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+	public Integer applyNumFirstSchoolInPastgraduate(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+	public Integer applyNumFirstSchoolInDoctor(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+	public Integer applyNumFirstMajorInUndergraduate(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+	public Integer applyNumFirstMajorInPastgraduate(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+	public Integer applyNumFirstMajorInDoctor(@Param("recruitId")String recruitId,@Param("positonName")String positonName);
+	
 
 	public Integer applyNumDoctorToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString,@Param("positonName")String positonName);
 	public Integer applyNumMasterToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString,@Param("positonName")String positonName);
 	public Integer applyNumBachelorToday(@Param("recruitId")String recruitId,@Param("dateString") String dateString,@Param("positonName")String positonName);
 	public Integer applyNumDoubleOneToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString,@Param("positonName")String positonName);
 	public Integer applyNumInSideToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString,@Param("positonName")String positonName);
+	public Integer applyNumFirstSchoolInUndergraduateToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString,@Param("positonName")String positonName);
+	public Integer applyNumFirstSchoolInPastgraduateToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString,@Param("positonName")String positonName);
+	public Integer applyNumFirstSchoolInDoctorToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString,@Param("positonName")String positonName);
+	public Integer applyNumFirstMajorInUndergraduateToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString,@Param("positonName")String positonName);
+	public Integer applyNumFirstMajorInPastgraduateToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString,@Param("positonName")String positonName);
+	public Integer applyNumFirstMajorInDoctorToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString,@Param("positonName")String positonName);
 	
 	public User getUserByName(@Param("employeeNum")String employeeNum);
 	public User getUserById(@Param("userId")String userId);
@@ -202,5 +215,12 @@ public interface IUserDao {
 	 */
 	public void deletePosition(@Param("organizationId")String organizationId,@Param("recuritId") String recruitId);
 
-	
+	/**
+	 * @author wenli
+	 * @param recruitId
+	 * 根据职位名和招聘信息id获得职位信息
+	 * @param positionName
+	 * @return
+	 */
+	public Position getPositionByPositionNameAndRecruitId(@Param("recruitId")String recruitId,@Param("positionName")String positionName);
 }

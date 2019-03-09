@@ -41,7 +41,7 @@
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/css/index.css" />
 <link rel="stylesheet" type="text/css"
-	href="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" />
+	href="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.css" />
 <script src="${pageContext.request.contextPath}/js/g2.min.js"
 	type="text/javascript" charset="utf-8"></script>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
@@ -115,6 +115,7 @@
 										<strong> 招聘单位:</strong><strong> 太员工业学院招生办</strong>
 									</h3>
 									<div style="height: 18px;width: 100%"></div>
+
 									<c:forEach items="${occupationApplicantLsit }"
 										var="occupationApplicant"  varStatus="status">
 										<a
