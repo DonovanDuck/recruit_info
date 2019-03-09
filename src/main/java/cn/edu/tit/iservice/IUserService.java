@@ -98,6 +98,12 @@ public interface IUserService {
 	public Integer applyNumBachelor(String recruitId,String positonName);
 	public Integer applyNumDoubleOne(String recruitId,String positonName);
 	public Integer applyNumInSide(String recruitId,String positonName);
+	public Integer applyNumFirstSchoolInUndergraduate(String recruitId,String positonName);
+	public Integer applyNumFirstSchoolInPastgraduate(String recruitId,String positonName);
+	public Integer applyNumFirstSchoolInDoctor(String recruitId,String positonName);
+	public Integer applyNumFirstMajorInUndergraduate(String recruitId, String positonName);
+	public Integer applyNumFirstMajorInPastgraduate(String recruitId,String positonName);
+	public Integer applyNumFirstMajorInDoctor(String recruitId,String positonName);
 	
 	public Integer applyNumToday(String recruitId, String dateString,String positonName);
 	public Integer applyNumDoctorToday(String recruitId, String dateString,String positonName);
@@ -105,8 +111,12 @@ public interface IUserService {
 	public Integer applyNumBachelorToday(String recruitId, String dateString,String positonName);
 	public Integer applyNumDoubleOneToday(String recruitId, String dateString,String positonName);
 	public Integer applyNumInSideToday(String recruitId, String dateString,String positonName);
-	
-	
+	public Integer applyNumFirstSchoolInUndergraduateToday(String recruitId, String dateString,String positonName);
+	public Integer applyNumFirstSchoolInPastgraduateToday(String recruitId, String dateString,String positonName);
+	public Integer applyNumFirstSchoolInDoctorToday(String recruitId, String dateString,String positonName);
+	public Integer applyNumFirstMajorInUndergraduateToday(String recruitId, String dateString,String positonName);
+	public Integer applyNumFirstMajorInPastgraduateToday(String recruitId, String dateString,String positonName);
+	public Integer applyNumFirstMajorInDoctorToday(String recruitId, String dateString,String positonName);
 	/**
 	 *@author LiMing
 	 * @param organizationId
@@ -187,5 +197,13 @@ public interface IUserService {
 	 * @param recruitId 
 	 */
 	public void deletePosition(String organizationId, String recruitId);
+	/**
+	 * @author wenli
+	 * @param recruitId
+	 * 根据职位名和招聘信息id获得职位信息
+	 * @param positionName
+	 * @return
+	 */
+	public Position getPositionByPositionNameAndRecruitId(String recruitId,String positionName);
 
 }
