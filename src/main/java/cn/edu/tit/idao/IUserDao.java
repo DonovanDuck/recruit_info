@@ -81,7 +81,7 @@ public interface IUserDao {
 	 * @param 当参数(publisherId)不空时,条件查询该ID下的招聘信息
 	 * @return 获取所有招聘信息
 	 */
-	public List<RecruitInfo> getRecruitInfo(@Param("publisherId")String publisherId);
+	public List<RecruitInfo> getRecruitInfo(@Param("organization")String organization);
 
 	/**
 	 *@author LiMing
@@ -122,7 +122,7 @@ public interface IUserDao {
 	public Integer applyNumDoubleOneToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString,@Param("positonName")String positonName);
 	public Integer applyNumInSideToday(@Param("recruitId")String recruitId, @Param("dateString")String dateString,@Param("positonName")String positonName);
 	
-	public User getUserByName(@Param("employeeNum")String employeeNum);
+	public User getUserByPhone(@Param("phoneNum")String phoneNum);
 	public User getUserById(@Param("userId")String userId);
 	
 	/**
@@ -201,6 +201,13 @@ public interface IUserDao {
 	 * @param recruitId 
 	 */
 	public void deletePosition(@Param("organizationId")String organizationId,@Param("recuritId") String recruitId);
+
+	/**
+	 *@author LiMing
+	 * @param organizationId
+	 * @return
+	 */
+	public List<String> getPositionNameByorganizationId(@Param("organizationId")String organizationId);
 
 	
 }

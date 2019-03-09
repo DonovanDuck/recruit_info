@@ -49,42 +49,82 @@
 <script
 	src="${pageContext.request.contextPath}/js/Admin/materialize.min.js"></script>
 <script type="text/javascript">
-	function submitButton() {
-		var startTime = $("#startTime").val();
-		var endTime = $("#endTime").val();
-		var titleName = $("#organizationTitle").val();
-		var positionContent = "";
-		var positonNum = "";
-		var positionProfession = "";
-		var positionCompilationNature = "";
-		$("input[name='position']").each(function() {
-			positionContent = positionContent + $(this).val() + ",";
-		});
-		$("input[name='positionNum']").each(function() {
-			positonNum = positonNum + $(this).val() + ",";
-		});
-		$("input[name='professionalOrientation']").each(function() {
-			positionProfession = positionProfession + $(this).val() + ",";
-		});
-		$("select[name='compilationNatureS']").each(
-				function() {
-					positionCompilationNature = positionCompilationNature
-							+ $(this).val() + ",";
-				});
-		$("#positionContent").val(positionContent);
-		$("#positionNumber").val(positonNum);
-		$("#positionProfession").val(positionProfession);
-		$("#compilationNature").val(positionCompilationNature);
-		if (startTime == endTime) {
-			alert("开始时间与截止时间相等,重新选择");
-		} else if (startTime >= endTime) {
-			alert("开始时间后于截止时间,重新选择");
-		} else if (titleName == null || titleName == "") {
-			alert("招聘标题为空");
-		} else {
-			$("#recruitForm").submit();
-		}
+function submitButton() {
+	var judge = true;
+	var num = 0;//添加的职位数
+	var startTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
+	var titleName = $("#organizationTitle").val();
+	var positionContent = "";
+	var positonNum = "";
+	var positionProfession = "";
+	var positionCompilationNature = "";
+
+	//根据编制信息获取总共的添加职位数
+	$("input[name='professionalOrientation']").each(function() {
+		num = num + 1;
+	});
+	/**先进行判空*/
+	var i = 0;
+	if (startTime == endTime) {
+		alert("开始时间与截止时间相等,重新选择");
+		judge = false;
 	}
+	if (startTime > endTime) {
+		alert("开始时间后于截止时间,重新选择");
+		judge = false;
+	}
+	if (titleName == null || titleName == "") {
+		alert("招聘标题为空");
+		judge = false;
+	}
+	$("input[name='position']").each(function() {
+		i = i + 1;
+		if ($(this).val() == "" && i != num) {
+			alert("职位为空,请选择");
+			judge = false;
+		}
+	});
+	i = 0;
+	$("input[name='positionNum']").each(function() {
+		i = i + 1;
+		if ($(this).val() == "" && i != num) {
+			alert("人数为空,请选择");
+			judge = false;
+		}
+	});
+	i = 0;
+	$("input[name='professionalOrientation']").each(function() {
+		i = i + 1;
+		if ($(this).val() == "" && i != num) {
+			alert("专业及专业方向为空,请选择");
+			judge = false;
+		}
+	})
+	i = 0;
+	/**数据整合*/
+	$("input[name='position']").each(function() {
+		positionContent = positionContent + $(this).val() + ",";
+	});
+	$("input[name='positionNum']").each(function() {
+		positonNum = positonNum + $(this).val() + ",";
+	});
+	$("input[name='professionalOrientation']").each(function() {
+		positionProfession = positionProfession + $(this).val() + ",";
+	});
+	$("select[name='compilationNatureS']").each(
+			function() {
+				positionCompilationNature = positionCompilationNature
+						+ $(this).val() + ",";
+			});
+	$("#positionContent").val(positionContent);
+	$("#positionNumber").val(positonNum);
+	$("#positionProfession").val(positionProfession);
+	$("#compilationNature").val(positionCompilationNature);
+	if (judge) {
+		$("#recruitForm").submit();
+	}
+}
 </script>
 <script type="text/javascript">
 	$(function() {
@@ -100,17 +140,27 @@
 		});
 		$("#addPosition").click(function() {
 			//div 的复制
-			var div0 = document.getElementById("liContentZero");
 			var div1 = document.getElementById("liContentOne");
-			var div2 = div1.cloneNode(true);
-			var div3 = div0.cloneNode(true);
+			var div2 = document.getElementById("liContentTwo");
+			var div3 = div1.cloneNode(true);
+			var div4 = div2.cloneNode(true);
 			$("#ulContent").append(div3);
-			$("#ulContent").append(div2);
+			$("#ulContent").append(div4);
 		});
 	});	
 	/**删除DIV*/
-		function removeLi(name){
-			$("li[name="+name+"]").remove();
+		function removeLi(element){
+			if (window.confirm("是否确认要删除?")) {
+				var node = element.parentNode.previousSibling;
+				var node2 = element.parentNode;
+				node.remove();
+				node2.remove();
+				} 
+		}
+		function removeContent(name){
+			if (window.confirm("是否确认要删除?")) {
+				$("li[name="+name+"]").remove();
+				} 
 		}
 </script>
 </head>
@@ -130,9 +180,9 @@
 						href="${pageContext.request.contextPath}/user/toMainPage"
 						class="waves-effect waves-dark">招聘信息</a></li>
 					<c:if test="${sessionScope.User.authority == 2 }">
-					<li class="text-left"><a
-						href="${pageContext.request.contextPath}/user/toUserInfo"
-						class="waves-effect waves-dark">用户管理</a></li>
+						<li class="text-left"><a
+							href="${pageContext.request.contextPath}/user/toUserInfo"
+							class="waves-effect waves-dark">用户管理</a></li>
 					</c:if>
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toPersonalInfo"
@@ -178,24 +228,13 @@
 									<h3>招聘信息:</h3>
 								</div>
 								<div class="col-md-7" style="padding: 0">
-									<div class="col-md-12" style="padding: 0">
-										<input type="button" style="width: 30%;" id="addPosition"
-											class="btn btn-success btn-xs btn-block  pull-right"
-											value="添加职位" />
-									</div>
 									<ul class="col-md-12"
-										style="padding: 0; width: 120%; margin-left: -20%;"
+										style="padding: 0; width: 100%; margin-left: 3%;"
 										id="ulContent">
 										<c:forEach items="${positionList }" var="list"
 											varStatus="status">
-											<li class="col-md-2 text-right"
-												style="float: left; margin-top: 5%"
-												name="${requestScope.offset+status.index+1}">
-												<button type="button" class="btn btn-danger btn-sm"
-													id="deleteDiv"
-													onclick="removeLi(${requestScope.offset+status.index+1})">删除</button>
-											</li>
-											<li class="col-md-10" style="padding: 0; float: left"
+											<li class="col-md-10"
+												style="padding: 0; float: left; background-color: rgba(245, 246, 246, 0.8); margin-top: 4px"
 												id="liContent" name="${requestScope.offset+status.index+1}">
 												<div class="col-md-12" style="padding: 0;">
 													<div class="col-md-8" style="padding: 0">
@@ -204,7 +243,8 @@
 															value="${list.positonName }" list="positionlist">
 														<datalist id="positionlist">
 															<c:forEach items="${positionName }" var="positionName">
-																<option>${positonName }</option>
+																<option label="${positionName }"
+																	value="${positionName }" />
 															</c:forEach>
 														</datalist>
 													</div>
@@ -225,15 +265,27 @@
 														<select class="form-control" id="compilationNatureS"
 															name="compilationNatureS"
 															style="margin-top: 6%; padding: 0">
-															<option>民企</option>
-															<option>国企</option>
-															<option>私企</option>
+															<option>行政岗</option>
+															<option>事业岗</option>
+															<option>其他岗</option>
 														</select>
 													</div>
 												</div>
 											</li>
+											<li class="col-md-2 text-right"
+												style="float: left; margin-top: 5%"
+												name="${requestScope.offset+status.index+1}">
+												<button type="button" class="btn btn-danger btn-sm"
+													id="deleteDiv"
+													onclick="removeContent(${requestScope.offset+status.index+1})">删除</button>
+											</li>
 										</c:forEach>
 									</ul>
+									<div class="col-md-12" style="padding: 0">
+										<input type="button" style="width: 30%;" id="addPosition"
+											class="btn btn-success btn-xs btn-block  pull-right"
+											value="添加职位" />
+									</div>
 								</div>
 							</div>
 							<div class="form-group" style="margin-top: 1%">
@@ -256,7 +308,8 @@
 									data-link-field="dtp_input1">
 									<input class="form-control" style='font-size: 18px;' size="16"
 										value="${recruit.startTime }" type="text" id="startTime"
-										name="startTime" readonly="true"> <span class="input-group-addon"><span
+										name="startTime" readonly="true"> <span
+										class="input-group-addon"><span
 										class="glyphicon glyphicon-th"></span></span>
 								</div>
 							</div>
@@ -271,7 +324,8 @@
 									data-link-field="dtp_input1">
 									<input class="form-control" style='font-size: 18px;' size="16"
 										type="text" value="${recruit.endTime }" id="endTime"
-										name="endTime" readonly="true"> <span class="input-group-addon"><span
+										name="endTime" readonly="true"> <span
+										class="input-group-addon"><span
 										class="glyphicon glyphicon-th"></span></span>
 								</div>
 							</div>
@@ -301,19 +355,16 @@
 				</div>
 			</div>
 			<ul class="col-md-12" style="padding: 0; display: none">
-				<li class="col-md-2 text-right"
-					style="float: left; margin-top: 5%; visibility: hidden"
-					id="liContentZero">
-					<button type="button" class="btn btn-danger btn-sm" id="deleteDiv">删除</button>
-				</li>
-				<li class="col-md-10" style="padding: 0" id="liContentOne">
+				<li class="col-md-10"
+					style="padding: 0; background-color: rgba(245, 246, 246, 0.8);"
+					id="liContentOne">
 					<div class="col-md-12" style="padding: 0">
 						<div class="col-md-8" style="padding: 0">
 							<input id="position" name="position" type="text" placeholder="职业"
 								style='font-size: 18px;' list="positionlist">
 							<datalist id="positionlist">
-								<c:forEach items="${positionList }" var="list">
-									<option>${list.positonName }</option>
+								<c:forEach items="${positionName }" var="positionName">
+									<option label="${positionName }" value="${positionName }" />
 								</c:forEach>
 							</datalist>
 						</div>
@@ -331,12 +382,17 @@
 						<div class="col-md-5">
 							<select class="form-control" id="compilationNatureS"
 								name="compilationNatureS" style="margin-top: 6%; padding: 0">
-								<option>民企</option>
-								<option>国企</option>
-								<option>私企</option>
+								<option>行政岗</option>
+								<option>事业岗</option>
+								<option>其他岗</option>
 							</select>
 						</div>
 					</div>
+				</li>
+				<li class="col-md-2 text-right" style="float: left; margin-top: 5%"
+					id="liContentTwo">
+					<button type="button" class="btn btn-danger btn-sm" id="deleteDiv"
+						onclick="removeLi(this)">删除</button>
 				</li>
 			</ul>
 		</div>

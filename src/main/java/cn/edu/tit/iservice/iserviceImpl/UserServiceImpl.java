@@ -43,7 +43,7 @@ public class UserServiceImpl implements IUserService {
 	 * */
 	@Override
 	public void updateUser() throws Exception {
-		
+
 	}
 
 	/**
@@ -69,14 +69,15 @@ public class UserServiceImpl implements IUserService {
 	 * @return 获取所有招聘信息
 	 */
 	@Override
-	public List<RecruitInfo> getRecruitInfo(String publisherId) {
+	public List<RecruitInfo> getRecruitInfo(String organizationId) {
 		List<RecruitInfo> list =new ArrayList<RecruitInfo>();
 		try {
-			list = iUserDao.getRecruitInfo(publisherId);
+			list = iUserDao.getRecruitInfo(organizationId);
 			for (RecruitInfo recruitInfo : list) {
 				String publisher = recruitInfo.getPublisher();
 				User user = iUserDao.getUserById(publisher);
 				recruitInfo.setPublisher(user.getUserName());
+				recruitInfo.setOrganization(user.getOrganizationName());
 			}
 			System.out.println("getRecruitInfo-------------执行成功");
 		} catch (Exception e) {
@@ -90,7 +91,7 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public List<User> getUser() {
-		
+
 		return iUserDao.getUser();
 	}
 
@@ -224,8 +225,8 @@ public class UserServiceImpl implements IUserService {
 		}
 		return list;
 	}
-	
-	
+
+
 
 	/**
 	 *@author LiMing
@@ -233,11 +234,11 @@ public class UserServiceImpl implements IUserService {
 	 * @return 返回用户实体
 	 */
 	@Override
-	public User getUserByName(String employeeNum) {
+	public User getUserByPhone(String employeeNum) {
 		// TODO Auto-generated method stub
-		return iUserDao.getUserByName(employeeNum);
+		return iUserDao.getUserByPhone(employeeNum);
 	}
-	
+
 	/**
 	 *@author LiMing
 	 * @param employeeNum
@@ -295,10 +296,10 @@ public class UserServiceImpl implements IUserService {
 		if((undergraduateIsFirstSchool!=null||graduateIsFirstSchool!=null||doctorIsFirstSchool!=null)&&(undergraduateIsFirstSchool==1||graduateIsFirstSchool ==1||doctorIsFirstSchool == 1)) {
 			return true;
 		}else {
-			
+
 			return false;	
 		}
-		
+
 	}
 
 	@Override
@@ -308,12 +309,12 @@ public class UserServiceImpl implements IUserService {
 		Integer graduateIsFirstMajor =  iUserDao.graduateIsFirstMajor(applyId);
 		Integer doctorIsFirstMajor  =  iUserDao.doctorIsFirstMajor(applyId);
 		if((undergraduateIsFirstMajor!=null||graduateIsFirstMajor!=null||doctorIsFirstMajor!=null)&&(undergraduateIsFirstMajor ==1||graduateIsFirstMajor ==1||doctorIsFirstMajor ==1 )) {
-			
+
 			return true;
 		}else {
 			return false;
 		}
-		
+
 	}
 
 	@Override
@@ -333,7 +334,7 @@ public class UserServiceImpl implements IUserService {
 		iUserDao.publishPosition(po);
 	}
 
-	
+
 
 
 	/* (non-Javadoc)
@@ -369,5 +370,14 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public void deletePosition(String organizationId,String recruitId) {
 		iUserDao.deletePosition(organizationId,recruitId);	
+	}
+
+	/* (non-Javadoc)
+	 * @see cn.edu.tit.iservice.IUserService#getPositionNameByorganizationId(java.lang.String)
+	 */
+	@Override
+	public List<String> getPositionNameByorganizationId(String organizationId) {
+		// TODO Auto-generated method stub
+		return iUserDao.getPositionNameByorganizationId(organizationId);
 	}
 }

@@ -53,7 +53,7 @@
 <style>
 	.personalInfo_head{
 		height: 70px;
-   		width: 190px;
+   		width: 300px;
    		position: relative;
     left: 26%;
 	}

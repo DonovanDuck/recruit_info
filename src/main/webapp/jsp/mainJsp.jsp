@@ -59,15 +59,44 @@
 	$(document).ready(function() {
 		$("#dataTables-example").dataTable();
 	});
-
 </script>
 <script type="text/javascript">
 $(function(){
 	if(${sessionScope.User.authority }==1)//如果报错，为正常，不影响功能
 	{
 	$("#addButton").css("display","block");
-	}
+	};
 })
+</script>
+<script type="text/javascript">
+function CurentTime(time)
+{ 
+    var now = new Date();
+    var year = now.getFullYear();       //年
+    var month = now.getMonth() + 1;     //月
+    var day = now.getDate();            //日
+    var hh = now.getHours();            //时
+    var mm = now.getMinutes();          //分
+    var ss = now.getSeconds();           //秒   
+    var clock = year + "-"; 
+    if(month < 10)
+        clock += "0";   
+    clock += month + "-"; 
+    if(day < 10)
+        clock += "0";      
+    clock += day + " ";   
+    if(hh < 10)
+        clock += "0";       
+    clock += hh + ":";
+    if (mm < 10) clock += '0'; 
+    clock += mm + ":"; 
+    if (ss < 10) clock += '0'; 
+    clock += ss+".0"; 
+   	if(time != clock)
+   		{
+   		alert("时间相等")
+   		}
+}
 </script>
 </head>
 <body>
@@ -86,9 +115,9 @@ $(function(){
 						href="${pageContext.request.contextPath}/user/toMainPage"
 						class="waves-effect waves-dark">招聘信息</a></li>
 					<c:if test="${sessionScope.User.authority == 2 }">
-					<li class="text-left"><a
-						href="${pageContext.request.contextPath}/user/toUserInfo"
-						class="waves-effect waves-dark">用户管理</a></li>
+						<li class="text-left"><a
+							href="${pageContext.request.contextPath}/user/toUserInfo"
+							class="waves-effect waves-dark">用户管理</a></li>
 					</c:if>
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toPersonalInfo"
@@ -124,13 +153,13 @@ $(function(){
 											<th class="text-center">招聘单位</th>
 											<th class="text-center">报名开始时间</th>
 											<th class="text-center">报名截止时间</th>
-											<th class="text-center">发布截止时间</th>
+											<th class="text-center">发布时间</th>
 											<th class="text-center">发布人</th>
 											<th class="text-center"></th>
 										</tr>
 									</thead>
 									<tbody id="asds">
-										<c:forEach items="${list }" var="list"  begin = "1" varStatus="status">
+										<c:forEach items="${list }" var="list" varStatus="status">
 											<tr>
 												<td class="text-center" style="padding-top: 1%;">${requestScope.offset+status.index+1}</td>
 												<td class="text-center" style="padding-top: 1%;">${list.recruitInfo }</td>
@@ -138,32 +167,44 @@ $(function(){
 												<td class="text-center" style="padding-top: 1%;">${list.startTime }</td>
 												<td class="text-center" style="padding-top: 1%;">${list.endTime }</td>
 												<td class="text-center" style="padding-top: 1%;">${list.endTime }</td>
-
 												<td class="text-center" style="padding-top: 1%;">${list.publisher }</td>
 												<td class="text-center"><c:if
 														test="${sessionScope.User.authority == 0}">
 														<a
 															href="${pageContext.request.contextPath}/user/toConsultRecuit?recuritId=${list.recruitId }"
 															class="waves-effect waves-dark" style="font-size: 20px">
-															<button type="button" class="btn btn-default btn-lg"
-																id="consultRecurit" name="consultRecurit"
+															<button type="button" class="btn btn-default btn-lg "
+																id="consultRecurit" name="consultRecurit" onclick="CurentTime(${list.endTime })"
 																style="padding-top: 4%;">
 																<small>查看</small>
 															</button>
 														</a>
+
 													</c:if> <c:if test="${sessionScope.User.authority==1 }">
+													<c:if test="${systemTime < list.endTime }">
 														<a
 															href="${pageContext.request.contextPath}/user/toUpdateRecuit?recuritId=${list.recruitId }"
 															class="waves-effect waves-dark" style="font-size: 20px">
-															<button type="button" class="btn btn-default btn-lg"
+															<button type="button" class="btn btn-success btn-lg"
 																id="editRecurit" name="editRecurit"
 																style="padding-top: 4%;">
 																<small>编辑</small>
 															</button>
 														</a>
-													</c:if>
-													 <a href="${pageContext.request.contextPath}/user/toSignInInfo?recruitId=${list.recruitId }"
-
+														</c:if>
+														<c:if test="${systemTime >= list.endTime }">
+														<a
+															href="${pageContext.request.contextPath}/user/toConsultRecuit?recuritId=${list.recruitId }"
+															class="waves-effect waves-dark" style="font-size: 20px">
+															<button type="button" class="btn btn-default btn-lg"
+																id="editRecurit" name="editRecurit"
+																style="padding-top: 4%;">
+																<small>查看</small>
+															</button>
+															</a>
+														</c:if>
+													</c:if> <a
+													href="${pageContext.request.contextPath}/user/toSignInInfo?recruitId=${list.recruitId }"
 													class="waves-effect waves-dark" style="font-size: 20px">
 														<button type="button" class="btn btn-default btn-lg"
 															style="padding-top: 4%;">

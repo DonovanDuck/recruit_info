@@ -76,7 +76,7 @@ public interface IUserService {
 	 * @param 当参数(publisherId)不空时,条件查询该ID下的招聘信息
 	 * @return 获取所有招聘信息
 	 */
-	public List<RecruitInfo> getRecruitInfo(String publisherId);
+	public List<RecruitInfo> getRecruitInfo(String organizationId);
 
 	/**
 	 *@author LiMing
@@ -119,7 +119,6 @@ public interface IUserService {
 	 * @param employeeNum
 	 * @return 返回用户实体
 	 */
-	public User getUserByName(String employeeNum);
 	public User getUserById(String userId);
 	
 	/**
@@ -187,5 +186,19 @@ public interface IUserService {
 	 * @param recruitId 
 	 */
 	public void deletePosition(String organizationId, String recruitId);
+
+	/**
+	 *@author LiMing
+	 * @param phoneNum
+	 * @return
+	 */
+	public User getUserByPhone(String phoneNum);
+
+	/**
+	 *@author LiMing
+	 * @param organizationId
+	 * @return
+	 */
+	public List<String> getPositionNameByorganizationId(String organizationId);
 
 }
