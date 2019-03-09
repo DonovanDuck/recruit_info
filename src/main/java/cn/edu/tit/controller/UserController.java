@@ -275,6 +275,7 @@ public class UserController {
 			user.setOrganizationName(request.getParameter("organization"));
 			user.setUserName(request.getParameter("userName"));
 			user.setWechartNum(request.getParameter("weChat"));
+			user.setPhoneNum(request.getParameter("phoneNum"));
 			user.setOrganizationId(Common.uuid());
 			if ("on".equals(request.getParameter("authority")))
 				user.setAuthority(1);

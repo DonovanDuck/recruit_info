@@ -128,8 +128,8 @@
 		insert into user(user_id,
 		user_name, wechart_num, organization_name,
 		password, organization_id,
-		authority)
-		values(#{userId},#{userName},#{wechartNum},#{organizationName},#{password},#{organizationId},#{authority});
+		authority,phone_num)
+		values(#{userId},#{userName},#{wechartNum},#{organizationName},#{password},#{organizationId},#{authority},#{phoneNum});
 	</insert>
 
 	<!-- 查询所有用户 -->

@@ -33,7 +33,7 @@
 <link
 	href="${pageContext.request.contextPath}/css/Admin/custom-styles.css"
 	rel="stylesheet" />
-
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 <title>添加用户信息</title>
 <style>
 	.addUserInfo_head{
@@ -61,7 +61,18 @@
 		margin-right: 10px;
 	}
 </style>
-
+<script>
+	$(function(){
+		$("#phoneNum").blur(function(){
+			
+			var phoneNum = $("#phoneNum").val();
+			if(phoneNum == ""){
+				alert("电话不能为空！");
+			}
+		});
+	})
+	
+</script>
 </head>
 <body>
 	<div id="wrapper">
@@ -116,6 +127,12 @@
 				    <label for="WeChat" class="col-sm-2 control-label">微信号</label>
 				    <div class="col-sm-10">
 				      <input type="text" class="form-control" name="weChat" id="WeChat" placeholder="微信号">
+				    </div>
+  				</div>
+  				<div class="form-group">
+				    <label for="WeChat" class="col-sm-2 control-label">联系电话</label>
+				    <div class="col-sm-10">
+				      <input type="text" class="form-control" name="phoneNum" id="phoneNum" placeholder="联系电话">
 				    </div>
   				</div>
   				<div class="form-group">
