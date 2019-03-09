@@ -370,4 +370,82 @@ public class UserServiceImpl implements IUserService {
 	public void deletePosition(String organizationId,String recruitId) {
 		iUserDao.deletePosition(organizationId,recruitId);	
 	}
+
+	@Override
+	public Integer applyNumFirstSchoolInUndergraduate(String recruitId, String positonName) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumFirstSchoolInUndergraduate(recruitId, positonName);
+	}
+
+	@Override
+	public Integer applyNumFirstSchoolInPastgraduate(String recruitId, String positonName) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumFirstSchoolInPastgraduate(recruitId, positonName);
+	}
+
+	@Override
+	public Integer applyNumFirstSchoolInDoctor(String recruitId, String positonName) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumFirstSchoolInDoctor(recruitId, positonName);
+	}
+
+	@Override
+	public Integer applyNumFirstSchoolInUndergraduateToday(String recruitId, String dateString, String positonName) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumFirstSchoolInUndergraduateToday(recruitId, dateString, positonName);
+	}
+
+	@Override
+	public Integer applyNumFirstSchoolInPastgraduateToday(String recruitId, String dateString, String positonName) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumFirstSchoolInPastgraduateToday(recruitId, dateString, positonName);
+	}
+
+	@Override
+	public Integer applyNumFirstSchoolInDoctorToday(String recruitId, String dateString, String positonName) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumFirstSchoolInDoctorToday(recruitId, dateString, positonName);
+	}
+
+	@Override
+	public Integer applyNumFirstMajorInUndergraduate(String recruitId, String positonName) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumFirstMajorInUndergraduate(recruitId, positonName);
+	}
+
+	@Override
+	public Integer applyNumFirstMajorInPastgraduate(String recruitId, String positonName) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumFirstMajorInPastgraduate(recruitId, positonName);
+	}
+
+	@Override
+	public Integer applyNumFirstMajorInDoctor(String recruitId, String positonName) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumFirstMajorInDoctor(recruitId, positonName);
+	}
+
+	@Override
+	public Integer applyNumFirstMajorInUndergraduateToday(String recruitId, String dateString, String positonName) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumFirstMajorInUndergraduateToday(recruitId, dateString, positonName);
+	}
+
+	@Override
+	public Integer applyNumFirstMajorInPastgraduateToday(String recruitId, String dateString, String positonName) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumFirstMajorInPastgraduateToday(recruitId, dateString, positonName);
+	}
+
+	@Override
+	public Integer applyNumFirstMajorInDoctorToday(String recruitId, String dateString, String positonName) {
+		// TODO Auto-generated method stub
+		return iUserDao.applyNumFirstMajorInDoctorToday(recruitId, dateString, positonName);
+	}
+
+	@Override
+	public Position getPositionByPositionNameAndRecruitId(String recruitId, String positionName) {
+		// TODO Auto-generated method stub
+		return iUserDao.getPositionByPositionNameAndRecruitId(recruitId, positionName);
+	}
 }

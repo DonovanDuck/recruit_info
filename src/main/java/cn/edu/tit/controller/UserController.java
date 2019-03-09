@@ -556,9 +556,12 @@ public class UserController {
 		ModelAndView mv = new ModelAndView();
 		String recruitId = (String) request.getSession().getAttribute("recruitId");
 		List<Apply> applList = new ArrayList<Apply>();
-		List<Position> occupationApplicantLsit = new ArrayList<Position>();
+		Position position = new Position();
 		Integer numAll, numAllToday, numDoctor, numDoctorToday, numMaster, numMasterToday, numBachelor,
-				numBachelorToday, numInSide, numInSideToday,numFirstSchool,numFirstSchoolToday,numFirstMajor,numFirstMajorToday;
+				numBachelorToday, numInSide, numInSideToday,
+				numFirstSchoolInUndergraduate,numFirstSchoolInUndergraduateToday,numFirstMajorInUndergraduate,numFirstMajorInUndergraduateToday,
+				numFirstSchoolInPastgraduate,numFirstSchoolInPastgraduateToday,numFirstMajorInPastgraduate,numFirstMajorInPastgraduateToday,
+				numFirstSchoolInDoctor,numFirstSchoolInDoctorToday,numFirstMajorInDoctor,numFirstMajorInDoctorToday;
 		// 获取今日时间
 		Date date = new Date();// 取时间
 		Calendar calendar = new GregorianCalendar();
@@ -567,7 +570,9 @@ public class UserController {
 		date = calendar.getTime(); // 这个时间就是日期往后推一天的结果
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String dateString = formatter.format(date);
-
+		
+		position = userService.getPositionByPositionNameAndRecruitId(recruitId, positonName);
+		
 		numAllToday = userService.applyNumToday(recruitId, dateString, positonName); // 今天报名人数
 		numAll = userService.applyNum(recruitId, positonName);// 总报名人数
 		numBachelor = userService.applyNumBachelor(recruitId, positonName);// 总学士人数
@@ -578,12 +583,25 @@ public class UserController {
 		numDoctorToday = userService.applyNumDoctorToday(recruitId, dateString, positonName);// 今日总博士人数
 		numInSide = userService.applyNumInSide(recruitId, positonName);// 疆内人数
 		numInSideToday = userService.applyNumInSideToday(recruitId, dateString, positonName);// 今日疆内人数
+		numFirstSchoolInUndergraduate = userService.applyNumFirstSchoolInUndergraduate(recruitId, positonName);
+		numFirstSchoolInUndergraduateToday = userService.applyNumFirstSchoolInUndergraduateToday(recruitId, dateString, positonName);
+		numFirstMajorInUndergraduate = userService.applyNumFirstMajorInUndergraduate(recruitId, positonName);
+		numFirstMajorInUndergraduateToday = userService.applyNumFirstMajorInUndergraduateToday(recruitId, dateString, positonName);
+		numFirstSchoolInPastgraduate = userService.applyNumFirstSchoolInPastgraduate(recruitId, positonName);
+		numFirstSchoolInPastgraduateToday = userService.applyNumFirstSchoolInPastgraduateToday(recruitId, dateString, positonName);
+		numFirstMajorInPastgraduate = userService.applyNumFirstMajorInPastgraduate(recruitId, positonName);
+		numFirstMajorInPastgraduateToday = userService.applyNumFirstMajorInPastgraduateToday(recruitId, dateString, positonName);
+		numFirstSchoolInDoctor = userService.applyNumFirstSchoolInDoctor(recruitId, positonName);
+		numFirstSchoolInDoctorToday = userService.applyNumFirstSchoolInDoctorToday(recruitId, dateString, positonName);
+		numFirstMajorInDoctor  = userService.applyNumFirstMajorInDoctor(recruitId, positonName);
+		numFirstMajorInDoctorToday = userService.applyNumFirstMajorInDoctorToday(recruitId, dateString, positonName);
 		applList = userService.applyList(recruitId, positonName);// 报名表
 		System.out.println("recruitId = " + recruitId);
 		for (Apply apply : applList) {
 			System.out.println("Id=" + apply.getApplyId());
 			System.out.println("applyUserName=" + apply.getApplyUserName());
 		}
+		
 		mv.addObject("applList", applList);
 		mv.addObject("numInSideToday", numInSideToday);
 		mv.addObject("numInSide", numInSide);
@@ -594,7 +612,20 @@ public class UserController {
 		mv.addObject("numBachelor", numBachelor);
 		mv.addObject("numAll", numAll);
 		mv.addObject("numAllToday", numAllToday);
-
+		mv.addObject("numFirstSchoolInUndergraduate",numFirstSchoolInUndergraduate );
+		mv.addObject("numFirstSchoolInUndergraduateToday",numFirstSchoolInUndergraduateToday );
+		mv.addObject("numFirstMajorInUndergraduate",numFirstMajorInUndergraduate );
+		mv.addObject("numFirstMajorInUndergraduateToday",numFirstMajorInUndergraduateToday );
+		mv.addObject("numFirstSchoolInPastgraduate",numFirstSchoolInPastgraduate );
+		mv.addObject("numFirstSchoolInPastgraduateToday",numFirstSchoolInPastgraduateToday );
+		mv.addObject("numFirstMajorInPastgraduate",numFirstMajorInPastgraduate );
+		mv.addObject("numFirstMajorInPastgraduateToday",numFirstMajorInPastgraduateToday );
+		mv.addObject("numFirstSchoolInDoctor",numFirstSchoolInDoctor );
+		mv.addObject("numFirstSchoolInDoctorToday",numFirstSchoolInDoctorToday );
+		mv.addObject("numFirstMajorInDoctor",numFirstMajorInDoctor );
+		mv.addObject("numFirstMajorInDoctorToday",numFirstMajorInDoctorToday );
+		mv.addObject("position", position);
+		
 		mv.setViewName("/jsp/signIn_iframe");
 		return mv;
 
@@ -616,10 +647,10 @@ public class UserController {
             		"编制性质","姓名","性别",
             		"民族","籍贯","政治面貌",
             		"身份证号","婚否","学历",
-            		"学位","应历届","是否双一流大学",
-            		"是否双一流专业","本科就读院校及专业","本科毕业时间",
-            		"研究生就读院校及专业","研究生毕业时间","博士就读院校及专业",
-            		"博士毕业时间","原工作单位","原工作单位职务","专业技术资格",
+            		"学位","应历届",
+            		"本科就读院校及专业","本科是否双一流学院","本科是否双一流专业","本科毕业时间",
+            		"研究生就读院校及专业","研究生是否双一流学院","研究生是否双一流专业","研究生毕业时间","博士就读院校及专业",
+            		"博士是否双一流学院","博士是否双一流专业","博士毕业时间","原工作单位","原工作单位职务","专业技术资格",
             		"执业资格","联系电话","邮箱","通讯地址","邮编","备注"};
 
             //excel文件名
@@ -653,32 +684,53 @@ public class UserController {
 	            	 content[i][13] = "否";
 	            	
 	            }
-	           
-	            content[i][14] = "";//是否双一流大学
-	            if(userService.isFirstSchool(obj.getApplyId())) {
-	            	content[i][14] = "是";
+	            content[i][14] = obj.getBachelorDegreeAndMajor();//本科就读专业
+	          //本科是否双一流学院
+	            content[i][15]="否";
+	            if(obj.getUndergraduateIsFirstSchool()!=null&&obj.getUndergraduateIsFirstSchool()==1) {
+	            	 content[i][15]="是";
 	            }
-	            content[i][15] = "";//是否双一流学科
-	            if(userService.isFirstMajor(obj.getApplyId())) {
-	            	content[i][15] = "是";
+	          //本科是否双一流专业
+	            content[i][16]="否";
+	            if(obj.getUndergraduateIsFirstMajor()!=null&&obj.getUndergraduateIsFirstMajor()==1) {
+	            	 content[i][16]="是";
 	            }
-	            
-	            content[i][16] = obj.getBachelorDegreeAndMajor();//本科就读专业
 	            content[i][17] = obj.getUndergraduateGraduationTime();//本科毕业时间
 	            content[i][18] = obj.getGraduateSchoolAndMajor();//研究生就读学院
-	            content[i][19] = obj.getGraduateTime();//研究生毕业时间
-	            content[i][20] = obj.getDoctoralDegreeAndMajor();//博士就读学院
-	            content[i][21] = obj.getDoctoralGraduationTime();//博士毕业时间
+	            //研究生是否双一流学院
+	            content[i][19]="否";
+	            if(obj.getGraduateIsFirstSchool()!=null&&obj.getGraduateIsFirstSchool()==1) {
+	            	 content[i][19]="是";
+	            }
+	            //研究生是否双一流专业
+	            content[i][20]="否";
+	            if(obj.getGraduateIsFirstMajor()!=null&&obj.getGraduateIsFirstMajor()==1) {
+	            	 content[i][20]="是";
+	            }
+	            content[i][21] = obj.getGraduateTime();//研究生毕业时间
+	            content[i][22] = obj.getDoctoralDegreeAndMajor();//博士就读学院
+	            //博士是否双一流院校
+	            content[i][23]="否";
+	            if(obj.getDoctorIsFirstSchool()!=null&&obj.getDoctorIsFirstSchool()==1) {
+	            	 content[i][23]="是";
+	            }
+	            //博士是否双一流专业
+	            content[i][24]="否";
+	            if(obj.getDoctorIsFirstMajor()!=null&&obj.getDoctorIsFirstMajor()==1) {
+	            	 content[i][24]="是";
+	            }
 	            
-	            content[i][22] = obj.getWorkOrganization();//原工作单位
-	            content[i][23] = obj.getPosition();//原工作单位职务
-	            content[i][24] = obj.getProfessionalAndTechnicalQualification();//专业技术资格
-	            content[i][25] = obj.getPracticingRequirements();//执业资格
-	            content[i][26] = obj.getTelephone();//联系方式
-	            content[i][27] = obj.geteMail();//邮箱
-	            content[i][28] = obj.getMailingAddress();//通讯地址
-	            content[i][29] = obj.getPostalAddress();//邮编
-	            content[i][30] = null;
+	            content[i][25] = obj.getDoctoralGraduationTime();//博士毕业时间
+	            
+	            content[i][26] = obj.getWorkOrganization();//原工作单位
+	            content[i][27] = obj.getPosition();//原工作单位职务
+	            content[i][28] = obj.getProfessionalAndTechnicalQualification();//专业技术资格
+	            content[i][29] = obj.getPracticingRequirements();//执业资格
+	            content[i][30] = obj.getTelephone();//联系方式
+	            content[i][31] = obj.geteMail();//邮箱
+	            content[i][32] = obj.getMailingAddress();//通讯地址
+	            content[i][33] = obj.getPostalAddress();//邮编
+	            content[i][34] = null;
             }
 
 			 //创建HSSFWorkbook 

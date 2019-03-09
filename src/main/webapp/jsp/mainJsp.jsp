@@ -130,7 +130,7 @@ $(function(){
 										</tr>
 									</thead>
 									<tbody id="asds">
-										<c:forEach items="${list }" var="list"  begin = "1" varStatus="status">
+										<c:forEach items="${list }" var="list"  varStatus="status">
 											<tr>
 												<td class="text-center" style="padding-top: 1%;">${requestScope.offset+status.index+1}</td>
 												<td class="text-center" style="padding-top: 1%;">${list.recruitInfo }</td>

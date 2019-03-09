@@ -73,16 +73,17 @@
 </script>
 </head>
 <body>
+	<div><h2>所需专业及方向：<strong>${position.professionalOrientation }</strong></h2></div>
 	<div class="alert alert-info" role="alert">
 
 		<h3>
 			当前报名总人数：<strong>${numAll }</strong>人
 		</h3>
-		其中博士<strong>${numDoctor }</strong>人、硕士<strong>${numMaster }</strong>人、学士<strong>${numBachelor }</strong>人，疆内户籍<strong>${numInSide }</strong>人，双一流院校<strong>0</strong>人，双一流学科<strong>0</strong>人。
+		其中博士<strong>${numDoctor }</strong>人、硕士<strong>${numMaster }</strong>人、学士<strong>${numBachelor }</strong>人，疆内户籍<strong>${numInSide }</strong>人，本科双一流院校<strong>${numFirstSchoolInUndergraduate }</strong>人，本科双一流学科<strong>${numFirstMajorInUndergraduate }</strong>人，研究生双一流院校<strong>${numFirstSchoolInPastgraduate }</strong>人，研究生双一流学科<strong>${numFirstMajorInPastgraduate }</strong>人，博士双一流院校<strong>${numFirstSchoolInDoctor }</strong>人，博士双一流学科<strong>${numFirstMajorInDoctor }</strong>人。
 		<h3>
 			当日报名<strong>${numAllToday }</strong>人
 		</h3>
-		今日报名博士<strong>${numDoctorToday }</strong>人、硕士<strong>${numMasterToday }</strong>人、学士<strong>${numBachelorToday }</strong>人，疆内户籍<strong>${numBachelorToday }</strong>人，双一流院校<strong>0</strong>人，双一流学科<strong>0</strong>人。
+		今日报名博士<strong>${numDoctorToday }</strong>人、硕士<strong>${numMasterToday }</strong>人、学士<strong>${numBachelorToday }</strong>人，疆内户籍<strong>${numBachelorToday }</strong>人，本科双一流院校<strong>${numFirstSchoolInUndergraduateToday }</strong>人，本科双一流学科<strong>${numFirstMajorInUndergraduateToday }</strong>人，研究生双一流院校<strong>${numFirstSchoolInPastgraduateToday }</strong>人，研究生双一流学科<strong>${numFirstMajorInPastgraduateToday }</strong>人，博士双一流院校<strong>${numFirstSchoolInDoctorToday }</strong>人，博士双一流学科<strong>${numFirstMajorInDoctorToday }</strong>人。
 
 	</div>
 
