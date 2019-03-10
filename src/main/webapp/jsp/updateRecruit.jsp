@@ -1,4 +1,4 @@
-﻿﻿<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+﻿<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	String path = request.getContextPath();
@@ -13,7 +13,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Type"
 	content="multipart/form-data; charset=UTF-8">
-<title>教师信息管理</title>
+<title>更新招聘信息</title>
 <link
 	href="${pageContext.request.contextPath}/css/Admin/font-awesome.css"
 	rel="stylesheet" />
@@ -163,6 +163,19 @@ function submitButton() {
 				} 
 		}
 </script>
+<script type="text/javascript">
+function updateFile(element){
+ 	if (window.confirm("是否确认要删除旧文件并选择新文件?")) {
+		var node = element.previousSibling;
+		node.remove();
+		var node = element.previousSibling;
+		node.remove();//相同代码必须重写两次，原因未知。
+		element.remove();
+		 $("#upFile").css("display","block");
+		return  $("#upFile").click();
+		}  
+}
+</script>
 </head>
 <body>
 	<!-- 界面开始部分 -->
@@ -293,8 +306,20 @@ function submitButton() {
 									<h3>招聘文件:</h3>
 								</div>
 								<div class="col-md-7" style="padding-top: 1%;">
-									<input name="upFile" type="file" id="upFile"
-										multiple="multiple">
+									<c:if test="${recruit.accessory !=null}">
+										<a
+											href="${pageContext.request.contextPath}/user/resourceDownload?filePath=${recruit.accessory }">
+											<button type="button" class="btn btn-info btn-sm">文件下载</button>
+										</a>
+										<button type="button" class="btn btn-info btn-sm"
+											onclick="updateFile(this)">文件更新</button>
+										<input name="upFile" type="file" id="upFile"
+											multiple="multiple" style="display: none">
+									</c:if>
+									<c:if test="${recruit.accessory ==null}">
+										<input name="upFile" type="file" id="upFile"
+											multiple="multiple">
+									</c:if>
 								</div>
 							</div>
 							<div class="form-group" style="margin-top: 5%;">

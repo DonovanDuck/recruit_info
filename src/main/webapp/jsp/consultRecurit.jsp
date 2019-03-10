@@ -1,4 +1,4 @@
-﻿﻿<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+﻿<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	String path = request.getContextPath();
@@ -159,25 +159,21 @@
 									</ul>
 								</div>
 							</div>
-
 							<div class="form-group" style="margin-top: 1%">
 								<div class="col-md-4 text-right" style="padding-top: 1%;">
 									<h3>招聘文件:</h3>
 								</div>
-								<c:if test="${recruit.accessory !=null}">
-									<div class="col-md-7" style="padding-top: 1%;">
-										<input value="${recruit.accessory}" style='display: none'
-											id="consultPDFPath" type="text"> <a
+								<div class="col-md-7" style="padding-top: 1%;">
+									<c:if test="${recruit.accessory !=null}">
+										<a
 											href="${pageContext.request.contextPath}/user/resourceDownload?filePath=${recruit.accessory }">
 											<button type="button" class="btn btn-info btn-sm">文件下载</button>
 										</a>
-									</div>
-								</c:if>
-								<c:if test="${recruit.accessory ==null}">
-									<div class="col-md-7" style="padding-top: 1%;">
+									</c:if>
+									<c:if test="${recruit.accessory ==null}">
 										<button type="button" class="btn btn-info btn-sm">无文件</button>
-									</div>
-								</c:if>
+									</c:if>
+								</div>
 							</div>
 							<div class="form-group" style="margin-top: 5%;">
 								<div class="col-md-4 text-right" style="margin-top: 1%">
@@ -195,6 +191,12 @@
 								<div class="col-md-7">
 									<input type="text" style='font-size: 18px;'
 										value="${recruit.endTime }" readOnly="true">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-offset-3">
+									<button type="reset" class="btn btn-primary"
+										onclick="history.go(-1)" style="margin-left: 47%">取消</button>
 								</div>
 							</div>
 						</form>
