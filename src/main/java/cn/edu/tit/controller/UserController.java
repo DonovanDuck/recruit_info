@@ -87,6 +87,7 @@ public class UserController {
 		User user = new User();
 		try {
 			user = userService.getUserByPhone(phoneNum);
+			password = Common.eccryptMD5(password);
 			if (user == null || !user.getPassword().equals(password)) {
 				mv.setViewName("/jsp/login");// 设置返回页面
 			} else {
@@ -280,10 +281,11 @@ public class UserController {
 		try {
 			User user = new User();
 			user.setUserId(Common.uuid());
-			user.setPassword("123456");
+			user.setPassword(Common.eccryptMD5("123456"));
 			user.setOrganizationName(request.getParameter("organization"));
 			user.setUserName(request.getParameter("userName"));
 			user.setWechartNum(request.getParameter("weChat"));
+			user.setPhoneNum(request.getParameter("phoneNum"));
 			user.setOrganizationId(Common.uuid());
 			if ("on".equals(request.getParameter("authority")))
 				user.setAuthority(1);
@@ -371,12 +373,7 @@ public class UserController {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * 跳转到个人信息
-=======
-	 * 跳转到用户列表
-	 * 
->>>>>>> bfcba72d496947e7120a1fda08ca2d26d1c40ecf
 	 * @param request
 	 * @return
 	 */
@@ -411,6 +408,7 @@ public class UserController {
 			userId = user.getUserId();
 			password = request.getParameter("newPassword");
 			if (!"".equals(userId) && !"".equals(password)) {
+				password = Common.eccryptMD5(password);
 				userService.modifyPassword(userId, password);
 				mv.setViewName("jsp/login");
 			}
@@ -464,11 +462,12 @@ public class UserController {
 	public void ajaxCheckPassword(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			// 校验密码
-			// String userId = (String) request.getSession().getAttribute("userId");
-			String userId = "1";
+			 User user = (User) request.getSession().getAttribute("User");
+//			String userId = "1";
 			String password = request.getParameter("password");
+			password = Common.eccryptMD5(password);
 			String result = "";
-			Boolean isRight = userService.checkPassword(userId, password);
+			Boolean isRight = userService.checkPassword(user.getUserId(), password);
 			if (isRight)
 				result = JSONObject.toJSONString("OK");
 			else
@@ -493,7 +492,7 @@ public class UserController {
 		try {
 			// 校验密码
 			String userId = request.getParameter("userId");
-			userService.rePassword(userId);
+			userService.rePassword(userId, Common.eccryptMD5("123456"));
 			result = JSONObject.toJSONString("OK");
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -519,7 +518,7 @@ public class UserController {
 		String applyId = request.getParameter("applyId");
 		try {
 			// 通过applyId获取报名表
-			Apply apply = userService.getApplyById("1");
+			Apply apply = userService.getApplyById(applyId);
 			if(apply != null){
 				String undergraduateGraduationTime =  apply.getUndergraduateGraduationTime().toString().substring(0, 10);
 				String graduateTime =  apply.getGraduateTime().toString().substring(0, 10);
@@ -568,9 +567,13 @@ public class UserController {
 		ModelAndView mv = new ModelAndView();
 		String recruitId = (String) request.getSession().getAttribute("recruitId");
 		List<Apply> applList = new ArrayList<Apply>();
-		List<Position> occupationApplicantLsit = new ArrayList<Position>();
+		Position position = new Position();
 		Integer numAll, numAllToday, numDoctor, numDoctorToday, numMaster, numMasterToday, numBachelor,
 		numBachelorToday, numInSide, numInSideToday,numFirstSchool,numFirstSchoolToday,numFirstMajor,numFirstMajorToday;
+				numFirstSchoolInUndergraduate,numFirstSchoolInUndergraduateToday,numFirstMajorInUndergraduate,numFirstMajorInUndergraduateToday,
+				numFirstSchoolInPastgraduate,numFirstSchoolInPastgraduateToday,numFirstMajorInPastgraduate,numFirstMajorInPastgraduateToday,
+				numFirstSchoolInDoctor,numFirstSchoolInDoctorToday,numFirstMajorInDoctor,numFirstMajorInDoctorToday;
+
 		// 获取今日时间
 		Date date = new Date();// 取时间
 		Calendar calendar = new GregorianCalendar();
@@ -579,7 +582,9 @@ public class UserController {
 		date = calendar.getTime(); // 这个时间就是日期往后推一天的结果
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String dateString = formatter.format(date);
-
+		
+		position = userService.getPositionByPositionNameAndRecruitId(recruitId, positonName);
+		
 		numAllToday = userService.applyNumToday(recruitId, dateString, positonName); // 今天报名人数
 		numAll = userService.applyNum(recruitId, positonName);// 总报名人数
 		numBachelor = userService.applyNumBachelor(recruitId, positonName);// 总学士人数
@@ -590,12 +595,25 @@ public class UserController {
 		numDoctorToday = userService.applyNumDoctorToday(recruitId, dateString, positonName);// 今日总博士人数
 		numInSide = userService.applyNumInSide(recruitId, positonName);// 疆内人数
 		numInSideToday = userService.applyNumInSideToday(recruitId, dateString, positonName);// 今日疆内人数
+		numFirstSchoolInUndergraduate = userService.applyNumFirstSchoolInUndergraduate(recruitId, positonName);
+		numFirstSchoolInUndergraduateToday = userService.applyNumFirstSchoolInUndergraduateToday(recruitId, dateString, positonName);
+		numFirstMajorInUndergraduate = userService.applyNumFirstMajorInUndergraduate(recruitId, positonName);
+		numFirstMajorInUndergraduateToday = userService.applyNumFirstMajorInUndergraduateToday(recruitId, dateString, positonName);
+		numFirstSchoolInPastgraduate = userService.applyNumFirstSchoolInPastgraduate(recruitId, positonName);
+		numFirstSchoolInPastgraduateToday = userService.applyNumFirstSchoolInPastgraduateToday(recruitId, dateString, positonName);
+		numFirstMajorInPastgraduate = userService.applyNumFirstMajorInPastgraduate(recruitId, positonName);
+		numFirstMajorInPastgraduateToday = userService.applyNumFirstMajorInPastgraduateToday(recruitId, dateString, positonName);
+		numFirstSchoolInDoctor = userService.applyNumFirstSchoolInDoctor(recruitId, positonName);
+		numFirstSchoolInDoctorToday = userService.applyNumFirstSchoolInDoctorToday(recruitId, dateString, positonName);
+		numFirstMajorInDoctor  = userService.applyNumFirstMajorInDoctor(recruitId, positonName);
+		numFirstMajorInDoctorToday = userService.applyNumFirstMajorInDoctorToday(recruitId, dateString, positonName);
 		applList = userService.applyList(recruitId, positonName);// 报名表
 		System.out.println("recruitId = " + recruitId);
 		for (Apply apply : applList) {
 			System.out.println("Id=" + apply.getApplyId());
 			System.out.println("applyUserName=" + apply.getApplyUserName());
 		}
+		
 		mv.addObject("applList", applList);
 		mv.addObject("numInSideToday", numInSideToday);
 		mv.addObject("numInSide", numInSide);
@@ -606,13 +624,27 @@ public class UserController {
 		mv.addObject("numBachelor", numBachelor);
 		mv.addObject("numAll", numAll);
 		mv.addObject("numAllToday", numAllToday);
-
+		mv.addObject("numFirstSchoolInUndergraduate",numFirstSchoolInUndergraduate );
+		mv.addObject("numFirstSchoolInUndergraduateToday",numFirstSchoolInUndergraduateToday );
+		mv.addObject("numFirstMajorInUndergraduate",numFirstMajorInUndergraduate );
+		mv.addObject("numFirstMajorInUndergraduateToday",numFirstMajorInUndergraduateToday );
+		mv.addObject("numFirstSchoolInPastgraduate",numFirstSchoolInPastgraduate );
+		mv.addObject("numFirstSchoolInPastgraduateToday",numFirstSchoolInPastgraduateToday );
+		mv.addObject("numFirstMajorInPastgraduate",numFirstMajorInPastgraduate );
+		mv.addObject("numFirstMajorInPastgraduateToday",numFirstMajorInPastgraduateToday );
+		mv.addObject("numFirstSchoolInDoctor",numFirstSchoolInDoctor );
+		mv.addObject("numFirstSchoolInDoctorToday",numFirstSchoolInDoctorToday );
+		mv.addObject("numFirstMajorInDoctor",numFirstMajorInDoctor );
+		mv.addObject("numFirstMajorInDoctorToday",numFirstMajorInDoctorToday );
+		mv.addObject("position", position);
+		
 		mv.setViewName("/jsp/signIn_iframe");
 		return mv;
 
 	}
 
 	/**
+
 	 * 导出报表
 	 * @return
 	 */
@@ -707,7 +739,7 @@ public class UserController {
 			e.printStackTrace();
 		}
 	}
-
+   
 	// 发送响应流方法
 
 	public void setResponseHeader(HttpServletResponse response, String fileName) {

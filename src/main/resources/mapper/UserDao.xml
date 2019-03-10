@@ -80,7 +80,9 @@
 			property="paperTopicSituation" />
 		<result column="sanction_situation"
 			property="sanctionSituation" />
-
+		<result column="open_id" property="openId" />
+		<result column="form_id" property="formId" />
+		<result column="face" property="face" />
 	</resultMap>
 	<!-- 结果集映射 -->
 	<resultMap type="cn.edu.tit.bean.RecruitInfo"
@@ -125,8 +127,8 @@
 		insert into user(user_id,
 		user_name, wechart_num, organization_name,
 		password, organization_id,
-		authority)
-		values(#{userId},#{userName},#{wechartNum},#{organizationName},#{password},#{organizationId},#{authority});
+		authority,phone_num)
+		values(#{userId},#{userName},#{wechartNum},#{organizationName},#{password},#{organizationId},#{authority},#{phoneNum});
 	</insert>
 
 	<!-- 查询所有用户 -->
@@ -297,8 +299,6 @@
 		SELECT count(*) from
 		apply where recruit_id = #{recruitId} and occupation_applicant =
 		#{positonName} and undergraduate_and_major is not null ;
-
-	</select>
 	<select id="applyNumInSide" resultType="java.lang.Integer">
 		SELECT count(*) from apply
 		<where>
@@ -331,12 +331,77 @@
 	</select>
 	<select id="applyNumDoubleOneToday"
 		resultType="java.lang.Integer">
-
 		SELECT count(*) from apply where recruit_id = #{recruitId}
 		and occupation_applicant = #{positonName} and submit_time =
 		#{dateString} and undergraduate_and_major is not null ;
+	</select>
+
+	<select id="applyNumFirstMajorInDoctor" 
+		resultType="java.lang.Integer">
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and doctor_is_first_major =1 ;
+	</select>
+	<select id="applyNumFirstMajorInPastgraduate" 
+		resultType="java.lang.Integer">
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and graduate_is_first_major =1 ;
+	</select>
+	<select id="applyNumFirstMajorInUndergraduate" 
+		resultType="java.lang.Integer">
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and undergraduate_is_first_major =1 ;
+	</select>
+	<select id="applyNumFirstSchoolInDoctor" 
+		resultType="java.lang.Integer">
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and doctor_is_first_school =1 ;
+	</select>
+	<select id="applyNumFirstSchoolInPastgraduate" 
+		resultType="java.lang.Integer">
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and graduate_is_first_school =1;
+	</select>
+	<select id="applyNumFirstSchoolInUndergraduate" 
+		resultType="java.lang.Integer">
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and undergraduate_is_first_school =1 ;
+	</select>
+
+	<select id="applyNumFirstMajorInDoctorToday"
+		resultType="java.lang.Integer">
+
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and submit_time = #{dateString} and doctor_is_first_major =1  ;
 
 	</select>
+	<select id="applyNumFirstMajorInPastgraduateToday"
+		resultType="java.lang.Integer">
+
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and submit_time = #{dateString} and graduate_is_first_major =1  ;
+
+
+	</select>
+	<select id="applyNumFirstMajorInUndergraduateToday"
+		resultType="java.lang.Integer">
+
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and submit_time = #{dateString} and undergraduate_is_first_major =1 ;
+
+	</select>
+	<select id="applyNumFirstSchoolInDoctorToday"
+		resultType="java.lang.Integer">
+
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and submit_time = #{dateString} and doctor_is_first_school =1  ;
+
+	</select>
+	<select id="applyNumFirstSchoolInPastgraduateToday"
+		resultType="java.lang.Integer">
+
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and submit_time = #{dateString} and graduate_is_first_school =1  ;
+
+	</select>
+	<select id="applyNumFirstSchoolInUndergraduateToday"
+		resultType="java.lang.Integer">
+
+		SELECT count(*) from apply where recruit_id = #{recruitId} and occupation_applicant = #{positonName}  and submit_time = #{dateString} and undergraduate_is_first_school =1  ;
+
+	</select>
+	
+
+	
+	
 	<select id="applyNumInSideToday" resultType="java.lang.Integer">
 		SELECT count(*) from apply
 		<where> recruit_id = #{recruitId} and occupation_applicant =
@@ -347,14 +412,20 @@
 
 	<!-- 重置密码 -->
 	<select id="rePassword">
-		update user set password='123456' where
+		update user set password=#{password} where
 		user_id=#{userId};
 	</select>
+	
 
 	<!-- 查招聘表 -->
 	<select id="searchRecruit" resultMap="recruitInfo">
 		select * from recruit_info
 		where recruit_id = #{search};
+	</select>
+	<!-- 根据职位名和招聘信息id获得职位信息 -->
+	<select id="getPositionByPositionNameAndRecruitId" resultMap="position">
+		select * from position
+		where recruit_id = #{recruitId} and position_name = #{positionName};
 	</select>
 
 	<!-- 查本科是否双一流学校 -->
@@ -449,7 +520,10 @@
 		is_current,
 		job_performance,
 		paper_topic_situation,
-		sanction_situation
+		sanction_situation,
+		open_id,
+		form_id,
+		face
 		) values(
 		#{applyId},
 		#{gender},
@@ -494,7 +568,10 @@
 		#{isCurrent},
 		#{jobPerformance},
 		#{paperTopicSituation},
-		#{sanctionSituation}
+		#{sanctionSituation},
+		#{openId},
+		#{formId},
+		#{face}
 		);
 	</insert>
 

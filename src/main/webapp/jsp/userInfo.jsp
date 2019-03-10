@@ -44,33 +44,38 @@
 	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <title>用户信息</title>
 <style>
-input {
-	font-size: 21px;
-}
 
-.userInfo_main {
-	margin: 60px;
-}
-
-.userInfo_head {
-	height: 70px;
-	width: 135px;
-	position: relative;
-	left: 248px;
-	top: 29px
-}
-
-.userInfo_addInfo {
-	height: 50px;
-	width: 58px;
-	position: relative;
-	left: 90%;
-}
-
-.userInfo_TD {
-	width: 331px;
-	padding-right: 51px;
-}
+	input{
+		font-size: 21px;
+	}
+	.userInfo_main{
+		margin: 60px;
+		
+	}
+	.userInfo_head{
+		height: 70px;
+   		width: 135px;	
+   		position: relative;
+    left: 248px;
+    top: 29px
+	}
+	.userInfo_addInfo{
+		height: 50px;
+    width: 58px;
+    position: relative;
+    left: 90%;
+	}
+	.userInfo_TD{
+		width: 331px;
+    	padding-right: 51px;
+	}
+	.au_admin{
+		    color: #000;
+    font-size: 18px;
+    position: relative;
+    left: 77px;
+    top: 12px;
+	}
 </style>
 <script>
 	function open1(ob) {
@@ -113,7 +118,12 @@ input {
 		};
 	});
 </script>
+<script>
+	$(document).ready(function() {
+		$("#dataTables-example").dataTable();
+	});
 
+</script>
 
 </head>
 
@@ -148,74 +158,54 @@ input {
 				<div class="col-md-12">
 					<div class="card">
 						<div class="card-content " style="padding-top: 0%">
-							<div class="userInfo_main">
-								<div class="userInfo_head">
-									<h2>用户信息</h2>
-								</div>
-								<div class="userInfo_addInfo">
-									<a
-										href="${pageContext.request.contextPath}/jsp/addUserInfo.jsp"><button
-											class="btn btn-success" type="button">添加用户</button></a>
-								</div>
-								<div class="table-responsive userInfo_table"
-									style="overflow-x: hidden;">
-									<table
-										class="table table-striped table-bordered table-hover table-condensed"
-										id="dataTables-example">
-										<thead>
-											<tr>
-												<th>编号</th>
-												<th>单位</th>
-												<th>负责人</th>
-												<th style="position: relative; left: 71px;">权限</th>
-												<th style="padding-left: 42px;">修改</th>
-											</tr>
-										</thead>
-										<tbody>
-											<c:forEach items="${userList }" var="user" varStatus="status">
-												<form
-													action="${pageContext.request.contextPath}/user/modifyUser">
-													<tr>
-														<td
-															style="width: 62px; text-align: center; padding-top: 21px;">${requestScope.offset+status.index+1}
-															<input class="form-control" type="hidden" name="userId"
-															id="${requestScope.offset+status.index+1}"
-															value="${user.userId }">
-														</td>
-														<!-- <td style="width: 62px;">1</td> -->
-														<td class="userInfo_TD"><input class="form-control"
-															type="text" name="organizationName"
-															value="${user.organizationName }"></td>
-														<td class="userInfo_TD"><input class="form-control"
-															type="text" name="userName" value="${user.userName }"></td>
-														<c:if test="${user.authority == 1 }">
-															<td class="userInfo_TD"><input class="form-control"
-																type="checkbox" name="authority"
-																checked="${user.authority }" /></td>
-														</c:if>
-														<c:if test="${user.authority == 0 }">
-															<td class="userInfo_TD"><input class="form-control"
-																type="checkbox" name="authority" /></td>
-														</c:if>
-														<td class="userInfo_TD"><input
-															class="btn btn-default" type="submit" value="修改"
-															style="margin-left: 26px; margin-right: 27px;"> <input
-															class="btn btn-default"
-															name="${requestScope.offset+status.index+1}"
-															onclick="open1(this)" type="button" value="重置密码"
-															style="margin-right: 0xp;"> <label
-															style="margin-left: 113px;">原始密码：123456</label></td>
-													</tr>
-												</form>
-											</c:forEach>
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+		<div class="userInfo_main">
+		<div class="userInfo_head">
+			<h2>用户信息</h2>
+		</div>
+		<div class="userInfo_addInfo">
+			<a href="${pageContext.request.contextPath}/jsp/addUserInfo.jsp"><button class="btn btn-success" type="button">添加用户</button></a>
+		</div>
+		<div class="userInfo_table">
+			<table class="table table table-striped table-bordered table-hover"
+									id="dataTables-example">
+				<thead>
+					<tr>
+						<th>编号</th>
+						<th>单位</th>
+						<th>负责人</th>
+						<th style="position: relative;left: 86px;">权限</th>
+						<th style="    padding-left: 42px;">修改</th>
+					</tr>
+				</thead>
+				<tbody>
+				<c:forEach items="${userList }" var="user" varStatus="status">
+				<form action="${pageContext.request.contextPath}/user/modifyUser">
+					<tr>
+						<td style="width: 62px;text-align: center;padding-top: 21px;">${requestScope.offset+status.index+1}
+							<input class="form-control" type="hidden" name="userId" id="${requestScope.offset+status.index+1}" value="${user.userId }">
+						</td>
+						<!-- <td style="width: 62px;">1</td> -->
+						<td class="userInfo_TD"><input class="form-control" type="text" name="organizationName" value="${user.organizationName }"></td>
+						<td class="userInfo_TD"><input class="form-control" type="text" name="userName" value="${user.userName }"></td>
+						<c:if test="${user.authority == 1 }">
+						<td class="userInfo_TD"><input class="form-control" type="checkbox" name="authority" checked="${user.authority }" /></td>
+						</c:if>
+						<c:if test="${user.authority == 0 }">
+						<td class="userInfo_TD"><input class="form-control" type="checkbox" name="authority" /></td>
+						</c:if>
+						<c:if test="${user.authority == 2 }">
+						<td class="userInfo_TD"><label class="au_admin">管理员</label></td>
+						</c:if>
+						<td class="userInfo_TD">
+							<input class="btn btn-default" type="submit" value="修改" style="margin-left: 26px;margin-right: 27px;">
+					    	<input class="btn btn-default" name="${requestScope.offset+status.index+1}" onclick="open1(this)" type="button" value="重置密码" style="margin-right: 0xp;">
+					    	<label style="margin-left: 113px;">原始密码：123456</label>
+						</td>
+					</tr>
+				</form>
+				</c:forEach>
+				</tbody>
+			</table>
 		</div>
 	</div>
 	<script>

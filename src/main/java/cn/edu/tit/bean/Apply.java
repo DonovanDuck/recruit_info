@@ -61,7 +61,24 @@ public class Apply {
 	private String jobPerformance; // 工作业绩
 	private String paperTopicSituation; // 论文和课题情况
 	private String sanctionSituation; // 奖罚情况
+	
+	private String openId; //微信用户（报名人）openid
+	private String formId; //微信用户（报名人）formid
 	private List<ApplyFamily> familyRelationship; // 家庭成员及重要社会关系
+	
+	
+	public String getOpenId() {
+		return openId;
+	}
+	public void setOpenId(String openId) {
+		this.openId = openId;
+	}
+	public String getFormId() {
+		return formId;
+	}
+	public void setFormId(String formId) {
+		this.formId = formId;
+	}
 	public String getApplyId() {
 		return applyId;
 	}
@@ -338,7 +355,7 @@ public class Apply {
 	public void setFamilyRelationship(List<ApplyFamily> familyRelationship) {
 		this.familyRelationship = familyRelationship;
 	}
-	public Apply(String applyId, String gender, String applyUserName, String face, String nation, String politicsStatus,
+	public Apply(String applyId, String gender, String applyUserName,  String nation, String politicsStatus,
 			String nativePlace, String identityNum, String isMarry, String speciality, String telephone,
 			String bachelorDegreeAndMajor, String undergraduateGraduationTime, Integer undergraduateIsFirstSchool,
 			Integer undergraduateIsFirstMajor, String graduateSchoolAndMajor, String graduateTime,
@@ -347,14 +364,13 @@ public class Apply {
 			String workOrganization, String position, String telephoneOriganization,
 			String professionalAndTechnicalQualification, String practicingRequirements, String mailingAddress,
 			String postalAddress, String eMail, String applicationOrganization, String majorApplicant,
-			String workExperience, String occupationApplicant, String recruitId, Date submitTime,
+			String workExperience, String occupationApplicant, String recruitId,
 			String professionalOrientation, String compilationNature, String education, String degree,
-			Integer isCurrent, String jobPerformance, String paperTopicSituation, String sanctionSituation) {
+			Integer isCurrent, String jobPerformance, String paperTopicSituation, String sanctionSituation,String openId,String formId) {
 		super();
 		this.applyId = applyId;
 		this.gender = gender;
 		this.applyUserName = applyUserName;
-		this.face = face;
 		this.nation = nation;
 		this.politicsStatus = politicsStatus;
 		this.nativePlace = nativePlace;
@@ -387,7 +403,6 @@ public class Apply {
 		this.workExperience = workExperience;
 		this.occupationApplicant = occupationApplicant;
 		this.recruitId = recruitId;
-		this.submitTime = submitTime;
 		this.professionalOrientation = professionalOrientation;
 		this.compilationNature = compilationNature;
 		this.education = education;
@@ -396,6 +411,8 @@ public class Apply {
 		this.jobPerformance = jobPerformance;
 		this.paperTopicSituation = paperTopicSituation;
 		this.sanctionSituation = sanctionSituation;
+		this.openId = openId;
+		this.formId = formId;
 	}
 	public Apply() {
 		super();
