@@ -13,7 +13,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Type"
 	content="multipart/form-data; charset=UTF-8">
-<title>教师信息管理</title>
+<title>浏览招聘信息</title>
 <link
 	href="${pageContext.request.contextPath}/css/Admin/font-awesome.css"
 	rel="stylesheet" />
@@ -159,17 +159,25 @@
 									</ul>
 								</div>
 							</div>
+
 							<div class="form-group" style="margin-top: 1%">
 								<div class="col-md-4 text-right" style="padding-top: 1%;">
 									<h3>招聘文件:</h3>
 								</div>
-								<div class="col-md-7" style="padding-top: 1%;">
-									<input value="${recruit.accessory}" style='display: none'
-										id="consultPDFPath" type="text"> <a
-										href="${pageContext.request.contextPath}/user/resourceDownload?filePath=${recruit.accessory }">
-										<button type="button" class="btn btn-info btn-sm">文件下载</button>
-									</a>
-								</div>
+								<c:if test="${recruit.accessory !=null}">
+									<div class="col-md-7" style="padding-top: 1%;">
+										<input value="${recruit.accessory}" style='display: none'
+											id="consultPDFPath" type="text"> <a
+											href="${pageContext.request.contextPath}/user/resourceDownload?filePath=${recruit.accessory }">
+											<button type="button" class="btn btn-info btn-sm">文件下载</button>
+										</a>
+									</div>
+								</c:if>
+								<c:if test="${recruit.accessory ==null}">
+									<div class="col-md-7" style="padding-top: 1%;">
+										<button type="button" class="btn btn-info btn-sm">无文件</button>
+									</div>
+								</c:if>
 							</div>
 							<div class="form-group" style="margin-top: 5%;">
 								<div class="col-md-4 text-right" style="margin-top: 1%">

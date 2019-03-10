@@ -13,7 +13,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Type"
 	content="multipart/form-data; charset=UTF-8">
-<title>招聘系统</title>
+<title>招聘系统主页</title>
 <link
 	href="${pageContext.request.contextPath}/css/Admin/font-awesome.css"
 	rel="stylesheet" />

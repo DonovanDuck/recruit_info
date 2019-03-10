@@ -223,7 +223,7 @@ public interface IUserDao {
 	public List<String> getPositionNameByorganizationId(@Param("organizationId")String organizationId);
 
 	
-	 * @author wenli
+	/* @author wenli
 	 * @param recruitId
 	 * 根据职位名和招聘信息id获得职位信息
 	 * @param positionName

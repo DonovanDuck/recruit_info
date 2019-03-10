@@ -298,7 +298,7 @@
 	<select id="applyNumDoubleOne" resultType="java.lang.Integer">
 		SELECT count(*) from
 		apply where recruit_id = #{recruitId} and occupation_applicant =
-		#{positonName} and undergraduate_and_major is not null ;
+		#{positonName} and undergraduate_and_major is not null ;</select>
 	<select id="applyNumInSide" resultType="java.lang.Integer">
 		SELECT count(*) from apply
 		<where>

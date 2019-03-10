@@ -377,7 +377,7 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public List<String> getPositionNameByorganizationId(String organizationId) {
 		// TODO Auto-generated method stub
-		return iUserDao.getPositionNameByorganizationId(organizationId);
+		return iUserDao.getPositionNameByorganizationId(organizationId);}
 	@Override
 	public Integer applyNumFirstSchoolInUndergraduate(String recruitId, String positonName) {
 		// TODO Auto-generated method stub
