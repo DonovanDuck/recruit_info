@@ -61,13 +61,17 @@ public class UserController {
 		ModelAndView mv = new ModelAndView();
 		List<RecruitInfo> list = new ArrayList<RecruitInfo>();
 		Date day=new Date();    
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:"); 
 		String time = df.format(day).toString(); //获取系统时间，将时间放入session
 		try {
 			User publisher = (User) request.getSession().getAttribute("User");
-			String organizationId = publisher.getOrganizationId();
+			String publisherId = publisher.getUserId();
 			// 获取招聘信息
-			list = userService.getRecruitInfo(organizationId);
+			list = userService.getRecruitInfo(publisherId);
+			if(publisher.getAuthority()==0)
+			{
+				list = userService.getRecruitInfo(null);
+			}
 			mv.addObject("systemTime",time);
 			mv.addObject("list",list);
 			mv.setViewName("/jsp/mainJsp");//设置返回页面
@@ -78,7 +82,7 @@ public class UserController {
 		return mv;
 	}
 
-
+	
 
 	@RequestMapping(value = "userLogin", method = { RequestMethod.GET })
 	public ModelAndView userLogin(HttpServletRequest request, @RequestParam(value = "phoneNum") String phoneNum,
@@ -87,7 +91,6 @@ public class UserController {
 		User user = new User();
 		try {
 			user = userService.getUserByPhone(phoneNum);
-			password = Common.eccryptMD5(password);
 			if (user == null || !user.getPassword().equals(password)) {
 				mv.setViewName("/jsp/login");// 设置返回页面
 			} else {
@@ -134,7 +137,8 @@ public class UserController {
 			RecruitInfo recruit = new RecruitInfo();
 			User publisher = (User) request.getSession().getAttribute("User");
 			String publisherId = publisher.getUserId();
-			recruit.setOrganization(publisher.getOrganizationId());//设置招聘单位
+
+			recruit.setOrganization(publisher.getOrganizationName());//设置招聘单位
 			recruit.setPublisher(publisherId);//发布者ID
 			ts = Timestamp.valueOf((String)formdata.get("endTime"));  
 			recruit.setEndTime(ts);//设置结束时间
@@ -172,10 +176,7 @@ public class UserController {
 				po.setRecruitId(recruitId);
 				listPo.add(po);
 			}
-			if(positon.length!=0)
-			{
-				userService.publishPosition(listPo);//添加职位
-			}
+			userService.publishPosition(listPo);//添加职位
 			/**结束*/
 			if(!returnFileList.isEmpty())
 			{
@@ -209,7 +210,7 @@ public class UserController {
 			String organizationId = publisher.getOrganizationId();
 			//根据recruitId找到原有的招聘信息，将现有信息全部替换
 			recruit = userService.getRecruitInfoById(recruitId);
-			recruit.setOrganization(publisher.getOrganizationId());//设置招聘单位
+			recruit.setOrganization(publisher.getOrganizationName());//设置招聘单位
 			recruit.setPublisher(publisherId);//发布者ID
 			ts = Timestamp.valueOf((String)formdata.get("endTime"));  
 			recruit.setEndTime(ts);//设置结束时间
@@ -249,10 +250,7 @@ public class UserController {
 			}
 			//根据招聘信息ID和招聘单位ID删除原发布的职位信息
 			userService.deletePosition(organizationId,recruitId);
-			if(positon.length!=0)
-			{
-				userService.publishPosition(listPo);//添加职位
-			}
+			userService.publishPosition(listPo);//添加职位
 			/**结束*/	
 
 			if(!returnFileList.isEmpty())
@@ -281,11 +279,10 @@ public class UserController {
 		try {
 			User user = new User();
 			user.setUserId(Common.uuid());
-			user.setPassword(Common.eccryptMD5("123456"));
+			user.setPassword("123456");
 			user.setOrganizationName(request.getParameter("organization"));
 			user.setUserName(request.getParameter("userName"));
 			user.setWechartNum(request.getParameter("weChat"));
-			user.setPhoneNum(request.getParameter("phoneNum"));
 			user.setOrganizationId(Common.uuid());
 			if ("on".equals(request.getParameter("authority")))
 				user.setAuthority(1);
@@ -373,7 +370,12 @@ public class UserController {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * 跳转到个人信息
+=======
+	 * 跳转到用户列表
+	 * 
+>>>>>>> bfcba72d496947e7120a1fda08ca2d26d1c40ecf
 	 * @param request
 	 * @return
 	 */
@@ -408,7 +410,6 @@ public class UserController {
 			userId = user.getUserId();
 			password = request.getParameter("newPassword");
 			if (!"".equals(userId) && !"".equals(password)) {
-				password = Common.eccryptMD5(password);
 				userService.modifyPassword(userId, password);
 				mv.setViewName("jsp/login");
 			}
@@ -462,12 +463,11 @@ public class UserController {
 	public void ajaxCheckPassword(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			// 校验密码
-			 User user = (User) request.getSession().getAttribute("User");
-//			String userId = "1";
+			// String userId = (String) request.getSession().getAttribute("userId");
+			String userId = "1";
 			String password = request.getParameter("password");
-			password = Common.eccryptMD5(password);
 			String result = "";
-			Boolean isRight = userService.checkPassword(user.getUserId(), password);
+			Boolean isRight = userService.checkPassword(userId, password);
 			if (isRight)
 				result = JSONObject.toJSONString("OK");
 			else
@@ -492,7 +492,7 @@ public class UserController {
 		try {
 			// 校验密码
 			String userId = request.getParameter("userId");
-			userService.rePassword(userId, Common.eccryptMD5("123456"));
+			userService.rePassword(userId);
 			result = JSONObject.toJSONString("OK");
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -518,7 +518,7 @@ public class UserController {
 		String applyId = request.getParameter("applyId");
 		try {
 			// 通过applyId获取报名表
-			Apply apply = userService.getApplyById(applyId);
+			Apply apply = userService.getApplyById("1");
 			if(apply != null){
 				String undergraduateGraduationTime =  apply.getUndergraduateGraduationTime().toString().substring(0, 10);
 				String graduateTime =  apply.getGraduateTime().toString().substring(0, 10);
@@ -567,13 +567,9 @@ public class UserController {
 		ModelAndView mv = new ModelAndView();
 		String recruitId = (String) request.getSession().getAttribute("recruitId");
 		List<Apply> applList = new ArrayList<Apply>();
-		Position position = new Position();
+		List<Position> occupationApplicantLsit = new ArrayList<Position>();
 		Integer numAll, numAllToday, numDoctor, numDoctorToday, numMaster, numMasterToday, numBachelor,
-		numBachelorToday, numInSide, numInSideToday,numFirstSchool,numFirstSchoolToday,numFirstMajor,numFirstMajorToday,
-				numFirstSchoolInUndergraduate,numFirstSchoolInUndergraduateToday,numFirstMajorInUndergraduate,numFirstMajorInUndergraduateToday,
-				numFirstSchoolInPastgraduate,numFirstSchoolInPastgraduateToday,numFirstMajorInPastgraduate,numFirstMajorInPastgraduateToday,
-				numFirstSchoolInDoctor,numFirstSchoolInDoctorToday,numFirstMajorInDoctor,numFirstMajorInDoctorToday;
-
+				numBachelorToday, numInSide, numInSideToday,numFirstSchool,numFirstSchoolToday,numFirstMajor,numFirstMajorToday;
 		// 获取今日时间
 		Date date = new Date();// 取时间
 		Calendar calendar = new GregorianCalendar();
@@ -582,9 +578,7 @@ public class UserController {
 		date = calendar.getTime(); // 这个时间就是日期往后推一天的结果
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String dateString = formatter.format(date);
-		
-		position = userService.getPositionByPositionNameAndRecruitId(recruitId, positonName);
-		
+
 		numAllToday = userService.applyNumToday(recruitId, dateString, positonName); // 今天报名人数
 		numAll = userService.applyNum(recruitId, positonName);// 总报名人数
 		numBachelor = userService.applyNumBachelor(recruitId, positonName);// 总学士人数
@@ -595,25 +589,12 @@ public class UserController {
 		numDoctorToday = userService.applyNumDoctorToday(recruitId, dateString, positonName);// 今日总博士人数
 		numInSide = userService.applyNumInSide(recruitId, positonName);// 疆内人数
 		numInSideToday = userService.applyNumInSideToday(recruitId, dateString, positonName);// 今日疆内人数
-		numFirstSchoolInUndergraduate = userService.applyNumFirstSchoolInUndergraduate(recruitId, positonName);
-		numFirstSchoolInUndergraduateToday = userService.applyNumFirstSchoolInUndergraduateToday(recruitId, dateString, positonName);
-		numFirstMajorInUndergraduate = userService.applyNumFirstMajorInUndergraduate(recruitId, positonName);
-		numFirstMajorInUndergraduateToday = userService.applyNumFirstMajorInUndergraduateToday(recruitId, dateString, positonName);
-		numFirstSchoolInPastgraduate = userService.applyNumFirstSchoolInPastgraduate(recruitId, positonName);
-		numFirstSchoolInPastgraduateToday = userService.applyNumFirstSchoolInPastgraduateToday(recruitId, dateString, positonName);
-		numFirstMajorInPastgraduate = userService.applyNumFirstMajorInPastgraduate(recruitId, positonName);
-		numFirstMajorInPastgraduateToday = userService.applyNumFirstMajorInPastgraduateToday(recruitId, dateString, positonName);
-		numFirstSchoolInDoctor = userService.applyNumFirstSchoolInDoctor(recruitId, positonName);
-		numFirstSchoolInDoctorToday = userService.applyNumFirstSchoolInDoctorToday(recruitId, dateString, positonName);
-		numFirstMajorInDoctor  = userService.applyNumFirstMajorInDoctor(recruitId, positonName);
-		numFirstMajorInDoctorToday = userService.applyNumFirstMajorInDoctorToday(recruitId, dateString, positonName);
 		applList = userService.applyList(recruitId, positonName);// 报名表
 		System.out.println("recruitId = " + recruitId);
 		for (Apply apply : applList) {
 			System.out.println("Id=" + apply.getApplyId());
 			System.out.println("applyUserName=" + apply.getApplyUserName());
 		}
-		
 		mv.addObject("applList", applList);
 		mv.addObject("numInSideToday", numInSideToday);
 		mv.addObject("numInSide", numInSide);
@@ -624,142 +605,128 @@ public class UserController {
 		mv.addObject("numBachelor", numBachelor);
 		mv.addObject("numAll", numAll);
 		mv.addObject("numAllToday", numAllToday);
-		mv.addObject("numFirstSchoolInUndergraduate",numFirstSchoolInUndergraduate );
-		mv.addObject("numFirstSchoolInUndergraduateToday",numFirstSchoolInUndergraduateToday );
-		mv.addObject("numFirstMajorInUndergraduate",numFirstMajorInUndergraduate );
-		mv.addObject("numFirstMajorInUndergraduateToday",numFirstMajorInUndergraduateToday );
-		mv.addObject("numFirstSchoolInPastgraduate",numFirstSchoolInPastgraduate );
-		mv.addObject("numFirstSchoolInPastgraduateToday",numFirstSchoolInPastgraduateToday );
-		mv.addObject("numFirstMajorInPastgraduate",numFirstMajorInPastgraduate );
-		mv.addObject("numFirstMajorInPastgraduateToday",numFirstMajorInPastgraduateToday );
-		mv.addObject("numFirstSchoolInDoctor",numFirstSchoolInDoctor );
-		mv.addObject("numFirstSchoolInDoctorToday",numFirstSchoolInDoctorToday );
-		mv.addObject("numFirstMajorInDoctor",numFirstMajorInDoctor );
-		mv.addObject("numFirstMajorInDoctorToday",numFirstMajorInDoctorToday );
-		mv.addObject("position", position);
-		
+
 		mv.setViewName("/jsp/signIn_iframe");
 		return mv;
 
 	}
 
 	/**
+     * 导出报表
+     * @return
+     */
+    @RequestMapping(value = "/export")
+    @ResponseBody
+    public void export(HttpServletRequest request,HttpServletResponse response) throws Exception {
+           //获取数据
+    		String recruitId = (String) request.getSession().getAttribute("recruitId");
+            List<Apply> list =userService.applyListAll(recruitId);
+            RecruitInfo recruitInfo = userService.getRecruitInfoById(recruitId);
+            //excel标题
+            String[] title = {"报考单位","报名职位","专业及专业方向",
+            		"编制性质","姓名","性别",
+            		"民族","籍贯","政治面貌",
+            		"身份证号","婚否","学历",
+            		"学位","应历届","是否双一流大学",
+            		"是否双一流专业","本科就读院校及专业","本科毕业时间",
+            		"研究生就读院校及专业","研究生毕业时间","博士就读院校及专业",
+            		"博士毕业时间","原工作单位","原工作单位职务","专业技术资格",
+            		"执业资格","联系电话","邮箱","通讯地址","邮编","备注"};
 
-	 * 导出报表
-	 * @return
-	 */
-	@RequestMapping(value = "/export")
-	@ResponseBody
-	public void export(HttpServletRequest request,HttpServletResponse response) throws Exception {
-		//获取数据
-		String recruitId = (String) request.getSession().getAttribute("recruitId");
-		List<Apply> list =userService.applyListAll(recruitId);
-		RecruitInfo recruitInfo = userService.getRecruitInfoById(recruitId);
-		//excel标题
-		String[] title = {"报考单位","报名职位","专业及专业方向",
-				"编制性质","姓名","性别",
-				"民族","籍贯","政治面貌",
-				"身份证号","婚否","学历",
-				"学位","应历届","是否双一流大学",
-				"是否双一流专业","本科就读院校及专业","本科毕业时间",
-				"研究生就读院校及专业","研究生毕业时间","博士就读院校及专业",
-				"博士毕业时间","原工作单位","原工作单位职务","专业技术资格",
-				"执业资格","联系电话","邮箱","通讯地址","邮编","备注"};
+            //excel文件名
+            String fileName = recruitInfo.getRecruitInfo()+".xls";
+            System.out.println("文件名称"+fileName);
+            //sheet名
+            String sheetName = recruitInfo.getRecruitInfo();
 
-		//excel文件名
-		String fileName = recruitInfo.getRecruitInfo()+".xls";
-		System.out.println("文件名称"+fileName);
-		//sheet名
-		String sheetName = recruitInfo.getRecruitInfo();
+            String [][] content  = new String[list.size()][];
+            for (int i = 0; i < list.size(); i++) {
+	            content[i] = new String[title.length];
+	            Apply obj = list.get(i);
+	            content[i][0] = obj.getApplicationOrganization();//报考单位
+	            content[i][1] = obj.getOccupationApplicant();//报名职业
+	            content[i][2] = obj.getProfessionalOrientation();//专业及方向
+	            content[i][3] = obj.getCompilationNature();//编制性质
+	            content[i][4] = obj.getApplyUserName();//姓名
+	            content[i][5] = obj.getGender();//性别
+	            content[i][6] = obj.getNation();//民族
+	            content[i][7] = obj.getNativePlace();//籍贯
+	            content[i][8] = obj.getPoliticsStatus();//政治面貌
+	            content[i][9] = obj.getIdentityNum();//身份证号
+	            content[i][10] = obj.getIsMarry();//婚否
+	            content[i][11] = obj.getEducation();//学历
+	            content[i][12] = obj.getDegree();//学位
+	            
+	            //是否应届
+	            if(obj.getIsCurrent()!=null&&obj.getIsCurrent()==1) {
+	            	 content[i][13] = "是";
+	            }else {
+	            	 content[i][13] = "否";
+	            	
+	            }
+	           
+	            content[i][14] = "";//是否双一流大学
+	            if(userService.isFirstSchool(obj.getApplyId())) {
+	            	content[i][14] = "是";
+	            }
+	            content[i][15] = "";//是否双一流学科
+	            if(userService.isFirstMajor(obj.getApplyId())) {
+	            	content[i][15] = "是";
+	            }
+	            
+	            content[i][16] = obj.getBachelorDegreeAndMajor();//本科就读专业
+	            content[i][17] = obj.getUndergraduateGraduationTime();//本科毕业时间
+	            content[i][18] = obj.getGraduateSchoolAndMajor();//研究生就读学院
+	            content[i][19] = obj.getGraduateTime();//研究生毕业时间
+	            content[i][20] = obj.getDoctoralDegreeAndMajor();//博士就读学院
+	            content[i][21] = obj.getDoctoralGraduationTime();//博士毕业时间
+	            
+	            content[i][22] = obj.getWorkOrganization();//原工作单位
+	            content[i][23] = obj.getPosition();//原工作单位职务
+	            content[i][24] = obj.getProfessionalAndTechnicalQualification();//专业技术资格
+	            content[i][25] = obj.getPracticingRequirements();//执业资格
+	            content[i][26] = obj.getTelephone();//联系方式
+	            content[i][27] = obj.geteMail();//邮箱
+	            content[i][28] = obj.getMailingAddress();//通讯地址
+	            content[i][29] = obj.getPostalAddress();//邮编
+	            content[i][30] = null;
+            }
 
-		String [][] content  = new String[list.size()][];
-		for (int i = 0; i < list.size(); i++) {
-			content[i] = new String[title.length];
-			Apply obj = list.get(i);
-			content[i][0] = obj.getApplicationOrganization();//报考单位
-			content[i][1] = obj.getOccupationApplicant();//报名职业
-			content[i][2] = obj.getProfessionalOrientation();//专业及方向
-			content[i][3] = obj.getCompilationNature();//编制性质
-			content[i][4] = obj.getApplyUserName();//姓名
-			content[i][5] = obj.getGender();//性别
-			content[i][6] = obj.getNation();//民族
-			content[i][7] = obj.getNativePlace();//籍贯
-			content[i][8] = obj.getPoliticsStatus();//政治面貌
-			content[i][9] = obj.getIdentityNum();//身份证号
-			content[i][10] = obj.getIsMarry();//婚否
-			content[i][11] = obj.getEducation();//学历
-			content[i][12] = obj.getDegree();//学位
+			 //创建HSSFWorkbook 
+			  HSSFWorkbook wb = ExcelExportUtil.getHSSFWorkbook(sheetName, title, content, null);
 
-			//是否应届
-			if(obj.getIsCurrent()!=null&&obj.getIsCurrent()==1) {
-				content[i][13] = "是";
-			}else {
-				content[i][13] = "否";
+			  //响应到客户端
+			  try {
+				  	this.setResponseHeader(response, fileName);
+					 OutputStream os = response.getOutputStream();
+					 wb.write(os);
+					 os.flush();
+					 os.close();
+			  } catch (Exception e) {
+				  e.printStackTrace();
+			 }
+}
 
-			}
-
-			content[i][14] = "";//是否双一流大学
-			if(userService.isFirstSchool(obj.getApplyId())) {
-				content[i][14] = "是";
-			}
-			content[i][15] = "";//是否双一流学科
-			if(userService.isFirstMajor(obj.getApplyId())) {
-				content[i][15] = "是";
-			}
-
-			content[i][16] = obj.getBachelorDegreeAndMajor();//本科就读专业
-			content[i][17] = obj.getUndergraduateGraduationTime();//本科毕业时间
-			content[i][18] = obj.getGraduateSchoolAndMajor();//研究生就读学院
-			content[i][19] = obj.getGraduateTime();//研究生毕业时间
-			content[i][20] = obj.getDoctoralDegreeAndMajor();//博士就读学院
-			content[i][21] = obj.getDoctoralGraduationTime();//博士毕业时间
-
-			content[i][22] = obj.getWorkOrganization();//原工作单位
-			content[i][23] = obj.getPosition();//原工作单位职务
-			content[i][24] = obj.getProfessionalAndTechnicalQualification();//专业技术资格
-			content[i][25] = obj.getPracticingRequirements();//执业资格
-			content[i][26] = obj.getTelephone();//联系方式
-			content[i][27] = obj.geteMail();//邮箱
-			content[i][28] = obj.getMailingAddress();//通讯地址
-			content[i][29] = obj.getPostalAddress();//邮编
-			content[i][30] = null;
-		}
-
-		//创建HSSFWorkbook 
-		HSSFWorkbook wb = ExcelExportUtil.getHSSFWorkbook(sheetName, title, content, null);
-
-		//响应到客户端
-		try {
-			this.setResponseHeader(response, fileName);
-			OutputStream os = response.getOutputStream();
-			wb.write(os);
-			os.flush();
-			os.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-   
 	// 发送响应流方法
-
-	public void setResponseHeader(HttpServletResponse response, String fileName) {
-		try {
-			try {
-				fileName = new String(fileName.getBytes(),"ISO8859-1");
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			response.setContentType("application/octet-stream;charset=ISO8859-1");
-			response.setHeader("Content-Disposition", "attachment;filename="+ fileName);
-			response.addHeader("Pargam", "no-cache");
-			response.addHeader("Cache-Control", "no-cache");
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
-
+  
+    public void setResponseHeader(HttpServletResponse response, String fileName) {
+        try {
+            try {
+                fileName = new String(fileName.getBytes(),"ISO8859-1");
+            } catch (UnsupportedEncodingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            response.setContentType("application/octet-stream;charset=ISO8859-1");
+            response.setHeader("Content-Disposition", "attachment;filename="+ fileName);
+            response.addHeader("Pargam", "no-cache");
+            response.addHeader("Cache-Control", "no-cache");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    
 	/**
 	 * @author liming
 	 * @param request

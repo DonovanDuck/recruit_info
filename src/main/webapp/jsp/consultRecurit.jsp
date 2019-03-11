@@ -1,4 +1,4 @@
-﻿﻿<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+﻿<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	String path = request.getContextPath();
@@ -13,7 +13,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Type"
 	content="multipart/form-data; charset=UTF-8">
-<title>教师信息管理</title>
+<title>浏览招聘信息</title>
 <link
 	href="${pageContext.request.contextPath}/css/Admin/font-awesome.css"
 	rel="stylesheet" />
@@ -48,6 +48,7 @@
 	src="${pageContext.request.contextPath}/js/Admin/bootstrap-datetimepicker.zh-CN.js"></script>
 <script
 	src="${pageContext.request.contextPath}/js/Admin/materialize.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/pdfobject.min.js"></script>
 </head>
 <body>
 	<!-- 界面开始部分 -->
@@ -65,9 +66,9 @@
 						href="${pageContext.request.contextPath}/user/toMainPage"
 						class="waves-effect waves-dark">招聘信息</a></li>
 					<c:if test="${sessionScope.User.authority == 2 }">
-					<li class="text-left"><a
-						href="${pageContext.request.contextPath}/user/toUserInfo"
-						class="waves-effect waves-dark">用户管理</a></li>
+						<li class="text-left"><a
+							href="${pageContext.request.contextPath}/user/toUserInfo"
+							class="waves-effect waves-dark">用户管理</a></li>
 					</c:if>
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toPersonalInfo"
@@ -122,33 +123,35 @@
 												style="float: left; margin-top: 5%; visibility: hidden">
 												<button type="button" class="btn btn-danger btn-sm">删除</button>
 											</li>
-											<li class="col-md-10" style="padding: 0; float: left">
+											<li class="col-md-10"
+												style="padding: 0; background-color: rgba(245, 246, 246, 0.8); margin-top: 4px; float: left">
 												<div class="col-md-12" style="padding: 0;">
 													<div class="col-md-8" style="padding: 0">
 														<input style='font-size: 18px;' type="text"
-															value="【职位】：${list.positonName }" readOnly="true">
+															value="【职位】:${list.positonName }" readOnly="true">
 													</div>
 													<div class="col-md-4">
-														<input type="text" value="【人数】：${list.positionNum }"
-															style='font-size: 18px; padding-top: 7%'
-															readOnly="true" />
+														<input type="text" value="【人数】:${list.positionNum }"
+															style='font-size: 18px; padding-top: 7%' readOnly="true" />
 													</div>
 												</div>
 												<div class="col-md-12" style="padding: 0">
-													<div class="col-md-7" style="padding: 0">
-														<input value="【专业】：${list.professionalOrientation }"
-															style='font-size: 18px;' type="text"readOnly="true">
-													
+													<div class="col-md-7" style="padding: 0;">
+														<%-- 		<input value="【专业】:${list.professionalOrientation }"
+															style='font-size: 18px;
+															white-space:normal;word-wrap:break-word;word-break:break-all;'
+															 type="text" readOnly="true"> --%>
+														<span
+															style="font-size: 20px; border-bottom: 1px solid gray; line-height: 40pt;">
+															【专业】:${list.professionalOrientation } </span>
 													</div>
-													
+
 													<div class="col-md-5">
-														<select class="form-control" id="compilationNatureS"
-															name="compilationNatureS"
-															style="margin-top: 6%; padding: 0">
-															<option>民企</option>
-															<option>国企</option>
-															<option>私企</option>
-														</select>
+														<%-- 	<input value="【岗位性质】:${list.compilationNature }"
+															style='font-size: 18px;' type="text" readOnly="true"> --%>
+														<span
+															style="font-size: 20px; border-bottom: 1px solid gray; line-height: 40pt;">
+															【岗位性质】:${list.compilationNature } </span>
 													</div>
 												</div>
 											</li>
@@ -161,8 +164,15 @@
 									<h3>招聘文件:</h3>
 								</div>
 								<div class="col-md-7" style="padding-top: 1%;">
-									<input name="upFile" type="file" id="upFile"
-										multiple="multiple" readonly="readonly">
+									<c:if test="${recruit.accessory !=null}">
+										<a
+											href="${pageContext.request.contextPath}/user/resourceDownload?filePath=${recruit.accessory }">
+											<button type="button" class="btn btn-info btn-sm">文件下载</button>
+										</a>
+									</c:if>
+									<c:if test="${recruit.accessory ==null}">
+										<button type="button" class="btn btn-info btn-sm">无文件</button>
+									</c:if>
 								</div>
 							</div>
 							<div class="form-group" style="margin-top: 5%;">
@@ -181,6 +191,12 @@
 								<div class="col-md-7">
 									<input type="text" style='font-size: 18px;'
 										value="${recruit.endTime }" readOnly="true">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-offset-3">
+									<button type="reset" class="btn btn-primary"
+										onclick="history.go(-1)" style="margin-left: 47%">取消</button>
 								</div>
 							</div>
 						</form>

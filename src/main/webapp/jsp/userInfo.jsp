@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	String path = request.getContextPath();
@@ -44,6 +44,7 @@
 	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <title>用户信息</title>
 <style>
+
 	input{
 		font-size: 21px;
 	}
@@ -77,45 +78,45 @@
 	}
 </style>
 <script>
-function open1(ob)
-{
-  var id=$(ob).attr("name");
- //alert(id);
- var userId = $("#"+id).val();
- //alert(userId);
-   $.ajax({
-		async:false,
-		cache:false,
-		url:"${pageContext.request.contextPath}/user/ajaxRePassword",
-		data:{'userId':userId},
-		type:"POST",
-		dataType:"text",
-		success:function(result) {
-			//alert(eval(result));
-			if(eval(result) == "OK"){
-				alert("密码重置成功！");
+	function open1(ob) {
+		var id = $(ob).attr("name");
+		//alert(id);
+		var userId = $("#" + id).val();
+		//alert(userId);
+		$.ajax({
+			async : false,
+			cache : false,
+			url : "${pageContext.request.contextPath}/user/ajaxRePassword",
+			data : {
+				'userId' : userId
+			},
+			type : "POST",
+			dataType : "text",
+			success : function(result) {
+				//alert(eval(result));
+				if (eval(result) == "OK") {
+					alert("密码重置成功！");
+				} else {
+					alert("密码重置失败！");
+				}
 			}
-			else{
-				alert("密码重置失败！");
-			}
-		}
-	}); 
-   
-}	
+		});
+
+	}
 </script>
 
 <script>
-$(function(){
-    
-    //当页面加载完成的时候，自动调用该方法
-    window.onload=function(){
-    	alert(fff);
-    	/* if(${status} == "OK")
-    		alert("修改成功！");
-        if(${status} == "ERROR")
-    		alert("修改失败！"); */
-    };
-});
+	$(function() {
+
+		//当页面加载完成的时候，自动调用该方法
+		window.onload = function() {
+			alert(fff);
+			/* if(${status} == "OK")
+				alert("修改成功！");
+			if(${status} == "ERROR")
+				alert("修改失败！"); */
+		};
+	});
 </script>
 <script>
 	$(document).ready(function() {
@@ -129,27 +130,27 @@ $(function(){
 <body>
 	<div id="wrapper">
 		<nav class="navbar navbar-default top-navbar" role="navigation">
-			<div class="text-center">
-				<h2>新疆招聘信息系统</h2>
-			</div>
+		<div class="text-center">
+			<h2>新疆招聘信息系统</h2>
+		</div>
 		</nav>
 		<!--/. NAV TOP  -->
 		<nav class="navbar-default navbar-side" role="navigation">
-			<div class="sidebar-collapse">
-				<ul class="nav" id="main-menu">
-					<li class="text-left"><a
-						href="${pageContext.request.contextPath}/user/toMainPage"
-						class="waves-effect waves-dark">招聘信息</a></li>
-					<c:if test="${sessionScope.User.authority == 2 }">
+		<div class="sidebar-collapse">
+			<ul class="nav" id="main-menu">
+				<li class="text-left"><a
+					href="${pageContext.request.contextPath}/user/toMainPage"
+					class="waves-effect waves-dark">招聘信息</a></li>
+				<c:if test="${sessionScope.User.authority == 2 }">
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toUserInfo"
 						class="waves-effect waves-dark">用户管理</a></li>
-					</c:if>
-					<li class="text-left"><a
-						href="${pageContext.request.contextPath}/user/toPersonalInfo"
-						class="waves-effect waves-dark">个人信息</a></li>
-				</ul>
-			</div>
+				</c:if>
+				<li class="text-left"><a
+					href="${pageContext.request.contextPath}/user/toPersonalInfo"
+					class="waves-effect waves-dark">个人信息</a></li>
+			</ul>
+		</div>
 		</nav>
 		<!-- /. NAV SIDE  -->
 		<div id="page-wrapper">
@@ -207,9 +208,10 @@ $(function(){
 			</table>
 		</div>
 	</div>
-	</div>
-	</div>
-	</div>
-	</div>
+	<script>
+		$(document).ready(function() {
+			$("#dataTables-example").dataTable();
+		});
+	</script>
 </body>
 </html>
