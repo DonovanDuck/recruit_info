@@ -36,7 +36,7 @@ public class UserTest {
 	@Test
 	public void Test() throws Exception {
 		
-		iUserService.rePassword("0", "a");
+		System.out.println(Common.eccryptMD5("1"));
 		
 	}
 	}

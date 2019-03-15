@@ -13,7 +13,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Type"
 	content="multipart/form-data; charset=UTF-8">
-<title>教师信息管理</title>
+<title>招聘信息管理</title>
 <link
 	href="${pageContext.request.contextPath}/css/Admin/font-awesome.css"
 	rel="stylesheet" />
@@ -110,9 +110,9 @@
 								<!-- 页头 -->
 								<!-- 页头 -->
 								<div class="titleMain">
-									<h3 style="text-align: center">太原工业学院招聘信息</h3>
+									<h3 style="text-align: center; font-size: 31px;">太原工业学院招聘信息</h3>
 									<h3>
-										<strong> 招聘单位:</strong><strong> 太员工业学院招生办</strong>
+										<strong style="font-size: 31px;"> 招聘单位:</strong><strong style="font-size: 31px;"> 太员工业学院招生办</strong>
 									</h3>
 									<div style="height: 18px;width: 100%"></div>
 

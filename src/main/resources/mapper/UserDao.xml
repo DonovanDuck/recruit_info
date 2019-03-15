@@ -223,6 +223,13 @@
 		#{organization}
 		order by publish_time desc;
 	</select>
+	
+	<!-- 分页获取招聘信息 -->
+	<select id="getRecruitInfoLimit" resultMap="recruitInfo">
+		SELECT * from recruit_info where organization =
+		#{organization} order by publish_time desc limit #{index},4;
+	</select>
+	
 	<select id="getUserByPhone" parameterType="String"
 		resultMap="userMap">
 		SELECT * FROM user where phone_num = #{phoneNum};

@@ -83,7 +83,9 @@ public interface IUserService {
 	 * @param organizationId
 	 * @return 获取单位职位
 	 */
-	public List<RecruitInfo> searchRecruit(String search);
+	public List<RecruitInfo> searchRecruit(String search, Integer index);
+	
+	
 	
 	/**
 	 * 修改用户信息

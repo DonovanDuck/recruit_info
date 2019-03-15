@@ -84,6 +84,14 @@ public interface IUserDao {
 	public List<RecruitInfo> getRecruitInfo(@Param("organization")String organization);
 
 	/**
+	 * 分页获取招聘信息
+	 * @param organization
+	 * @param index
+	 * @return
+	 */
+	public List<RecruitInfo> getRecruitInfoLimit(@Param("organization")String organization,@Param("index")Integer index);
+	
+	/**
 	 *@author LiMing
 	 * @param organizationId
 	 * @return 获取单位职位

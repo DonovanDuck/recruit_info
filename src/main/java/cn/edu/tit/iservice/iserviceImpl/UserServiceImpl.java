@@ -251,9 +251,9 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public List<RecruitInfo> searchRecruit(String search) {
+	public List<RecruitInfo> searchRecruit(String search, Integer index) {
 		// TODO Auto-generated method stub
-		return iUserDao.getRecruitInfo(search);
+		return iUserDao.getRecruitInfoLimit(search,index);
 	}
 
 	@Override

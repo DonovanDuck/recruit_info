@@ -166,14 +166,13 @@
 			<a href="${pageContext.request.contextPath}/jsp/addUserInfo.jsp"><button class="btn btn-success" type="button">添加用户</button></a>
 		</div>
 		<div class="userInfo_table">
-			<table class="table table table-striped table-bordered table-hover"
-									id="dataTables-example">
+			<table class="table " >
 				<thead>
 					<tr>
 						<th>编号</th>
 						<th>单位</th>
 						<th>负责人</th>
-						<th style="position: relative;left: 86px;">权限</th>
+						<th style="position: relative;padding-left: 91px;">权限</th>
 						<th style="    padding-left: 42px;">修改</th>
 					</tr>
 				</thead>

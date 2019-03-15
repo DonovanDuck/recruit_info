@@ -78,6 +78,10 @@
 			alert("招聘标题为空");
 			judge = false;
 		}
+		if(titleName.length>35){
+			alert("标题最多输入35个字符！");
+			judge = false;
+		}
 		$("input[name='position']").each(function() {
 			i = i + 1;
 			if ($(this).val() == "" && i != num) {
@@ -160,6 +164,19 @@
 		}
 	};
 </script>
+
+<script>
+	$(function(){
+		$("#organizationTitle").blur(function(){
+			var organizationTitle = $("#organizationTitle").val();
+			if(organizationTitle.length>35){
+				alert("标题最多输入35个字符！");
+			}
+		});
+	})
+	
+</script>
+
 </head>
 <body>
 	<!-- 界面开始部分 -->
@@ -201,12 +218,12 @@
 							style="width: 50%; margin-left: 25%; padding-top: 5%;"
 							name="recruitForm" id="recruitForm">
 							<div class="form-group">
-								<div class="col-md-4 text-right" style="margin-top: 1%">
+								<div class="col-md-4 text-right " style="margin-top: 1%">
 									<h3>招聘标题:</h3>
 								</div>
 								<div class="col-md-7">
 									<input name="organizationTitle" id="organizationTitle"
-										type="text" id="organization" style='font-size: 18px;'
+										type="text" style='font-size: 18px;'
 										placeholder="招聘标题">
 								</div>
 							</div>

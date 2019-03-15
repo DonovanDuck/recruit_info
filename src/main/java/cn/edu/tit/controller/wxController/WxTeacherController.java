@@ -173,6 +173,7 @@ public class WxTeacherController {
 			userId = user.getUserId();
 			 password = request.getParameter("newPassword");
 			if(!"".equals(userId) || !"".equals(password)){
+				password = Common.eccryptMD5(password);
 				userService.modifyPassword(userId, password);
 			}
 			ret.put("status", "OK");
@@ -218,10 +219,11 @@ public class WxTeacherController {
 	@RequestMapping(value="searchRecruit",method= {RequestMethod.GET})
 	public Map<String, Object> searchRecruit(HttpServletRequest request,@RequestParam(value="search") String search) throws Exception {
 		Map<String, Object> ret = new HashMap<String, Object>();
+		Integer index = Integer.parseInt(request.getParameter("index"));
 		List<RecruitInfo> list = new ArrayList<RecruitInfo>();
 		try {
 			//获取招聘信息
-			list = userService.searchRecruit(search);
+			list = userService.searchRecruit(search, index);
 			for(RecruitInfo re : list){ // 获取每次招聘的相关职位信息
 				List<Position> positionList = new ArrayList<>();
 				positionList = userService.getPositionByRecruitId(re.getRecruitId());
@@ -338,11 +340,14 @@ public class WxTeacherController {
 			request.setCharacterEncoding("utf-8");
 			String positonName = request.getParameter("positionName");
 			String recruitId = request.getParameter("recruitId");
-			
 			List<Apply> applList = new ArrayList<Apply>();
-//			List<Position> occupationApplicantLsit = new ArrayList<Position>();
+			Position position = new Position();
 			Integer numAll, numAllToday, numDoctor, numDoctorToday, numMaster, numMasterToday, numBachelor,
-					numBachelorToday, numInSide, numInSideToday,numFirstSchool,numFirstSchoolToday,numFirstMajor,numFirstMajorToday;
+			numBachelorToday, numInSide, numInSideToday,numFirstSchool,numFirstSchoolToday,numFirstMajor,numFirstMajorToday,
+					numFirstSchoolInUndergraduate,numFirstSchoolInUndergraduateToday,numFirstMajorInUndergraduate,numFirstMajorInUndergraduateToday,
+					numFirstSchoolInPastgraduate,numFirstSchoolInPastgraduateToday,numFirstMajorInPastgraduate,numFirstMajorInPastgraduateToday,
+					numFirstSchoolInDoctor,numFirstSchoolInDoctorToday,numFirstMajorInDoctor,numFirstMajorInDoctorToday;
+
 			// 获取今日时间
 			Date date = new Date();// 取时间
 			Calendar calendar = new GregorianCalendar();
@@ -351,7 +356,9 @@ public class WxTeacherController {
 			date = calendar.getTime(); // 这个时间就是日期往后推一天的结果
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			String dateString = formatter.format(date);
-
+			
+			position = userService.getPositionByPositionNameAndRecruitId(recruitId, positonName);
+			
 			numAllToday = userService.applyNumToday(recruitId, dateString, positonName); // 今天报名人数
 			numAll = userService.applyNum(recruitId, positonName);// 总报名人数
 			numBachelor = userService.applyNumBachelor(recruitId, positonName);// 总学士人数
@@ -362,12 +369,25 @@ public class WxTeacherController {
 			numDoctorToday = userService.applyNumDoctorToday(recruitId, dateString, positonName);// 今日总博士人数
 			numInSide = userService.applyNumInSide(recruitId, positonName);// 疆内人数
 			numInSideToday = userService.applyNumInSideToday(recruitId, dateString, positonName);// 今日疆内人数
+			numFirstSchoolInUndergraduate = userService.applyNumFirstSchoolInUndergraduate(recruitId, positonName); //本科双一流总数
+			numFirstSchoolInUndergraduateToday = userService.applyNumFirstSchoolInUndergraduateToday(recruitId, dateString, positonName); // 本科今日双一流数
+			numFirstMajorInUndergraduate = userService.applyNumFirstMajorInUndergraduate(recruitId, positonName); //本科双一流专业总数
+			numFirstMajorInUndergraduateToday = userService.applyNumFirstMajorInUndergraduateToday(recruitId, dateString, positonName); //本科今日双一流专业
+			numFirstSchoolInPastgraduate = userService.applyNumFirstSchoolInPastgraduate(recruitId, positonName); //研究生双一流总数
+			numFirstSchoolInPastgraduateToday = userService.applyNumFirstSchoolInPastgraduateToday(recruitId, dateString, positonName); //研究生今日双一流数
+			numFirstMajorInPastgraduate = userService.applyNumFirstMajorInPastgraduate(recruitId, positonName);  //研究生双一流专业总数
+			numFirstMajorInPastgraduateToday = userService.applyNumFirstMajorInPastgraduateToday(recruitId, dateString, positonName); //研究生今日双一流专业
+			numFirstSchoolInDoctor = userService.applyNumFirstSchoolInDoctor(recruitId, positonName);  //博士生双一流总数
+			numFirstSchoolInDoctorToday = userService.applyNumFirstSchoolInDoctorToday(recruitId, dateString, positonName); // 博士今日双一流数
+			numFirstMajorInDoctor  = userService.applyNumFirstMajorInDoctor(recruitId, positonName); //博士生双一流专业总数
+			numFirstMajorInDoctorToday = userService.applyNumFirstMajorInDoctorToday(recruitId, dateString, positonName); //博士生今日双一流专业
 			applList = userService.applyList(recruitId, positonName);// 报名表
 			System.out.println("recruitId = " + recruitId);
 			for (Apply apply : applList) {
 				System.out.println("Id=" + apply.getApplyId());
 				System.out.println("applyUserName=" + apply.getApplyUserName());
 			}
+			
 			ret.put("applList", applList);
 			ret.put("numInSideToday", numInSideToday);
 			ret.put("numInSide", numInSide);
@@ -378,16 +398,27 @@ public class WxTeacherController {
 			ret.put("numBachelor", numBachelor);
 			ret.put("numAll", numAll);
 			ret.put("numAllToday", numAllToday);
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
+			ret.put("numFirstSchoolInUndergraduate",numFirstSchoolInUndergraduate );
+			ret.put("numFirstSchoolInUndergraduateToday",numFirstSchoolInUndergraduateToday );
+			ret.put("numFirstMajorInUndergraduate",numFirstMajorInUndergraduate );
+			ret.put("numFirstMajorInUndergraduateToday",numFirstMajorInUndergraduateToday );
+			ret.put("numFirstSchoolInPastgraduate",numFirstSchoolInPastgraduate );
+			ret.put("numFirstSchoolInPastgraduateToday",numFirstSchoolInPastgraduateToday );
+			ret.put("numFirstMajorInPastgraduate",numFirstMajorInPastgraduate );
+			ret.put("numFirstMajorInPastgraduateToday",numFirstMajorInPastgraduateToday );
+			ret.put("numFirstSchoolInDoctor",numFirstSchoolInDoctor );
+			ret.put("numFirstSchoolInDoctorToday",numFirstSchoolInDoctorToday );
+			ret.put("numFirstMajorInDoctor",numFirstMajorInDoctor );
+			ret.put("numFirstMajorInDoctorToday",numFirstMajorInDoctorToday );
+			ret.put("position", position);
+		} catch (Exception e) {
+			// TODO: handle exception
 			e.printStackTrace();
 		}
-		
 
 		return ret;
 
 	}
-	
 	
 	/**
 	 * 获取openid
