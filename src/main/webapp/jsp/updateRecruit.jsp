@@ -306,7 +306,7 @@ function updateFile(element){
 									<h3>招聘文件:</h3>
 								</div>
 								<div class="col-md-7" style="padding-top: 1%;">
-									<c:if test="${recruit.accessory !=null}">
+									<c:if test="${not empty recruit.accessory}">
 										<a
 											href="${pageContext.request.contextPath}/user/resourceDownload?filePath=${recruit.accessory }">
 											<button type="button" class="btn btn-info btn-sm">文件下载</button>
@@ -316,7 +316,7 @@ function updateFile(element){
 										<input name="upFile" type="file" id="upFile"
 											multiple="multiple" style="display: none">
 									</c:if>
-									<c:if test="${recruit.accessory ==null}">
+									<c:if test="${empty recruit.accessory}">
 										<input name="upFile" type="file" id="upFile"
 											multiple="multiple">
 									</c:if>
