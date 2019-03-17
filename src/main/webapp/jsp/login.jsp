@@ -18,6 +18,7 @@
 	session.setAttribute("_csrf", _csrf);
 %>
 <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 <script>
 	$(document).ready(function() {
 
@@ -42,6 +43,39 @@
 		return true;
 	}
 </script>
+<script type="text/javascript">
+function submitButton(){
+	var juge = true;
+	var employeeNum = $("#employeeNum").val();
+	var password = $("#password").val();
+			 $.ajax({
+				async : false,
+				cache : false,
+				url : "${pageContext.request.contextPath}/user/ajaxCheckLogin",
+				data : {
+					'phoneNum' : employeeNum,
+					'password' : password			
+				},
+				type : "POST",
+				dataType : "text",
+				success : function(result) {
+					//alert(eval(result));
+					if (eval(result) == "ERROR") {
+						alert("用户名或密码错误！");
+						juge = false;
+					} 
+				}
+			});
+			if(juge){
+				$("#myform").submit();
+			}  
+}
+
+function keyLogin(){
+	  if (event.keyCode==13)   //回车键的键值为13
+		  submitButton();  //调用登录按钮的登录事件
+	}
+</script>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/login.css" type="text/css">
 <link rel="stylesheet"
@@ -49,7 +83,7 @@
 	type="text/css">
 
 </head>
-<body id="body">
+<body id="body" onkeydown="keyLogin();">
 	<div class="Card">
 		<div class="card_top">
 			<div class="icon_banner">新疆&nbsp;&nbsp;&nbsp;招聘信息系统</div>
@@ -93,7 +127,7 @@
 								<a href="">忘记密码</a>
 							</div>
 						</div>
-						<button type="submit" class="submit">登录</button>
+						<button type="button" class="submit" onclick="submitButton()">登录</button>
 						<input type="hidden" name="_csrf" value="<%=_csrf%>" />
 					</form>
 				</div>

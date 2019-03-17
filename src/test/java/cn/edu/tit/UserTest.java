@@ -14,6 +14,7 @@ import com.alibaba.fastjson.JSONObject;
 
 import cn.edu.tit.bean.Apply;
 import cn.edu.tit.bean.Material;
+import cn.edu.tit.bean.Organization;
 import cn.edu.tit.bean.Position;
 import cn.edu.tit.bean.RecruitInfo;
 import cn.edu.tit.bean.User;
@@ -35,8 +36,7 @@ public class UserTest {
 
 	@Test
 	public void Test() throws Exception {
-		
-		System.out.println(Common.eccryptMD5("1"));
+	userDao.bandOpenId("1", "D2EBF54A4CD041E692811B7C52BF4557");
 		
 	}
 	}

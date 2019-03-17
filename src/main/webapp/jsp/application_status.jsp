@@ -87,7 +87,7 @@
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toMainPage"
 						class="waves-effect waves-dark">招聘信息</a></li>
-					<c:if test="${sessionScope.User.authority == 2 }">
+					<c:if test="${sessionScope.User.authority == 0 || sessionScope.User.authority == 10 ||sessionScope.User.authority == 20 }">
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toUserInfo"
 						class="waves-effect waves-dark">用户管理</a></li>
@@ -110,9 +110,9 @@
 								<!-- 页头 -->
 								<!-- 页头 -->
 								<div class="titleMain">
-									<h3 style="text-align: center; font-size: 31px;">太原工业学院招聘信息</h3>
+									<h3 style="text-align: center; font-size: 31px;">招聘信息</h3>
 									<h3>
-										<strong style="font-size: 31px;"> 招聘单位:</strong><strong style="font-size: 31px;"> 太员工业学院招生办</strong>
+										<strong style="font-size: 31px;"> 招聘单位:</strong><strong style="font-size: 31px;"> ${organizationName }</strong>
 									</h3>
 									<div style="height: 18px;width: 100%"></div>
 

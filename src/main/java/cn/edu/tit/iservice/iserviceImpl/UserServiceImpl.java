@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import cn.edu.tit.bean.Apply;
 import cn.edu.tit.bean.ApplyFamily;
 import cn.edu.tit.bean.Material;
+import cn.edu.tit.bean.Organization;
 import cn.edu.tit.bean.Position;
 import cn.edu.tit.bean.RecruitInfo;
 import cn.edu.tit.bean.User;
@@ -454,5 +455,65 @@ public class UserServiceImpl implements IUserService {
 	public Position getPositionByPositionNameAndRecruitId(String recruitId, String positionName) {
 		// TODO Auto-generated method stub
 		return iUserDao.getPositionByPositionNameAndRecruitId(recruitId, positionName);
+	}
+
+	@Override
+	public String getOrganizaionIdByName(String organizationName) {
+		// TODO Auto-generated method stub
+		return iUserDao.getOrganizaionIdByName(organizationName);
+	}
+
+	@Override
+	public void addOrganizaion(Organization orga) {
+		// TODO Auto-generated method stub
+		iUserDao.addOrganizaion(orga);
+	}
+
+	@Override
+	public List<String> getOrganizationName() {
+		// TODO Auto-generated method stub
+		return iUserDao.getOrganizationName();
+	}
+
+	@Override
+	public void deleteUser(String userId) {
+		// TODO Auto-generated method stub
+		iUserDao.deleteUser(userId);
+	}
+
+	@Override
+	public List<RecruitInfo> getAllRecruitInfo() {
+		// TODO Auto-generated method stub
+		return iUserDao.getAllRecruitInfo();
+	}
+
+	@Override
+	public List<User> getUserByOrganizationId(String organizationId) {
+		// TODO Auto-generated method stub
+		return iUserDao.getUserByOrganizationId(organizationId);
+	}
+
+	@Override
+	public String getOrganizationNameById(String organizationId) {
+		// TODO Auto-generated method stub
+		return iUserDao.getOrganizationNameById(organizationId);
+	}
+
+	@Override
+	public List<Organization> getOrganization() {
+		// TODO Auto-generated method stub
+		return iUserDao.getOrganization();
+	}
+
+	@Override
+	public List<RecruitInfo> getAllRecruitInfoBypage(int index) {
+		// TODO Auto-generated method stub
+		return iUserDao.getAllRecruitInfoBypage(index);
+	}
+
+	@Override
+	public void bandOpenId(String openId,String userId) {
+		// TODO Auto-generated method stub
+		iUserDao.bandOpenId(openId, userId);
 	}
 }

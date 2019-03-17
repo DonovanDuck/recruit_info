@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import cn.edu.tit.bean.Apply;
 import cn.edu.tit.bean.ApplyFamily;
 import cn.edu.tit.bean.Material;
+import cn.edu.tit.bean.Organization;
 import cn.edu.tit.bean.Position;
 import cn.edu.tit.bean.RecruitInfo;
 import cn.edu.tit.bean.User;
@@ -220,5 +221,69 @@ public interface IUserService {
 	 * @return
 	 */
 	public List<String> getPositionNameByorganizationId(String organizationId);
+	
+	/**
+	 * 通过公司名查公司id
+	 * @param organizationName
+	 * @return
+	 */
+	public String getOrganizaionIdByName(String organizationName);
+	
+	/**
+	 * 添加公司
+	 * @param orga
+	 */
+	public void addOrganizaion(Organization orga);
+	
+	/**
+	 * 获取所有公司名
+	 * @return
+	 */
+	public List<String> getOrganizationName();
+	
+	/**
+	 * 删除用户
+	 * @param userId
+	 */
+	public void deleteUser(String userId);
+	
+	/**
+	 * 查询所有招聘信息
+	 * @return
+	 */
+	public List<RecruitInfo> getAllRecruitInfo();
+	
+	/**
+	 * 通过单位id查员工
+	 * @param organizationId
+	 * @return
+	 */
+	public List<User> getUserByOrganizationId(String organizationId);
+	
+	/**
+	 * 通过单位id查名字
+	 * @param organizationId
+	 * @return
+	 */
+	public String getOrganizationNameById(String organizationId);
+	
+	/**
+	 * 获取所有公司
+	 * @return
+	 */
+	public List<Organization> getOrganization();
+	
+	/**
+	 * 分页获取招聘信息
+	 * @param index
+	 * @return
+	 */
+	public List<RecruitInfo> getAllRecruitInfoBypage(int index);
+	
+	/**
+	 * 为用户绑定openId
+	 * @param openId
+	 */
+	public void bandOpenId(String openId ,String userId);
 
 }

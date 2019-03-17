@@ -62,7 +62,7 @@
 </script>
 <script type="text/javascript">
 $(function(){
-	if(${sessionScope.User.authority }==1)//如果报错，为正常，不影响功能
+	if(${sessionScope.User.authority }==10 || ${sessionScope.User.authority }==20)//如果报错，为正常，不影响功能
 	{
 	$("#addButton").css("display","block");
 	};
@@ -114,7 +114,7 @@ function CurentTime(time)
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toMainPage"
 						class="waves-effect waves-dark">招聘信息</a></li>
-					<c:if test="${sessionScope.User.authority == 2 }">
+					<c:if test="${sessionScope.User.authority == 0 || sessionScope.User.authority == 10 ||sessionScope.User.authority == 20 }">
 						<li class="text-left"><a
 							href="${pageContext.request.contextPath}/user/toUserInfo"
 							class="waves-effect waves-dark">用户管理</a></li>
@@ -130,13 +130,16 @@ function CurentTime(time)
 			<div id="page-inner">
 				<div class="col-md-12">
 					<div class="card">
+						<div style="height: 42px;width: 200px;position: relative;left: 24px;top: 10px;font-size: 18px;">
+							<label style="color: #000;">欢迎：${sessionScope.User.userName }</label>
+						</div>
 						<div class="card-action text-center" style="padding-bottom: 0%">
 							<h3>${sessionScope.User.organizationName }</h3>
 						</div>
 						<div class="card-content">
 							<div class="table-responsive" style="overflow-x: hidden;">
 								<div class="col-md-7" style="display: none" id="addButton"
-									name=“addButton”>
+									name="addButton">
 									<a
 										href="${pageContext.request.contextPath}/user/toPublishRcruitPage"
 										style="font-size: 20px">
@@ -148,14 +151,14 @@ function CurentTime(time)
 									id="dataTables-example" style="margin-top: -1%">
 									<thead>
 										<tr>
-											<th class="text-center">编号</th>
-											<th class="text-center">招聘标题</th>
-											<th class="text-center">招聘单位</th>
-											<th class="text-center">报名开始时间</th>
-											<th class="text-center">报名截止时间</th>
-											<th class="text-center">发布时间</th>
-											<th class="text-center">发布人</th>
-											<th class="text-center"></th>
+											<th class="text-center" style="width: 50px;">编号</th>
+											<th class="text-center" style="width: 144px;">招聘标题</th>
+											<th class="text-center" style="width: 112px;">招聘单位</th>
+											<th class="text-center" style="width: 80px;">报名开始时间</th>
+											<th class="text-center" style="width: 80px;">报名截止时间</th>
+											<th class="text-center" style="width: 80px;">发布时间</th>
+											<th class="text-center" style="width: 80px;">发布人</th>
+											<th class="text-center" style="width: 331px;height: 60px"></th>
 										</tr>
 									</thead>
 									<tbody id="asds">
@@ -164,13 +167,12 @@ function CurentTime(time)
 											<tr>
 												<td class="text-center" style="padding-top: 1%;">${requestScope.offset+status.index+1}</td>
 												<td class="text-center" style="padding-top: 1%;">${list.recruitInfo }</td>
-												<td class="text-center" style="padding-top: 1%;">${list.organization }</td>
+												<td class="text-center" style="padding-top: 1%;">${onameList[status.index] }</td>
 												<td class="text-center" style="padding-top: 1%;">${list.startTime }</td>
 												<td class="text-center" style="padding-top: 1%;">${list.endTime }</td>
 												<td class="text-center" style="padding-top: 1%;">${list.endTime }</td>
-												<td class="text-center" style="padding-top: 1%;">${list.publisher }</td>
-												<td class="text-center"><c:if
-														test="${sessionScope.User.authority == 0}">
+												<td class="text-center" style="padding-top: 1%;">${list.publisherName }</td>
+												<td class="text-center" style="width: 331px;height: 60px">
 														<a
 															href="${pageContext.request.contextPath}/user/toConsultRecuit?recuritId=${list.recruitId }"
 															class="waves-effect waves-dark" style="font-size: 20px">
@@ -181,7 +183,7 @@ function CurentTime(time)
 															</button>
 														</a>
 
-													</c:if> <c:if test="${sessionScope.User.authority==1 }">
+													 <c:if test="${((sessionScope.User.authority == 10 || sessionScope.User.authority == 20) &&  sessionScope.User.organizationId == list.organization) || sessionScope.User.authority == 0}">
 													<c:if test="${systemTime < list.endTime }">
 														<a
 															href="${pageContext.request.contextPath}/user/toUpdateRecuit?recuritId=${list.recruitId }"
@@ -204,14 +206,18 @@ function CurentTime(time)
 															</button>
 															</a>
 														</c:if>
-													</c:if> <a
+													</c:if> 
+													<c:if test="${sessionScope.User.authority != 21 || sessionScope.User.organizationId == list.organization }">
+													<a
 													href="${pageContext.request.contextPath}/user/toSignInInfo?recruitId=${list.recruitId }"
 													class="waves-effect waves-dark" style="font-size: 20px">
 														<button type="button" class="btn btn-default btn-lg"
 															style="padding-top: 4%;">
 															<small>查看报名情况</small>
 														</button>
-												</a></td>
+												</a>
+												</c:if>
+												</td>
 											</tr>
 										</c:forEach>
 									</tbody>

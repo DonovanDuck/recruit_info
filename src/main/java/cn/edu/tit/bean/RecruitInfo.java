@@ -21,11 +21,18 @@ public class RecruitInfo {
 	private Timestamp endTime; //截止时间
 	private String publisher; //发布人
 	private Timestamp publishTime; //发布时间
+	private String publisherName; //发布人名
 	
 	private List<Position> position; //招聘职位信息
 	
 	
 	
+	public String getPublisherName() {
+		return publisherName;
+	}
+	public void setPublisherName(String publisherName) {
+		this.publisherName = publisherName;
+	}
 	public List<Position> getPosition() {
 		return position;
 	}

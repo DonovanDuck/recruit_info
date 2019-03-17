@@ -12,6 +12,12 @@
 		<result column="password" property="password" />
 		<result column="authority" property="authority" />
 		<result column="phone_num" property="phoneNum" />
+		<result column="open_id" property="openId" />
+	</resultMap>
+	<resultMap type="cn.edu.tit.bean.Organization" id="organizationMap">
+		<id column="organization_id" property="organizaionId" />
+		<result column="organization_name" property="organizatinName" />
+		
 	</resultMap>
 	<resultMap type="cn.edu.tit.bean.Apply" id="applyMap">
 		<id column="apply_id" property="applyId" />
@@ -95,6 +101,7 @@
 		<result column="end_time" property="endTime" />
 		<result column="publisher" property="publisher" />
 		<result column="publish_time" property="publishTime" />
+		<result column="publisher_name" property="publisherName" />
 	</resultMap>
 	<!-- 结果集映射 -->
 	<resultMap type="cn.edu.tit.bean.Position" id="position">
@@ -224,10 +231,20 @@
 		order by publish_time desc;
 	</select>
 	
+	<!-- 查询所有招聘信息 -->
+	<select id="getAllRecruitInfo" resultMap="recruitInfo">
+		SELECT * from recruit_info order by publish_time desc;
+	</select>
+	
 	<!-- 分页获取招聘信息 -->
 	<select id="getRecruitInfoLimit" resultMap="recruitInfo">
 		SELECT * from recruit_info where organization =
-		#{organization} order by publish_time desc limit #{index},4;
+		#{organization} order by publish_time desc limit #{index},10;
+	</select>
+	
+	<!-- 分页获取全部招聘信息 -->
+	<select id="getAllRecruitInfoBypage" resultMap="recruitInfo">
+		SELECT * from recruit_info order by publish_time desc limit #{index},10;
 	</select>
 	
 	<select id="getUserByPhone" parameterType="String"
@@ -245,7 +262,7 @@
 	<update id="modifyUser">
 		update user set organization_name=#{organizationName}
 		, user_name =
-		#{userName}, authority = #{authority} where
+		#{userName}, authority = #{authority},phone_num = #{phoneNum} where
 		user_id=#{userId};
 	</update>
 
@@ -624,4 +641,44 @@
 		where organization=#{organizationId} and recruit_id =
 		#{recuritId};
 	</delete>
+	
+	<!-- 通过公司名查公司id -->
+	<select id="getOrganizaionIdByName" resultType="java.lang.String">
+		select organization_id from organization where organization_name = #{organizationName};
+	</select>
+	
+	<!-- 添加公司 -->
+	<insert id="addOrganizaion">
+		insert into organization(organization_id, organization_name) values(#{organizaionId},#{organizatinName}); 
+	</insert>
+	
+	<!-- 获取所有公司名 -->
+	<select id="getOrganizationName" resultType="java.lang.String">
+		select organization_name from organization;
+	</select>
+	
+	<!-- 删除用户 -->
+	<delete id="deleteUser">
+		delete from user where user_id = #{userId};
+	</delete>
+	
+	<!-- 通过单位id查员工 -->
+	<select id="getUserByOrganizationId" resultMap="userMap">
+		select * from user where organization_id = #{organizationId};
+	</select>
+	
+	<!-- 通过单位id查名字 -->
+	<select id="getOrganizationNameById" resultType="java.lang.String">
+		select organization_name from organization where organization_id = #{organizationId};
+	</select>
+	
+	<!-- 查所有公司 -->
+	<select id="getOrganization" resultMap="organizationMap">
+		select * from organization;
+	</select>
+	<!-- 为用户绑定openId -->
+	<update id="bandOpenId">
+		update user set open_id = #{openId} where user_id = #{userId};
+	</update>
+	
 </mapper>

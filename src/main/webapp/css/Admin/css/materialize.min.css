@@ -5751,7 +5751,7 @@ textarea.materialize-textarea {
     user-select: none;
 }
 
-[type="radio"] + label:before, [type="radio"] + label:after {
+/* [type="radio"] + label:before, [type="radio"] + label:after {
     content: '';
     position: absolute;
     left: 0;
@@ -5827,7 +5827,7 @@ textarea.materialize-textarea {
 [type="radio"]:disabled:checked + label:after {
     background-color: rgba(0, 0, 0, 0.26);
     border-color: #BDBDBD
-}
+} */
 
 form p {
     margin-bottom: 10px;
@@ -5857,7 +5857,7 @@ form p:last-child {
     -ms-user-select: none;
 } */
 
-[type="checkbox"] + label:before, [type="checkbox"]:not(.filled-in) + label:after {
+/* [type="checkbox"] + label:before, [type="checkbox"]:not(.filled-in) + label:after {
     content: '';
     position: absolute;
     top: 0;
@@ -6028,7 +6028,7 @@ form p:last-child {
     -moz-user-select: none;
     -khtml-user-select: none;
     -ms-user-select: none
-}
+} */
 
 .switch label {
     cursor: pointer

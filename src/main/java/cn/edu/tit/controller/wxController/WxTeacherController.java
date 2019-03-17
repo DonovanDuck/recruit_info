@@ -2,12 +2,15 @@ package cn.edu.tit.controller.wxController;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,6 +53,7 @@ import com.alibaba.fastjson.JSONObject;
 
 import cn.edu.tit.bean.Apply;
 import cn.edu.tit.bean.Material;
+import cn.edu.tit.bean.Organization;
 import cn.edu.tit.bean.Position;
 import cn.edu.tit.bean.RecruitInfo;
 import cn.edu.tit.bean.TemplateData;
@@ -106,14 +110,6 @@ public class WxTeacherController {
 				User user = userService.getUser(userId, password);
 				
 				if (user != null) {
-//					if (password != user.getPassword()) {
-//						ret.put("user", user);
-//						return ret;
-//					} else {
-//						ret.put("status", "ERROR");
-//						ret.put("msg", "密码错误");
-//						return ret;
-//					}
 					ret.put("user", user);
 					return ret;
 				} 
@@ -140,20 +136,64 @@ public class WxTeacherController {
 	@RequestMapping(value="addUser")
 	public Map<String, Object> addUser(HttpServletRequest request){
 		Map<String, Object> ret = new HashMap<String, Object>();
-		try {
-			User user = new User();
-			user.setUserId(Common.uuid());
-			user.setPassword(Common.eccryptMD5("123456"));
-			user.setOrganizationName(request.getParameter("organization"));
-			user.setUserName(request.getParameter("userName"));
-			user.setWechartNum(request.getParameter("weChat"));
-			userService.addUser(user);
-			ret.put("status", "OK");
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-			ret.put("status", "ERROR");
-		}
+		//先查有无用户，若有此次添加的是二级公司，若无则是一级公司
+				List<Organization> orList = userService.getOrganization();
+				try {
+					User user = new User();
+					user.setUserId(Common.uuid());
+					user.setPassword(Common.eccryptMD5("123456"));
+					user.setUserName(request.getParameter("userName"));
+					user.setWechartNum(request.getParameter("weChat"));
+					user.setPhoneNum(request.getParameter("phoneNum"));
+					String organizationName = request.getParameter("organization");
+					user.setOrganizationName(organizationName);
+					if(orList.isEmpty()){ // 用户单位为空，公司为一级公司，id：01
+						user.setOrganizationId("01");
+						Organization orga = new Organization("01", organizationName);
+						userService.addOrganizaion(orga); // 添加公司
+						if ("on".equals(request.getParameter("authority")))
+							user.setAuthority(10);
+						else
+							user.setAuthority(11);
+					}
+					else{ 
+						// 通过获取的id是否为空判断此处填写的公司名是已有的还是新添加的，已有的将原公司id赋予，新添加的给新的id。
+						String organizationId = userService.getOrganizaionIdByName(organizationName);
+						if("".equals(organizationId) || organizationId == null || organizationId == ""){
+							 organizationId = Common.uuid();
+							user.setOrganizationId(organizationId);
+							 Organization orga = new Organization(organizationId, organizationName);
+							 userService.addOrganizaion(orga); //添加新公司
+							 if ("on".equals(request.getParameter("authority")))
+									user.setAuthority(20);
+								else
+									user.setAuthority(21);
+						}
+						else{ // id存在，说明公司已存在
+							user.setOrganizationId(organizationId);
+							//判断此次添加的是否为一级公司成员而设置相应权限
+							if("01".equals(organizationId)){
+								if ("on".equals(request.getParameter("authority")))
+									user.setAuthority(10);
+								else
+									user.setAuthority(11);
+							}
+							else{
+								if ("on".equals(request.getParameter("authority")))
+									user.setAuthority(20);
+								else
+									user.setAuthority(21);
+							}
+						}
+						}
+						
+					userService.addUser(user);
+					ret.put("status", "OK");
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+					ret.put("status", "ERROR");
+				}
 		return ret;
 	}
 	
@@ -221,9 +261,12 @@ public class WxTeacherController {
 		Map<String, Object> ret = new HashMap<String, Object>();
 		Integer index = Integer.parseInt(request.getParameter("index"));
 		List<RecruitInfo> list = new ArrayList<RecruitInfo>();
+		
 		try {
 			//获取招聘信息
-			list = userService.searchRecruit(search, index);
+			User publisher = (User) request.getSession().getAttribute("User");
+			
+				list = userService.getAllRecruitInfoBypage(index); // 获取所有招聘信息
 			for(RecruitInfo re : list){ // 获取每次招聘的相关职位信息
 				List<Position> positionList = new ArrayList<>();
 				positionList = userService.getPositionByRecruitId(re.getRecruitId());
@@ -245,19 +288,58 @@ public class WxTeacherController {
 	@RequestMapping(value="publishRcruit")
 	public Map<String, Object> publishRcruit(HttpServletRequest request) throws Exception {
 		Map<String, Object> ret = new HashMap<String, Object>();
+		Timestamp ts = new Timestamp(System.currentTimeMillis());
 		try {
-			String recruitId = Common.uuid();
+			String recruitId = Common.uuid();//设置招聘信息的ID
 			Object[] obj = Common.fileFactory(request,recruitId);
 			Map<String, Object> formdata = (Map<String, Object>) obj[1];
 			List<File> returnFileList = (List<File>) obj[0]; // 要返回的文件集合
 			RecruitInfo recruit = new RecruitInfo();
-			recruit.setOrganization((String) formdata.get("organization"));
-			recruit.setPublisher("111");
-			recruit.setEndTime(timeConverter((String)formdata.get("endTime")));
-			recruit.setPublishTime(new Timestamp(System.currentTimeMillis()));
-			recruit.setRecruitId(recruitId);
-			recruit.setRecruitInfo((String) formdata.get("recruitInfo"));
-			recruit.setStartTime(timeConverter((String)formdata.get("startTime")));
+			User publisher = (User) request.getSession().getAttribute("User");
+			String publisherId = publisher.getUserId();
+			recruit.setOrganization(publisher.getOrganizationId());//设置招聘单位
+			recruit.setPublisher(publisherId);//发布者ID
+			ts = Timestamp.valueOf((String)formdata.get("endTime"));  
+			recruit.setEndTime(ts);//设置结束时间
+			recruit.setPublishTime(new Timestamp(System.currentTimeMillis()));//设置发布时间
+			recruit.setRecruitId(recruitId);//设置招聘信息ID
+			recruit.setRecruitInfo((String) formdata.get("organizationTitle"));//设置招聘标题
+			ts = Timestamp.valueOf((String)formdata.get("startTime"));  
+			recruit.setStartTime(ts);//设置开始时间
+			/**
+			 * 处理前台的职位数据，共四个数据
+			 * */
+			String pos = (String)formdata.get("positionContent");
+			String nu =  (String)formdata.get("positionNumber");
+			String pro = (String)formdata.get("positionProfession");
+			String comp = (String)formdata.get("compilationNature");
+			String[] positon = pos.split(",");
+			String[] num = nu.split(",");
+			String[] profetional = pro.split(",");
+			String[] compilationNature = comp.split(",");
+			Position po;
+			List<Position> listPo = new ArrayList<Position>();
+			//判断，如果输入人数为空，则默认0人
+			for (int i = 0; i < num.length; i++) {
+				if(num[i]==""||num[i]==null)
+					num[i]="0";
+			}
+			for (int i = 0; i < positon.length; i++) {
+				po = new Position();
+				po.setCompilationNature(compilationNature[i]);
+				po.setId(Common.uuid());
+				po.setOrganization(publisher.getOrganizationId());
+				po.setPositionNum(Integer.parseInt(num[i]));
+				po.setPositonName(positon[i]);
+				po.setProfessionalOrientation(profetional[i]);
+				po.setRecruitId(recruitId);
+				listPo.add(po);
+			}
+			if(positon.length!=0)
+			{
+				userService.publishPosition(listPo);//添加职位
+			}
+			/**结束*/
 			if(!returnFileList.isEmpty())
 			{
 				recruit.setAccessory(returnFileList.get(0).getPath());
@@ -428,8 +510,17 @@ public class WxTeacherController {
 	 * @return
 	 */
 	@RequestMapping(value="getWxUserOpenid")
-	public  Map<String, Object> getWxUserOpenid(@RequestParam(value="js_code")String js_code, @RequestParam(value="appid")String appid, 
+	public  Map<String, Object> getWxUserOpenid(HttpServletRequest request,@RequestParam(value="js_code")String js_code, @RequestParam(value="appid")String appid, 
 			@RequestParam(value="secret")String secret) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		//如果是工作人员，则会传手机号，如果数据库里找不到，不给登录，并提示
+		String phone = "";
+		phone = request.getParameter("phone");
+		User user = userService.getUserByPhone(phone);
+		if(user == null){
+			map.put("img", "查无此人，请检查电话号码是否正确！");
+			return map;
+		}
 	    //拼接url
 		StringBuilder url = new StringBuilder("https://api.weixin.qq.com/sns/jscode2session?");
 		url.append("appid=");//appid设置
@@ -439,7 +530,6 @@ public class WxTeacherController {
 		url.append("&js_code=");//code设置
 		url.append(js_code);
 		url.append("&grant_type=authorization_code");
-		Map<String, Object> map = null;
 		try {
 	        HttpClient client =HttpClientBuilder.create().build();//构建一个Client
 	        HttpGet get = new HttpGet(url.toString());    //构建一个GET请求
@@ -450,6 +540,11 @@ public class WxTeacherController {
 	        net.sf.json.JSONObject res = net.sf.json.JSONObject.fromObject(content);//把信息封装为json
 		    //把信息封装到map
 		    map = Common.parseJSON2Map(res);//这个小工具的代码在下面
+		    // 将openId和用户绑定
+		    String openId = (String) map.get("openId");
+		    if("".equals(openId) && openId !=null){
+		    	userService.bandOpenId(openId,user.getUserId());
+		    }
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}
@@ -569,5 +664,58 @@ public class WxTeacherController {
 			return (String) resultJson.get("access_token");
 		}
 	
+	/**
+	 * 下载文件
+	 * 
+	 * @param id
+	 *            appid
+	 * @param response
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "download")
+	public void download( HttpServletResponse response, HttpServletRequest request)
+			throws UnsupportedEncodingException {
+		request.setCharacterEncoding("utf-8");
+		String filepath = "";
+		filepath = request.getParameter("path");
+
+		File file = new File(filepath);
+		InputStream inputStream = null;
+		OutputStream outputStream = null;
+		byte[] b = new byte[1024];
+		int len = 0;
+		try {
+			inputStream = new FileInputStream(file);
+			outputStream = response.getOutputStream();
+
+			response.setContentType("application/force-download");
+			String filename = file.getName();
+			response.addHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(filename, "UTF-8"));
+			response.setContentLength((int) file.length());
+
+			while ((len = inputStream.read(b)) != -1) {
+				outputStream.write(b, 0, len);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (inputStream != null) {
+				try {
+					inputStream.close();
+					inputStream = null;
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if (outputStream != null) {
+				try {
+					outputStream.close();
+					outputStream = null;
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 
 }

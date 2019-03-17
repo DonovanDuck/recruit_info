@@ -55,10 +55,11 @@
 		height: 70px;
    		width: 300px;
    		position: relative;
-    left: 26%;
+    left: 38%;
+        top: -11px;
 	}
 	.personalInfo_main{
-		
+		padding-top: 4%;
 	}
 	.personalInfo_form{
 		width: 500px;
@@ -110,7 +111,42 @@
 	})
 	
 </script>
-
+<script type="text/javascript">
+function submitButton(){
+	if(confirm("您确定修改密码吗？")){
+		 var juge = true;
+		 var password = $("#password").val();
+			 $.ajax({
+				async:false,
+				cache:false,
+				url:"${pageContext.request.contextPath}/user/ajaxCheckPassword",
+				data:{'password':password},
+				type:"POST",
+				dataType:"text",
+				success:function(result) {
+					//alert(eval(result));
+					if(eval(result) == "ERROR"){
+						alert("原密码输入错误！");
+						juge = false;
+					}
+				}
+			});  
+			 var newPassword = $("#newPassword").val();
+			var confirmNewPassword = $("#confirmNewPassword").val();
+			if(newPassword != confirmNewPassword){
+				alert("两次密码输入不一致！");
+				juge = false;
+			}
+			if(newPassword=="" ||confirmNewPassword=="" ){
+				alert("字段不能为空！");
+				juge = false;
+			}
+			if(juge){ 
+				$("#MPform").submit();
+			}  
+	}
+}
+</script>
 </head>
 <body>
 <div id="wrapper">
@@ -126,7 +162,7 @@
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toMainPage"
 						class="waves-effect waves-dark">招聘信息</a></li>
-					<c:if test="${sessionScope.User.authority == 2 }">
+					<c:if test="${sessionScope.User.authority == 0 || sessionScope.User.authority == 10 ||sessionScope.User.authority == 20}">
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toUserInfo"
 						class="waves-effect waves-dark">用户管理</a></li>
@@ -148,7 +184,7 @@
 			<h2>${sessionScope.User.userName }个人信息</h2>
 		</div>
 		<div class="personalInfo_form">
-			<form class="form-horizontal" action="${pageContext.request.contextPath}/user/modifyPassword">
+			<form class="form-horizontal" action="${pageContext.request.contextPath}/user/modifyPassword" id="MPform">
 				<div class="form-group">
 				    <label for="password" class="col-sm-2 control-label" style="padding-right: 31px;color: #000">原密码</label>
 				    <div class="col-sm-10">
@@ -169,10 +205,10 @@
   				</div>
   				<div class="form-group">
 				    <div class="col-sm-offset-2 col-sm-10 confirm" style="float: left">
-				      <button type="submit" class="btn btn-success">确定</button>
+				      <button type="button" onclick="submitButton()" class="btn btn-success">确定</button>
 				    </div>
 				    <div class="col-sm-offset-2 col-sm-10 confirm">
-				      <button type="text" class="btn btn-default">取消</button>
+				      <button type="button" class="btn btn-default" onclick="history.back(-1)" >取消</button>
 				    </div>
 				</div>
 			</form>

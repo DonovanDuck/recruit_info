@@ -192,7 +192,7 @@ function updateFile(element){
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toMainPage"
 						class="waves-effect waves-dark">招聘信息</a></li>
-					<c:if test="${sessionScope.User.authority == 2 }">
+					<c:if test="${sessionScope.User.authority == 0 || sessionScope.User.authority == 10 ||sessionScope.User.authority == 20 }">
 						<li class="text-left"><a
 							href="${pageContext.request.contextPath}/user/toUserInfo"
 							class="waves-effect waves-dark">用户管理</a></li>
@@ -354,14 +354,6 @@ function updateFile(element){
 										class="glyphicon glyphicon-th"></span></span>
 								</div>
 							</div>
-							<div class="form-group">
-								<div class="col-sm-offset-3">
-									<button type="button" class="btn btn-primary"
-										onclick="submitButton()">提交</button>
-									<button type="reset" class="btn btn-primary"
-										onclick="history.go(-1)" style="margin-left: 47%">取消</button>
-								</div>
-							</div>
 							<!-- 隐藏内容，向后台传值 -->
 							<div style="display: none">
 								<!-- 职位内容 -->
@@ -376,6 +368,14 @@ function updateFile(element){
 									id="compilationNature">
 							</div>
 						</form>
+						<div class="form-group">
+								<div class="col-sm-offset-3" style="margin-left: 38%;">
+									<button type="button" class="btn btn-primary"
+										onclick="submitButton()">提交</button>
+									<button type="reset" class="btn btn-primary"
+										onclick="history.back(-1)" style="margin-left: 24%">取消</button>
+								</div>
+							</div>
 					</div>
 				</div>
 			</div>

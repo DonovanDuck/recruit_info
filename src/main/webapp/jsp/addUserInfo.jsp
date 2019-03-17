@@ -11,36 +11,47 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link
-	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	rel="stylesheet">
-<link
-	href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
-	rel="stylesheet">
-<link
 	href="${pageContext.request.contextPath}/css/Admin/font-awesome.css"
 	rel="stylesheet" />
 <link
 	href="${pageContext.request.contextPath}/js/Admin/morris/morris-0.4.3.min.css"
 	rel="stylesheet" />
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-	rel="stylesheet">
-<link
-	href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
-	rel="stylesheet">
-	
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/Admin/css/materialize.min.css"
+	media="screen,projection" />
 <link href="${pageContext.request.contextPath}/css/Admin/bootstrap.css"
 	rel="stylesheet">
 <link
 	href="${pageContext.request.contextPath}/css/Admin/custom-styles.css"
 	rel="stylesheet" />
+<link
+	href="${pageContext.request.contextPath}/css/Admin/bootstrap-datetimepicker.css"
+	rel="stylesheet" />
+<link href='http://fonts.googleapis.com/css?family=Open+Sans'
+	rel='stylesheet' type='text/css' />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/Admin/css/cssCharts.css">
+
+<!-- js -->
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script
+	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/js/Admin/custom-scripts.js"></script>
+<script
+	src="${pageContext.request.contextPath}/js/Admin/bootstrap-datetimepicker.js"></script>
+<script
+	src="${pageContext.request.contextPath}/js/Admin/bootstrap-datetimepicker.zh-CN.js"></script>
+<script
+	src="${pageContext.request.contextPath}/js/Admin/materialize.min.js"></script>
 <title>添加用户信息</title>
 <style>
 	.addUserInfo_head{
 		height: 70px;
    		width: 190px;
    		position: relative;
-    left: 27%;
+    left: 38%;
+    top:-12px;
 	}
 	.addUserInfo_main{
 		margin: 60px;
@@ -52,6 +63,7 @@
 	}
 	.form-group{
 		margin-bottom: 40px;
+		color: #000;
 	}
 	.confirm{
 		width: 50px;
@@ -69,10 +81,45 @@
 			if(phoneNum == ""){
 				alert("电话不能为空！");
 			}
+			var reg = /(1[3-9]\d{9}$)/;
+			if(!reg.test(phoneNum)){
+				alert("请输入正确的电话格式！");
+			}
 		});
 	})
 	
 </script>
+
+<script type="text/javascript">
+function submitButton(){
+	 var juge = true;
+	var phoneNum = $("#phoneNum").val();
+	var reg = /(1[3-9]\d{9}$)/;
+	if(phoneNum == ""){
+		alert("电话不能为空！");
+		juge = false;
+	}
+	
+	if(!reg.test(phoneNum)){
+		alert("请输入正确的电话格式！");
+		juge = false;
+	}
+	var organization = $("#organization").val();
+	if(organization==""){
+		alert("单位不能为空！");
+		juge = false;
+	}
+	var name = $("#name").val();
+	if(name==""){
+		alert("负责人不能为空！");
+		juge = false;
+	}
+	if(juge){
+		$("#addForm").submit();
+	} 
+}
+</script>
+
 </head>
 <body>
 	<div id="wrapper">
@@ -88,7 +135,7 @@
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toMainPage"
 						class="waves-effect waves-dark">招聘信息</a></li>
-					<c:if test="${sessionScope.User.authority == 2 }">
+					<c:if test="${sessionScope.User.authority == 0 || sessionScope.User.authority == 10 ||sessionScope.User.authority == 20 }">
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toUserInfo"
 						class="waves-effect waves-dark">用户管理</a></li>
@@ -105,57 +152,68 @@
 				<div class="col-md-12">
 					<div class="card">
 						<div class="card-content " style="padding-top: 0%">
-	<div class="addUserInfo_main">
+	<div class="addUserInfo_main" style="padding-top: 38px">
 		<div class="addUserInfo_head">
 			<h2>添加用户信息</h2>
 		</div>
 		<div class="addUserInfo_form">
-			<form class="form-horizontal" action="${pageContext.request.contextPath}/user/addUser">
+			<form class="form-horizontal" action="${pageContext.request.contextPath}/user/addUser" id="addForm">
 				<div class="form-group">
-				    <label for="organization" class="col-sm-2 control-label" style="padding-right: 28px;">单位</label>
+				     <label for="organization" class="col-sm-2 control-label" style="padding-right: -1px;color: #000;">单位</label>
 				    <div class="col-sm-10">
-				      <input type="text" class="form-control" id="organization" name="organization"  placeholder="单位">
+				      <!-- <input type="text" class="form-control" id="organization" name="organization"  placeholder="单位"> -->
+				      
+													<input id="organization" style='font-size: 18px;'
+														name="organization" type="text" placeholder="单位"
+														list="positionlist">
+													<datalist id="positionlist">
+														<c:forEach items="${organizationList }" var="organizationName">
+															<option label="${organizationName }" value="${organizationName }" />
+														</c:forEach>
+													</datalist>
+						
+				    </div> 
+				    
+  				</div>
+  				<div class="form-group">
+				    <label for="principal" class="col-sm-2 control-label" style="color: #000;">员工</label>
+				    <div class="col-sm-10">
+				      <input type="text" class="form-control"  name="userName" id="name" placeholder="员工">
 				    </div>
   				</div>
   				<div class="form-group">
-				    <label for="principal" class="col-sm-2 control-label">负责人</label>
-				    <div class="col-sm-10">
-				      <input type="text" class="form-control" id="principal" name="userName" placeholder="负责人">
-				    </div>
-  				</div>
-  				<div class="form-group">
-				    <label for="WeChat" class="col-sm-2 control-label">微信号</label>
+				    <label for="WeChat" class="col-sm-2 control-label" style="color: #000;">微信号</label>
 				    <div class="col-sm-10">
 				      <input type="text" class="form-control" name="weChat" id="WeChat" placeholder="微信号">
 				    </div>
   				</div>
   				<div class="form-group">
-				    <label for="WeChat" class="col-sm-2 control-label">联系电话</label>
+				    <label for="WeChat" class="col-sm-2 control-label" style="color: #000;">联系电话</label>
 				    <div class="col-sm-10">
 				      <input type="text" class="form-control" name="phoneNum" id="phoneNum" placeholder="联系电话">
 				    </div>
   				</div>
+  				<c:if test="${sessionScope.User.authority == 0 }">
   				<div class="form-group">
 				    <div class="col-sm-offset-2 col-sm-10" style="position: relative;left: -95px;">
-				    <label for="WeChat" class="col-sm-2 control-label" style="margin-right: 30px;">权限</label>
+				    <label for="WeChat" class="col-sm-2 control-label" style="margin-right: 30px;color: #000;">权限</label>
 				      <div class="checkbox">
 				        <label>
-				          <input type="checkbox" name="authority"> 可发布招聘信息
+				          <input type="checkbox" name="authority"> 设为管理员
 				        </label>
 				      </div>
 				    </div>
 				  </div>
-  				
-  				
-  				<div class="form-group">
+				  </c:if>
+			</form>
+			<div class="form-group" style="height: 12px;">
 				    <div class="col-sm-offset-2 col-sm-10 confirm" style="float: left">
-				      <button type="submit" class="btn btn-success">确定</button>
+				      <button type="button" class="btn btn-success" onclick="submitButton()">确定</button>
 				    </div>
 				    <div class="col-sm-offset-2 col-sm-10 confirm">
-				      <button type="text" class="btn btn-default">取消</button>
+				      <button type="text" onclick="history.back(-1)" class="btn btn-default">取消</button>
 				    </div>
 				</div>
-			</form>
 		</div>
 	</div>
 	</div>

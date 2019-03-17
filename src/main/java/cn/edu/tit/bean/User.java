@@ -14,12 +14,22 @@ public class User {
 	private String password; //密码
 	private String phoneNum;//手机号
 	private Integer authority; // 权限 默认可查看用户信息0，可添加信息1
+	private String openId; // 用户微信open_id
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", userName=" + userName + ", wechartNum=" + wechartNum
 				+ ", organizationName=" + organizationName + ", organizationId=" + organizationId + ", password="
 				+ password + ", phoneNum=" + phoneNum + ", authority=" + authority + "]";
 	}
+	
+	public String getOpenId() {
+		return openId;
+	}
+
+	public void setOpenId(String openId) {
+		this.openId = openId;
+	}
+
 	public String getUserId() {
 		return userId;
 	}

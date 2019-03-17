@@ -56,7 +56,7 @@
 		height: 70px;
    		width: 135px;	
    		position: relative;
-    left: 248px;
+    left: 434px;
     top: 29px
 	}
 	.userInfo_addInfo{
@@ -71,18 +71,22 @@
 	}
 	.au_admin{
 		    color: #000;
-    font-size: 18px;
+    font-size: 14px;
     position: relative;
-    left: 77px;
+    left: 36px;
     top: 12px;
+	}
+	input{
+		font-size:10px;
+	  border: aliceblue;
 	}
 </style>
 <script>
 	function open1(ob) {
 		var id = $(ob).attr("name");
-		//alert(id);
+		var username = $("#username" + id).val(); 
+		if(confirm("您确定要重置"+username+"用户的密码吗？重置后密码的密码为：123456，提醒尽快修改密码，确保安全。")){
 		var userId = $("#" + id).val();
-		//alert(userId);
 		$.ajax({
 			async : false,
 			cache : false,
@@ -101,23 +105,78 @@
 				}
 			}
 		});
-
+	}
 	}
 </script>
 
 <script>
-	$(function() {
-
-		//当页面加载完成的时候，自动调用该方法
-		window.onload = function() {
-			alert(fff);
-			/* if(${status} == "OK")
-				alert("修改成功！");
-			if(${status} == "ERROR")
-				alert("修改失败！"); */
-		};
-	});
+	$(function(){
+		$("input[name='phoneNum']").blur(function(){
+			var id = $(this).attr("id");
+			var phoneNum = $("#"+id).val();
+			if(phoneNum == ""){
+				alert("电话不能为空！");
+			}
+			var reg = /^1[34578]\d{9}$/;
+			if(!reg.test(phoneNum)){
+				alert("请输入正确的电话格式！");
+			}
+		});
+	})
+	
 </script>
+
+<script type="text/javascript">
+function submitButton(ob){
+	var username = $("#username" + ob).val(); 
+	if(confirm("您确定修改"+username+"用户的信息吗？")){
+		 var juge = true;
+			var phoneNum = $("#phone"+ob).val();
+			if(phoneNum == ""){
+				alert("电话不能为空！");
+				juge = false;
+			}
+			var reg = /^1[34578]\d{9}$/;
+			if(!reg.test(phoneNum)){
+				alert("请输入正确的电话格式！");
+				juge = false;
+			}
+			
+			$.ajax({
+				async : false,
+				cache : false,
+				url : "${pageContext.request.contextPath}/user/ajaxCheckPhone",
+				data : {
+					'phoneNum' : phoneNum
+				},
+				type : "POST",
+				dataType : "text",
+				success : function(result) {
+					//alert(eval(result));
+					if (eval(result) == "ERROR") {
+						alert("此号码已经存在！请重新输入");
+						juge = false;
+					} 
+				}
+			});
+			
+			if(juge){
+				$("#modifyForm"+ob).submit();
+			} 
+	}
+}
+</script>
+
+<script type="text/javascript">
+function deleteUser(ob){
+	var username = $("#username" + ob).val(); 
+	var userId = $("#" + ob).val();
+	if(confirm("您确定删除"+username+"用户吗？")){
+		$("#deleteForm").submit();
+	}
+}
+</script>
+
 <script>
 	$(document).ready(function() {
 		$("#dataTables-example").dataTable();
@@ -141,7 +200,7 @@
 				<li class="text-left"><a
 					href="${pageContext.request.contextPath}/user/toMainPage"
 					class="waves-effect waves-dark">招聘信息</a></li>
-				<c:if test="${sessionScope.User.authority == 2 }">
+				<c:if test="${sessionScope.User.authority == 0 || sessionScope.User.authority == 10 ||sessionScope.User.authority == 20 }">
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toUserInfo"
 						class="waves-effect waves-dark">用户管理</a></li>
@@ -163,45 +222,72 @@
 			<h2>用户信息</h2>
 		</div>
 		<div class="userInfo_addInfo">
-			<a href="${pageContext.request.contextPath}/jsp/addUserInfo.jsp"><button class="btn btn-success" type="button">添加用户</button></a>
+			<a href="${pageContext.request.contextPath}/user/toAddUser"><button class="btn btn-success" type="button">添加用户</button></a>
 		</div>
 		<div class="userInfo_table">
 			<table class="table " >
 				<thead>
 					<tr>
-						<th>编号</th>
+						<th style="width: 80px;">编号</th>
 						<th>单位</th>
 						<th>负责人</th>
-						<th style="position: relative;padding-left: 91px;">权限</th>
+						<th>手机号</th>
+						<th style="position: relative;padding-left: 52px;">权限</th>
 						<th style="    padding-left: 42px;">修改</th>
 					</tr>
 				</thead>
 				<tbody>
 				<c:forEach items="${userList }" var="user" varStatus="status">
-				<form action="${pageContext.request.contextPath}/user/modifyUser">
 					<tr>
+					<form action="${pageContext.request.contextPath}/user/modifyUser" id="modifyForm${requestScope.offset+status.index+1}">
 						<td style="width: 62px;text-align: center;padding-top: 21px;">${requestScope.offset+status.index+1}
 							<input class="form-control" type="hidden" name="userId" id="${requestScope.offset+status.index+1}" value="${user.userId }">
 						</td>
 						<!-- <td style="width: 62px;">1</td> -->
-						<td class="userInfo_TD"><input class="form-control" type="text" name="organizationName" value="${user.organizationName }"></td>
-						<td class="userInfo_TD"><input class="form-control" type="text" name="userName" value="${user.userName }"></td>
-						<c:if test="${user.authority == 1 }">
-						<td class="userInfo_TD"><input class="form-control" type="checkbox" name="authority" checked="${user.authority }" /></td>
+						<td class="userInfo_TD"><input style="border: aliceblue;font-size: 14px;" class="form-control" type="text" id="orgaName${requestScope.offset+status.index+1 }" name="organizationName" value="${user.organizationName }"></td>
+						<td class="userInfo_TD"><input style="border: aliceblue;font-size: 14px;" class="form-control" type="text" name="userName" id="username${requestScope.offset+status.index+1}" value="${user.userName }"></td>
+						<td class="userInfo_TD"><input style="border: aliceblue;font-size: 14px;" class="form-control" type="text" id="phone${requestScope.offset+status.index+1 }"  name="phoneNum" value="${user.phoneNum }"></td>
+						
+						<c:if test="${sessionScope.User.authority == 0 }">
+						<c:if test="${user.authority==10 || user.authority==20}">
+						<td class="userInfo_TD"><input style="border: aliceblue;width: 26px; float: left;" class="form-control" type="checkbox" id="authority" name="authority" checked="${user.authority }" />
+							<label for="authority" style="margin-left: 10px;margin-top: 10px;color: #000;">可以发布招聘信息</label></td>
 						</c:if>
+						<c:if test="${user.authority==11 || user.authority==21 }">
+						<td class="userInfo_TD"><input style="border: aliceblue;width: 26px; float: left;" class="form-control" type="checkbox" id="authority2" name="authority" />
+							<label for="authority2" style="margin-left: 10px;margin-top: 10px;color: #000;">可以发布招聘信息</label></td>
+						</c:if>
+						</c:if>
+						
+						<c:if test="${sessionScope.User.authority != 0 }">
+						<c:if test="${user.authority==10 }">
+						<td class="userInfo_TD"><label class="au_admin">一级管理</label></td>
+						</c:if>
+						<c:if test="${user.authority==20 }">
+						<td class="userInfo_TD"><label class="au_admin">二级管理</label></td>
+						</c:if>
+						<c:if test="${user.authority==11 || user.authority==21 }">
+						<td class="userInfo_TD"><label class="au_admin">员工</label></td>
+						</c:if>
+						</c:if>
+						
 						<c:if test="${user.authority == 0 }">
-						<td class="userInfo_TD"><input class="form-control" type="checkbox" name="authority" /></td>
-						</c:if>
-						<c:if test="${user.authority == 2 }">
 						<td class="userInfo_TD"><label class="au_admin">管理员</label></td>
 						</c:if>
-						<td class="userInfo_TD">
-							<input class="btn btn-default" type="submit" value="修改" style="margin-left: 26px;margin-right: 27px;">
+						<td class="userInfo_TD" style="width: 19%;">
+							<input class="btn btn-default" type="button" onclick="submitButton(${requestScope.offset+status.index+1})" value="修改" style="margin-left: 26px;">
 					    	<input class="btn btn-default" name="${requestScope.offset+status.index+1}" onclick="open1(this)" type="button" value="重置密码" style="margin-right: 0xp;">
-					    	<label style="margin-left: 113px;">原始密码：123456</label>
+						</td>
+						</form>
+						<td class="userInfo_TD" style="position: relative;left: -8px;padding-left: 0;">
+							<form action="${pageContext.request.contextPath}/user/deleteUser" id="deleteForm">
+					    		<input class="form-control" type="hidden" name="deleteUserId"  value="${user.userId }" />
+					    		<input class="btn btn-danger" name="${requestScope.offset+status.index+1}" onclick="deleteUser(${requestScope.offset+status.index+1})" type="button" value="删除用户" style="margin-right: 0xp;">
+							</form>
 						</td>
 					</tr>
-				</form>
+				
+				
 				</c:forEach>
 				</tbody>
 			</table>

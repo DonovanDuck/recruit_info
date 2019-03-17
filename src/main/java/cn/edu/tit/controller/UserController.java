@@ -39,6 +39,7 @@ import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
 import cn.edu.tit.bean.Apply;
 import cn.edu.tit.bean.ApplyFamily;
+import cn.edu.tit.bean.Organization;
 import cn.edu.tit.bean.Position;
 import cn.edu.tit.bean.RecruitInfo;
 import cn.edu.tit.bean.User;
@@ -64,11 +65,17 @@ public class UserController {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 		String time = df.format(day).toString(); //获取系统时间，将时间放入session
 		try {
-			User publisher = (User) request.getSession().getAttribute("User");
-			String organizationId = publisher.getOrganizationId();
-			// 获取招聘信息
-			list = userService.getRecruitInfo(organizationId);
+			
+				list = userService.getAllRecruitInfo(); // 获取所有招聘信息
+			
+			//获取公司名
+			List<String> onameList = new ArrayList<>();
+			for(RecruitInfo r : list){
+				String oName = userService.getOrganizationNameById(r.getOrganization());
+				onameList.add(oName);
+			}
 			mv.addObject("systemTime",time);
+			mv.addObject("onameList",onameList);
 			mv.addObject("list",list);
 			mv.setViewName("/jsp/mainJsp");//设置返回页面
 		} catch (Exception e) {
@@ -79,6 +86,39 @@ public class UserController {
 	}
 
 
+	/**
+	 * 登录校验
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "ajaxCheckLogin")
+	public void ajaxCheckLogin(HttpServletRequest request, HttpServletResponse response) {
+		String result = "";
+		try {
+			// 校验密码
+			String phoneNum = request.getParameter("phoneNum");
+			String password = request.getParameter("password");
+			User user = userService.getUserByPhone(phoneNum);//根据电话找用户
+			
+			password = Common.eccryptMD5(password);
+			if (user == null || !user.getPassword().equals(password)) {
+				result = JSONObject.toJSONString("ERROR");
+			} else {
+				result = JSONObject.toJSONString("OK");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			result = JSONObject.toJSONString("ERROR");
+		}
+		try {
+			response.getWriter().println(result);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	@RequestMapping(value = "userLogin", method = { RequestMethod.GET })
 	public ModelAndView userLogin(HttpServletRequest request, @RequestParam(value = "phoneNum") String phoneNum,
@@ -136,6 +176,7 @@ public class UserController {
 			String publisherId = publisher.getUserId();
 			recruit.setOrganization(publisher.getOrganizationId());//设置招聘单位
 			recruit.setPublisher(publisherId);//发布者ID
+			recruit.setPublisherName(publisher.getUserName()); //发布人名
 			ts = Timestamp.valueOf((String)formdata.get("endTime"));  
 			recruit.setEndTime(ts);//设置结束时间
 			recruit.setPublishTime(new Timestamp(System.currentTimeMillis()));//设置发布时间
@@ -267,32 +308,102 @@ public class UserController {
 		return mv;
 	}
 
-
-
+	
+	/**
+	 * 跳转到添加用户界面
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="toAddUser")
+	public ModelAndView toAddUser(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView();
+		try {
+			User user = (User) request.getSession().getAttribute("User");
+			//查询所有单位
+			List<Organization> organizationList = userService.getOrganization();
+			List<String> organizationList2 = new ArrayList<>();
+			if(user.getAuthority() == 20){
+				for(Organization o : organizationList){
+					if(!"01".equals(o.getOrganizaionId())){
+						organizationList2.add(o.getOrganizatinName());
+					}
+				}
+			}
+			else{
+				for(Organization o : organizationList){
+					organizationList2.add(o.getOrganizatinName());
+				}
+			}
+			request.setAttribute("organizationList", organizationList2);
+			mv.setViewName("jsp/addUserInfo");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return mv;
+	}
 	/**
 	 * 添加用户
 	 * 
 	 * @param request
 	 * @return
 	 */
+	@SuppressWarnings("unused")
 	@RequestMapping(value = "addUser")
 	public ModelAndView addUser(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
+		//先查有无用户，若有此次添加的是二级公司，若无则是一级公司
+		List<Organization> orList = userService.getOrganization();
 		try {
 			User user = new User();
 			user.setUserId(Common.uuid());
 			user.setPassword(Common.eccryptMD5("123456"));
-			user.setOrganizationName(request.getParameter("organization"));
 			user.setUserName(request.getParameter("userName"));
 			user.setWechartNum(request.getParameter("weChat"));
 			user.setPhoneNum(request.getParameter("phoneNum"));
-			user.setOrganizationId(Common.uuid());
-			if ("on".equals(request.getParameter("authority")))
-				user.setAuthority(1);
-			else
-				user.setAuthority(0);
+			String organizationName = request.getParameter("organization");
+			user.setOrganizationName(organizationName);
+			if(orList.isEmpty()){ // 用户单位为空，公司为一级公司，id：01
+				user.setOrganizationId("01");
+				Organization orga = new Organization("01", organizationName);
+				userService.addOrganizaion(orga); // 添加公司
+				if ("on".equals(request.getParameter("authority")))
+					user.setAuthority(10);
+				else
+					user.setAuthority(11);
+			}
+			else{ 
+				// 通过获取的id是否为空判断此处填写的公司名是已有的还是新添加的，已有的将原公司id赋予，新添加的给新的id。
+				String organizationId = userService.getOrganizaionIdByName(organizationName);
+				if("".equals(organizationId) || organizationId == null || organizationId == ""){
+					 organizationId = Common.uuid();
+					user.setOrganizationId(organizationId);
+					 Organization orga = new Organization(organizationId, organizationName);
+					 userService.addOrganizaion(orga); //添加新公司
+					 if ("on".equals(request.getParameter("authority")))
+							user.setAuthority(20);
+						else
+							user.setAuthority(21);
+				}
+				else{ // id存在，说明公司已存在
+					user.setOrganizationId(organizationId);
+					//判断此次添加的是否为一级公司成员而设置相应权限
+					if("01".equals(organizationId)){
+						if ("on".equals(request.getParameter("authority")))
+							user.setAuthority(10);
+						else
+							user.setAuthority(11);
+					}
+					else{
+						if ("on".equals(request.getParameter("authority")))
+							user.setAuthority(20);
+						else
+							user.setAuthority(21);
+					}
+				}
+				}
+				
 			userService.addUser(user);
-
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -359,10 +470,21 @@ public class UserController {
 	 */
 	@RequestMapping(value="toUserInfo")
 	public ModelAndView toUserInfo(HttpServletRequest request, ModelAndView mv){
+		List<User> userList = new ArrayList<>();
 		if(mv == null)
 			mv = new ModelAndView();
 		try {
-			List<User> userList = userService.getUser();
+			//获取用户权限
+			User user = (User) request.getSession().getAttribute("User");
+			int authority = user.getAuthority();
+			// 如果是超级管理员，显示所有用户
+			if(authority == 0){
+				userList = userService.getUser();
+			}
+			// 如果是一级或二级管理，显示本单位
+			else{
+				userList = userService.getUserByOrganizationId(user.getOrganizationId());
+			}
 			mv.addObject("userList", userList);
 			mv.setViewName("/jsp/userInfo");
 		} catch (Exception e) {
@@ -431,15 +553,26 @@ public class UserController {
 		try {
 			// 获取用户信息
 			User user = new User();
-			user.setUserId((request.getParameter("userId")));
-			user.setOrganizationName(request.getParameter("organizationName"));
+			user.setUserId(request.getParameter("userId"));
+			String organizationName = request.getParameter("organizationName");
+			user.setOrganizationName(organizationName);
+			user.setPhoneNum(request.getParameter("phoneNum"));
 			user.setUserName(request.getParameter("userName"));
-
+			//获取公司id，是一级公司01，权限为10,11，否则为20，21
+			String organizationId = userService.getOrganizaionIdByName(organizationName);
 			String au = request.getParameter("authority");
-			if("on".equals(au))
-				user.setAuthority(1);
-			else
-				user.setAuthority(0);
+			if("01".equals(organizationId)){
+				if("on".equals(au))
+					user.setAuthority(10);
+				else
+					user.setAuthority(11);
+			}
+			else{
+				if("on".equals(au))
+					user.setAuthority(20);
+				else
+					user.setAuthority(21);
+			}
 			if(!"".equals(user.getUserId())){
 				userService.modifyuser(user);
 				mv.addObject("status","OK");
@@ -478,6 +611,36 @@ public class UserController {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * 校验电话
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "ajaxCheckPhone")
+	public void ajaxCheckPhone(HttpServletRequest request, HttpServletResponse response) {
+		String result = "";
+		try {
+			// 校验密码
+			String phoneNum = request.getParameter("phoneNum");
+			User user = userService.getUserByPhone(phoneNum);//根据电话找用户
+			if (user != null)
+				result = JSONObject.toJSONString("ERROR");
+			else
+				result = JSONObject.toJSONString("OK");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			result = JSONObject.toJSONString("ERROR");
+		}
+		try {
+			response.getWriter().println(result);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 
 	/**
@@ -505,6 +668,26 @@ public class UserController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * 删除用户
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "deleteUser")
+	public ModelAndView deleteUser(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			// 校验密码
+			String userId = request.getParameter("deleteUserId");
+			userService.deleteUser(userId);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return toUserInfo(request, null);
 	}
 
 	/**
@@ -554,8 +737,11 @@ public class UserController {
 		List<Position> occupationApplicantLsit = new ArrayList<Position>();
 		occupationApplicantLsit = userService.getPositionByRecruitId(recruitId);// 该招聘信息对应的所有职位对象
 		recruitInfo = userService.getRecruitInfoById(recruitId);
+		// 获取单位名
+		String organizationName = userService.getOrganizationNameById(recruitInfo.getOrganization());
 		mv.addObject("occupationApplicantLsit", occupationApplicantLsit);
 		mv.addObject("recruitInfo", recruitInfo);
+		mv.addObject("organizationName",organizationName);
 		mv.setViewName("/jsp/application_status");
 		return mv;
 	}
