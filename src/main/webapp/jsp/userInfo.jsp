@@ -49,7 +49,6 @@
 		font-size: 21px;
 	}
 	.userInfo_main{
-		margin: 60px;
 		
 	}
 	.userInfo_head{
@@ -129,6 +128,7 @@
 <script type="text/javascript">
 function submitButton(ob){
 	var username = $("#username" + ob).val(); 
+	var userId = $("#" + ob).val();
 	if(confirm("您确定修改"+username+"用户的信息吗？")){
 		 var juge = true;
 			var phoneNum = $("#phone"+ob).val();
@@ -147,7 +147,8 @@ function submitButton(ob){
 				cache : false,
 				url : "${pageContext.request.contextPath}/user/ajaxCheckPhone",
 				data : {
-					'phoneNum' : phoneNum
+					'phoneNum' : phoneNum,
+					'userId'   : userId
 				},
 				type : "POST",
 				dataType : "text",
@@ -190,7 +191,7 @@ function deleteUser(ob){
 	<div id="wrapper">
 		<nav class="navbar navbar-default top-navbar" role="navigation">
 		<div class="text-center">
-			<h2>新疆招聘信息系统</h2>
+			<!-- <h2>新疆招聘信息系统</h2> -->
 		</div>
 		</nav>
 		<!--/. NAV TOP  -->
@@ -208,6 +209,9 @@ function deleteUser(ob){
 				<li class="text-left"><a
 					href="${pageContext.request.contextPath}/user/toPersonalInfo"
 					class="waves-effect waves-dark">个人信息</a></li>
+				<li class="text-left"><a
+						href="${pageContext.request.contextPath}/user/exit"
+						class="waves-effect waves-dark">安全退出</a></li>
 			</ul>
 		</div>
 		</nav>
@@ -244,7 +248,12 @@ function deleteUser(ob){
 							<input class="form-control" type="hidden" name="userId" id="${requestScope.offset+status.index+1}" value="${user.userId }">
 						</td>
 						<!-- <td style="width: 62px;">1</td> -->
-						<td class="userInfo_TD"><input style="border: aliceblue;font-size: 14px;" class="form-control" type="text" id="orgaName${requestScope.offset+status.index+1 }" name="organizationName" value="${user.organizationName }"></td>
+						 <c:if test="${sessionScope.User.authority == 0 }">
+							<td class="userInfo_TD"><input style="border: aliceblue;font-size: 14px;" class="form-control" type="text" id="orgaName${requestScope.offset+status.index+1 }" name="organizationName" value="${user.organizationName }"></td>
+						</c:if> 
+						<c:if test="${sessionScope.User.authority != 0 }">
+							<td class="userInfo_TD"><input style="border: aliceblue;font-size: 14px;" readonly="false" class="form-control" type="text" id="orgaName${requestScope.offset+status.index+1 }" name="organizationName" value="${user.organizationName }"></td>
+						</c:if>
 						<td class="userInfo_TD"><input style="border: aliceblue;font-size: 14px;" class="form-control" type="text" name="userName" id="username${requestScope.offset+status.index+1}" value="${user.userName }"></td>
 						<td class="userInfo_TD"><input style="border: aliceblue;font-size: 14px;" class="form-control" type="text" id="phone${requestScope.offset+status.index+1 }"  name="phoneNum" value="${user.phoneNum }"></td>
 						

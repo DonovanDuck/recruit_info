@@ -78,8 +78,9 @@ public class User {
 	public void setAuthority(Integer authority) {
 		this.authority = authority;
 	}
+	
 	public User(String userId, String userName, String wechartNum, String organizationName, String organizationId,
-			String password, String phoneNum, Integer authority) {
+			String password, String phoneNum, Integer authority, String openId) {
 		super();
 		this.userId = userId;
 		this.userName = userName;
@@ -89,7 +90,9 @@ public class User {
 		this.password = password;
 		this.phoneNum = phoneNum;
 		this.authority = authority;
+		this.openId = openId;
 	}
+
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub

@@ -304,4 +304,25 @@ public interface IUserDao {
 	 */
 	public void bandOpenId(@Param(value="openId") String openId,@Param(value="userId")String userId);
 	
+	/**
+	 * 通过openID找apply对应recruitId
+	 * @param openId
+	 * @return
+	 */
+	public List<String> getApplyRecruitId(String openId);
+	
+	/**
+	 * 获取报名信息
+	 * @param openId
+	 * @param recruitId
+	 * @return
+	 */
+	public Apply getApplyByOpenAndRecruit(@Param(value="openId")String openId, @Param(value="recruitId")String recruitId);
+	
+	/**
+	 * 修改报名信息
+	 * @param apply
+	 */
+	public void modifyApply(Apply apply);
+	
 }

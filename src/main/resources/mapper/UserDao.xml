@@ -102,6 +102,7 @@
 		<result column="publisher" property="publisher" />
 		<result column="publish_time" property="publishTime" />
 		<result column="publisher_name" property="publisherName" />
+		<result column="organization_name" property="organizatinName" />
 	</resultMap>
 	<!-- 结果集映射 -->
 	<resultMap type="cn.edu.tit.bean.Position" id="position">
@@ -213,7 +214,9 @@
 		start_time,
 		end_time,
 		publisher,
-		publish_time)
+		publish_time,
+		publisher_name,
+		organization_name)
 		VALUES
 		(#{recruitId},
 		#{organization},
@@ -222,7 +225,9 @@
 		#{startTime},
 		#{endTime},
 		#{publisher},
-		#{publishTime});
+		#{publishTime},
+		#{publisherName},
+		#{organizatinName});
 	</insert>
 	<select id="getRecruitInfo" parameterType="String"
 		resultMap="recruitInfo">
@@ -285,11 +290,11 @@
 
 	<select id="applyList" resultMap="applyMap">
 		SELECT * from apply where
-		recruit_id = #{recruitId} and occupation_applicant =#{positonName};
+		recruit_id = #{recruitId} and occupation_applicant =#{positonName} order by submit_time desc;
 	</select>
 	<select id="applyListAll" resultMap="applyMap">
 		SELECT * from apply where
-		recruit_id = #{recruitId};
+		recruit_id = #{recruitId} order by submit_time desc;
 	</select>
 	<select id="applyNum" parameterType="String"
 		resultType="java.lang.Integer">
@@ -598,6 +603,58 @@
 		#{face}
 		);
 	</insert>
+	
+	<!-- 修改报名信息 -->
+	<update id="modifyApply" parameterType="cn.edu.tit.bean.Apply">
+		update apply set
+		gender=#{gender},
+		apply_user_name=#{applyUserName},
+		nation=#{nation},
+		politics_status=#{politicsStatus},
+		native_place=#{nativePlace},
+		identity_num=#{identityNum},
+		is_marry=#{isMarry},
+		speciality=#{speciality},
+		telephone=#{telephone},
+		undergraduate_and_major=#{bachelorDegreeAndMajor},
+		undergraduate_graduation_time=#{undergraduateGraduationTime},
+		undergraduate_is_first_school=#{undergraduateIsFirstSchool},
+		undergraduate_is_first_major=#{undergraduateIsFirstMajor},
+		graduate_school_and_major=#{graduateSchoolAndMajor},
+		graduate_time=#{graduateTime},
+		graduate_is_first_school=#{graduateIsFirstSchool},
+		graduate_is_first_major=#{graduateIsFirstMajor},
+		doctoral_degree_and_major=#{doctoralDegreeAndMajor},
+		doctoral_graduation_time=#{doctoralGraduationTime},
+		doctor_is_first_school=#{doctorIsFirstSchool},
+		doctor_is_first_major=#{doctorIsFirstMajor},
+		work_organization=#{workOrganization},
+		position=#{position},
+		telephone_organizatino=#{telephoneOriganization},
+		professional_and_technical_qualification=#{professionalAndTechnicalQualification},
+		practicing_requirements=#{practicingRequirements},
+		mailing_address=#{mailingAddress},
+		postal_address=#{postalAddress},
+		e_mail=#{eMail},
+		application_organization=#{applicationOrganization},
+		major_applicant=#{majorApplicant},
+		work_experience=#{workExperience},
+		occupation_applicant=#{occupationApplicant},
+		recruit_id=#{recruitId},
+		submit_time=#{submitTime},
+		professional_orientation=#{professionalOrientation},
+		compilation_nature=#{compilationNature},
+		education=#{education},
+		degree=#{degree},
+		is_current=#{isCurrent},
+		job_performance=#{jobPerformance},
+		paper_topic_situation=#{paperTopicSituation},
+		sanction_situation=#{sanctionSituation},
+		open_id=#{openId},
+		form_id=#{formId},
+		face=#{face}
+		where apply_id=#{applyId};
+	</update>
 
 	<!-- 存储报名材料 -->
 	<insert id="saveMaterial"
@@ -680,5 +737,15 @@
 	<update id="bandOpenId">
 		update user set open_id = #{openId} where user_id = #{userId};
 	</update>
+	
+	<!-- 获取apply的recruitid -->
+	<select id="getApplyRecruitId" resultType="java.lang.String">
+		select recruit_id from 	apply where open_id = #{openId};
+	</select>
+	
+	<!--  -->
+	<select id="getApplyByOpenAndRecruit" resultMap="applyMap">
+		select * from apply where open_id = #{openId} and recruit_id = #{recruitId};
+	</select>
 	
 </mapper>

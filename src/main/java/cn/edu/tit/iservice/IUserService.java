@@ -285,5 +285,26 @@ public interface IUserService {
 	 * @param openId
 	 */
 	public void bandOpenId(String openId ,String userId);
+	
+	/**
+	 * 通过openID找apply对应recruitId
+	 * @param openId
+	 * @return
+	 */
+	public List<String> getApplyRecruitId(String openId);
+	
+	/**
+	 * 获取报名信息
+	 * @param openId
+	 * @param recruitId
+	 * @return
+	 */
+	public Apply getApplyByOpenAndRecruit(String openId, String recruitId);
+	
+	/**
+	 * 修改报名信息
+	 * @param apply
+	 */
+	public void modifyApply(Apply apply);
 
 }

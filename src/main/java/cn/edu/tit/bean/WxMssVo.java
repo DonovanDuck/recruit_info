@@ -48,6 +48,20 @@ public class WxMssVo {
 	public void setData(Map<String, TemplateData> data) {
 		this.data = data;
 	}
+	public WxMssVo(String touser, String template_id, String page, String form_id, String emphasis_keyword,
+			Map<String, TemplateData> data) {
+		super();
+		this.touser = touser;
+		this.template_id = template_id;
+		this.page = page;
+		this.form_id = form_id;
+		this.emphasis_keyword = emphasis_keyword;
+		this.data = data;
+	}
+	public WxMssVo() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
     
     
 }

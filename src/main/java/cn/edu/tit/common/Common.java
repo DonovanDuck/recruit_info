@@ -151,7 +151,7 @@ public  class  Common {
 			Map<String, Object> formdata = new HashMap<String, Object>(); // 要返回的map,存储的是要转换的类信息
 			List<File> returnFileList = new ArrayList<>(); // 要返回的文件集合
 			String path = readProperties("path");
-			if(!"".equals(id) || id != null){
+			if(!"".equals(id) && id != null){
 				path +="/"+id;
 			}
 			// 创建工厂
@@ -161,7 +161,8 @@ public  class  Common {
 			List<FileItem> items = upload.parseRequest(request);// 得到所有的字段
 			for (FileItem fi : items) {
 				if (!fi.isFormField()) { // 判断是否是普通表单字段
-					String fileName = fi.getName(); 
+					int count = fi.getName().lastIndexOf(".");
+					String fileName = System.currentTimeMillis()+fi.getName().substring(count);
 					if (!fileName.isEmpty()) {
 						File fullFile = new File(new String(fileName.getBytes(), "utf-8")); // 解决文件名乱码问题,获得文件内容
 						File savedFile = new File(path, fullFile.getName()); // 为文件设置存储路径

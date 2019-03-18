@@ -36,8 +36,9 @@ public class UserTest {
 
 	@Test
 	public void Test() throws Exception {
-	userDao.bandOpenId("1", "D2EBF54A4CD041E692811B7C52BF4557");
+		System.out.println(iUserService.getApplyByOpenAndRecruit("orUkK46Gjtpme5SuTm4JXCkWf-Xs", "5713CB655FDA451C9569B1FF1DA2401F"));
 		
+				
 	}
 	}
 

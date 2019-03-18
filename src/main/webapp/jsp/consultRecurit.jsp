@@ -56,7 +56,7 @@
 	<div id="wrapper">
 		<nav class="navbar navbar-default top-navbar" role="navigation">
 			<div class="text-center">
-				<h2>新疆招聘信息系统</h2>
+				<!-- <h2>新疆招聘信息系统</h2> -->
 			</div>
 		</nav>
 		<!--/. NAV TOP  -->
@@ -74,6 +74,9 @@
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toPersonalInfo"
 						class="waves-effect waves-dark">个人信息</a></li>
+					<li class="text-left"><a
+						href="${pageContext.request.contextPath}/user/exit"
+						class="waves-effect waves-dark">安全退出</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -83,34 +86,34 @@
 				<div class="col-md-12">
 					<div class="card" style="height: 100%">
 						<div class="col-md-12 text-center">
-							<h2>浏览招聘信息</h2>
+							<h2>招聘信息</h2>
 						</div>
 						<form class="form-horizontal" action=""
-							style="width: 50%; margin-left: 25%; padding-top: 5%;"
+							style="width: 64%;margin-left: 17%; padding-top: 5%;"
 							name="recruitForm" id="recruitForm">
 							<div class="form-group">
 								<div class="col-md-4 text-right" style="margin-top: 1%">
 									<h3>招聘标题:</h3>
 								</div>
 								<div class="col-md-7">
-									<input type="text" id="organization" style='font-size: 18px;'
+									<input type="text" id="organization" style='font-size: 18px;border: none;'
 										value="${recruit.recruitInfo }" readOnly="true">
 								</div>
 							</div>
-							<div class="form-group">
-								<div class="col-md-4 text-right" style="margin-top: 1%">
+							<%-- <div class="form-group">
+								<div class="col-md-4 text-right" style="margin-top: 1%;">
 									<h3>招聘单位:</h3>
 								</div>
 								<div class="col-md-7">
-									<input style='font-size: 18px;' type="text"
+									<input style='font-size: 18px;border: none;' type="text"
 										value="${sessionScope.User.organizationName }" readOnly="true">
 								</div>
-							</div>
+							</div> --%>
 							<div class="form-group">
 								<div class="col-md-4 text-right">
 									<h3>招聘信息:</h3>
 								</div>
-								<div class="col-md-7" style="padding: 0">
+								<div class="col-md-7" style="padding: 0;width: 66%;">
 									<div class="col-md-12" style="padding: 0; visibility: hidden">
 										<input type="button" style="width: 30%;"
 											class="btn btn-success btn-xs btn-block  pull-right" />
@@ -128,30 +131,30 @@
 												style="padding: 0; background-color: rgba(245, 246, 246, 0.8); margin-top: 4px; float: left">
 												<div class="col-md-12" style="padding: 0;">
 													<div class="col-md-8" style="padding: 0">
-														<input style='font-size: 18px;' type="text"
+														<input style='font-size: 18px;border: none;' type="text"
 															value="【职位】:${list.positonName }" readOnly="true">
 													</div>
 													<div class="col-md-4">
 														<input type="text" value="【人数】:${list.positionNum }"
-															style='font-size: 18px; padding-top: 7%' readOnly="true" />
+															style='font-size: 18px; padding-top: 7%;border: none;position: relative;left: -49px;' readOnly="true" />
 													</div>
 												</div>
-												<div class="col-md-12" style="padding: 0">
-													<div class="col-md-7" style="padding: 0;">
+												<div class="col-md-12" style="padding: 0;position: relative;top: -21px;">
+													<div class="col-md-7" style="padding: 0;width: 100%;">
 														<%-- 		<input value="【专业】:${list.professionalOrientation }"
 															style='font-size: 18px;
 															white-space:normal;word-wrap:break-word;word-break:break-all;'
 															 type="text" readOnly="true"> --%>
 														<span
-															style="font-size: 20px; border-bottom: 1px solid gray; line-height: 40pt;">
+															style="font-size: 20px; border-bottom: 1px solid gray; line-height: 40pt;border: none;">
 															【专业】:${list.professionalOrientation } </span>
 													</div>
 
-													<div class="col-md-5">
+													<div class="col-md-5" style="width: 100%;padding-left: 0;">
 														<%-- 	<input value="【岗位性质】:${list.compilationNature }"
 															style='font-size: 18px;' type="text" readOnly="true"> --%>
 														<span
-															style="font-size: 20px; border-bottom: 1px solid gray; line-height: 40pt;">
+															style="font-size: 20px; border-bottom: 1px solid gray; line-height: 40pt;border: none;">
 															【岗位性质】:${list.compilationNature } </span>
 													</div>
 												</div>
@@ -181,7 +184,7 @@
 									<h3>开始时间:</h3>
 								</div>
 								<div class="col-md-7">
-									<input type="text" style='font-size: 18px;'
+									<input type="text" style='font-size: 18px;border: none;'
 										value="${recruit.startTime }" readOnly="true">
 								</div>
 							</div>
@@ -190,7 +193,7 @@
 									<h3>截止时间:</h3>
 								</div>
 								<div class="col-md-7">
-									<input type="text" style='font-size: 18px;'
+									<input type="text" style='font-size: 18px;border: none;'
 										value="${recruit.endTime }" readOnly="true">
 								</div>
 							</div>

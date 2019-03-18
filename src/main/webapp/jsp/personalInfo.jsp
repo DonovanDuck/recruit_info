@@ -152,7 +152,7 @@ function submitButton(){
 <div id="wrapper">
 		<nav class="navbar navbar-default top-navbar" role="navigation">
 			<div class="text-center">
-				<h2>新疆招聘信息系统</h2>
+				<!-- <h2>新疆招聘信息系统</h2> -->
 			</div>
 		</nav>
 		<!--/. NAV TOP  -->
@@ -170,6 +170,9 @@ function submitButton(){
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toPersonalInfo"
 						class="waves-effect waves-dark">个人信息</a></li>
+					<li class="text-left"><a
+						href="${pageContext.request.contextPath}/user/exit"
+						class="waves-effect waves-dark">安全退出</a></li>
 				</ul>
 			</div>
 		</nav>

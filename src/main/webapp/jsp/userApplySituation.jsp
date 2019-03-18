@@ -60,14 +60,14 @@
 <title>用户信息</title>
 <style>
 	.apply_main{
-		margin: 60px;
+		padding-top: 30px;
 		
 	}
 	.apply_head{
 		height: 70px;
-   		width: 200px;
-   		position: relative;
-    left: 42%;	
+   		width: 100%;
+    position: relative;
+    left: 37%;
 	}
 	.apply_addInfo{
 		height: 50px;
@@ -80,7 +80,7 @@
     	padding-right: 51px; 
 	}
 	.apply_table{
-		width: 78%;
+	width: 895px;
     position: relative;
     left: 13%;
 	}
@@ -97,7 +97,7 @@
 		width: 100%;
     height: 50%;
     position: relative;
-    top: 40px;
+    top: 82px;
     padding-left: 32px;
     padding-right: 40px;
 	}
@@ -109,6 +109,25 @@
 		float: left;
 	}
 </style>
+<script type="text/javascript">
+function doPrint() {
+
+    bdhtml = window.document.body.innerHTML;
+    sprnstr = "<!--startprint-->";
+    eprnstr = "<!--endprint-->";
+    prnhtml = bdhtml.substr(bdhtml.indexOf(sprnstr) + 17);
+    prnhtml = prnhtml.substring(0, prnhtml.indexOf(eprnstr));
+
+    window.document.body.innerHTML =document.getElementById("dayin").innerHTML; 
+    //window.print();
+
+  //  window.document.body.innerHTML = prnhtml;
+    window.print();
+    window.document.body.innerHTML = bdhtml;
+}
+
+
+</script>
 
 </head>
 
@@ -117,7 +136,7 @@
 <div id="wrapper">
 		<nav class="navbar navbar-default top-navbar" role="navigation">
 			<div class="text-center">
-				<h2>新疆招聘信息系统</h2>
+				<!-- <h2>新疆招聘信息系统</h2> -->
 			</div>
 		</nav>
 		<!--/. NAV TOP  -->
@@ -135,6 +154,9 @@
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toPersonalInfo"
 						class="waves-effect waves-dark">个人信息</a></li>
+					<li class="text-left"><a
+						href="${pageContext.request.contextPath}/user/exit"
+						class="waves-effect waves-dark">安全退出</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -148,8 +170,9 @@
 		<div class="apply_head">
 			<h2>${apply.applyUserName }的报名情况</h2>
 		</div>
+		<button  onclick="doPrint()" type="button" class="btn btn-primary" style="position: absolute;left: 172px; top: 41px;">打印</button>
 		
-		<div class="apply_table">
+		<div class="apply_table" id="dayin">
 			<table class="table table-bordered">
 				
 				<tbody>
@@ -161,7 +184,11 @@
 						<td class="apply_TD">${apply.gender }</td>
 						<td class="info_td">民族</td>
 						<td class="apply_TD">${apply.nation }</td>
-						<td rowspan="4">${apply.face }</td>
+						<td style="width: 112px;" rowspan="4">
+							<div style="height: 100%;width: 100%">
+								<img src="${apply.face }" style="height: 100%;width: 100%"/>
+							</div>
+						</td>
 					</tr>
 					
 					<tr>
@@ -300,13 +327,13 @@
 						<td></td>
 						<td colspan="2"></td>
 					</tr> -->
-					<tr style="height: 80px;">
+					<tr style="height: 123px;">
 						<td class="info_td">招聘组意见</td>
 						<td class="apply_TD" colspan="6">
 							<div class="advice">
 								<ul>
-									<li>签字：</li>
-									<li style="float: right;">年&emsp;&emsp;月&emsp;&emsp;日</li>
+									<li style="list-style: none;">签字：</li>
+									<li style="float: right;list-style: none;">年&emsp;&emsp;月&emsp;&emsp;日</li>
 								</ul>
 							</div>
 						</td>

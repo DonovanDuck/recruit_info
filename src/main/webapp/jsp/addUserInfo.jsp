@@ -54,7 +54,7 @@
     top:-12px;
 	}
 	.addUserInfo_main{
-		margin: 60px;
+		
 		
 	}
 	.addUserInfo_form{
@@ -125,7 +125,7 @@ function submitButton(){
 	<div id="wrapper">
 		<nav class="navbar navbar-default top-navbar" role="navigation">
 			<div class="text-center">
-				<h2>新疆招聘信息系统</h2>
+				<!-- <h2>新疆招聘信息系统</h2> -->
 			</div>
 		</nav>
 		<!--/. NAV TOP  -->
@@ -143,6 +143,9 @@ function submitButton(){
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toPersonalInfo"
 						class="waves-effect waves-dark">个人信息</a></li>
+					<li class="text-left"><a
+						href="${pageContext.request.contextPath}/user/exit"
+						class="waves-effect waves-dark">安全退出</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -158,10 +161,10 @@ function submitButton(){
 		</div>
 		<div class="addUserInfo_form">
 			<form class="form-horizontal" action="${pageContext.request.contextPath}/user/addUser" id="addForm">
+				<c:if test="${sessionScope.User.authority == 0 }">
 				<div class="form-group">
 				     <label for="organization" class="col-sm-2 control-label" style="padding-right: -1px;color: #000;">单位</label>
 				    <div class="col-sm-10">
-				      <!-- <input type="text" class="form-control" id="organization" name="organization"  placeholder="单位"> -->
 				      
 													<input id="organization" style='font-size: 18px;'
 														name="organization" type="text" placeholder="单位"
@@ -175,6 +178,15 @@ function submitButton(){
 				    </div> 
 				    
   				</div>
+  				</c:if>
+  				<c:if test="${sessionScope.User.authority != 0 }">
+  					<div class="form-group">
+  						<label for="organization" class="col-sm-2 control-label" style="padding-right: -1px;color: #000;">单位</label>
+  						<div class="col-sm-10">
+  						<input type="text" class="form-control" id="organization" name="organization"  readonly="false" value="${organizationName }">
+  						</div>
+  					</div>
+  				</c:if>
   				<div class="form-group">
 				    <label for="principal" class="col-sm-2 control-label" style="color: #000;">员工</label>
 				    <div class="col-sm-10">

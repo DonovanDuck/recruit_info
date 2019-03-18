@@ -516,4 +516,22 @@ public class UserServiceImpl implements IUserService {
 		// TODO Auto-generated method stub
 		iUserDao.bandOpenId(openId, userId);
 	}
+
+	@Override
+	public List<String> getApplyRecruitId(String openId) {
+		// TODO Auto-generated method stub
+		return iUserDao.getApplyRecruitId(openId);
+	}
+
+	@Override
+	public Apply getApplyByOpenAndRecruit(String openId, String recruitId) {
+		// TODO Auto-generated method stub
+		return iUserDao.getApplyByOpenAndRecruit( openId,  recruitId);
+	}
+
+	@Override
+	public void modifyApply(Apply apply) {
+		// TODO Auto-generated method stub
+		iUserDao.modifyApply(apply);
+	}
 }

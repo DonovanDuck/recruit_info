@@ -102,9 +102,9 @@ function CurentTime(time)
 <body>
 	<div id="wrapper">
 		<nav class="navbar navbar-default top-navbar" role="navigation"
-			style="height: 60px;">
+			>
 			<div class="text-center">
-				<h2>新疆招聘信息系统</h2>
+				<!-- <h2>新疆招聘信息系统</h2> -->
 			</div>
 		</nav>
 		<!--/. NAV TOP  -->
@@ -122,6 +122,9 @@ function CurentTime(time)
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toPersonalInfo"
 						class="waves-effect waves-dark">个人信息</a></li>
+					<li class="text-left"><a
+						href="${pageContext.request.contextPath}/user/exit"
+						class="waves-effect waves-dark">安全退出</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -134,7 +137,7 @@ function CurentTime(time)
 							<label style="color: #000;">欢迎：${sessionScope.User.userName }</label>
 						</div>
 						<div class="card-action text-center" style="padding-bottom: 0%">
-							<h3>${sessionScope.User.organizationName }</h3>
+							<h3>招聘信息</h3>
 						</div>
 						<div class="card-content">
 							<div class="table-responsive" style="overflow-x: hidden;">
@@ -158,7 +161,9 @@ function CurentTime(time)
 											<th class="text-center" style="width: 80px;">报名截止时间</th>
 											<th class="text-center" style="width: 80px;">发布时间</th>
 											<th class="text-center" style="width: 80px;">发布人</th>
-											<th class="text-center" style="width: 331px;height: 60px"></th>
+											<th class="text-center" style="width: 80px;"></th>
+											<th class="text-center" style="width: 80px;"></th>
+											<th class="text-center" style="width: 80px;"></th>
 										</tr>
 									</thead>
 									<tbody id="asds">
@@ -170,9 +175,11 @@ function CurentTime(time)
 												<td class="text-center" style="padding-top: 1%;">${onameList[status.index] }</td>
 												<td class="text-center" style="padding-top: 1%;">${list.startTime }</td>
 												<td class="text-center" style="padding-top: 1%;">${list.endTime }</td>
-												<td class="text-center" style="padding-top: 1%;">${list.endTime }</td>
+												<td class="text-center" style="padding-top: 1%;">${list.publishTime }</td>
 												<td class="text-center" style="padding-top: 1%;">${list.publisherName }</td>
-												<td class="text-center" style="width: 331px;height: 60px">
+												<!-- <td class="text-center" style="width: 331px;height: 60px"> -->
+												<td class="text-center" style="padding-top: 1%;">
+													<c:if test="${systemTime < list.endTime }"> 
 														<a
 															href="${pageContext.request.contextPath}/user/toConsultRecuit?recuritId=${list.recruitId }"
 															class="waves-effect waves-dark" style="font-size: 20px">
@@ -181,9 +188,20 @@ function CurentTime(time)
 																style="padding-top: 4%;">
 																<small>查看</small>
 															</button>
+														</a> 
+													</c:if>
+													<c:if test="${systemTime >= list.endTime }"> 
+														<a href="${pageContext.request.contextPath}/user/toConsultRecuit?recuritId=${list.recruitId }" class="waves-effect waves-dark" style="font-size: 20px">
+															<button type="button" class="btn btn-default btn-lg"
+																id="editRecurit" name="editRecurit"
+																style="padding-top: 4%;">
+																<small>查看</small>
+															</button>
 														</a>
-
-													 <c:if test="${((sessionScope.User.authority == 10 || sessionScope.User.authority == 20) &&  sessionScope.User.organizationId == list.organization) || sessionScope.User.authority == 0}">
+														</c:if> 
+													</td>
+													<td class="text-center" style="padding-top: 1%;">
+													 <c:if test="${(sessionScope.User.authority == 10 || sessionScope.User.authority == 20|| sessionScope.User.authority == 0) &&  sessionScope.User.organizationId == list.organization }">
 													<c:if test="${systemTime < list.endTime }">
 														<a
 															href="${pageContext.request.contextPath}/user/toUpdateRecuit?recuritId=${list.recruitId }"
@@ -195,18 +213,10 @@ function CurentTime(time)
 															</button>
 														</a>
 														</c:if>
-														<c:if test="${systemTime >= list.endTime }">
-														<a
-															href="${pageContext.request.contextPath}/user/toConsultRecuit?recuritId=${list.recruitId }"
-															class="waves-effect waves-dark" style="font-size: 20px">
-															<button type="button" class="btn btn-default btn-lg"
-																id="editRecurit" name="editRecurit"
-																style="padding-top: 4%;">
-																<small>查看</small>
-															</button>
-															</a>
-														</c:if>
-													</c:if> 
+														</c:if> 
+														</td>
+														
+													<td class="text-center" style="padding-top: 1%;">
 													<c:if test="${sessionScope.User.authority != 21 || sessionScope.User.organizationId == list.organization }">
 													<a
 													href="${pageContext.request.contextPath}/user/toSignInInfo?recruitId=${list.recruitId }"

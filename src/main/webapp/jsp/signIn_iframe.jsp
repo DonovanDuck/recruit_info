@@ -13,7 +13,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Type"
 	content="multipart/form-data; charset=UTF-8">
-<title>教师信息管理</title>
+<title>招聘信息管理</title>
 <link
 	href="${pageContext.request.contextPath}/css/Admin/font-awesome.css"
 	rel="stylesheet" />
@@ -73,7 +73,7 @@
 </script>
 </head>
 <body>
-	<div><h2>所需专业及方向：<strong>${position.professionalOrientation }</strong></h2></div>
+	<div><h4>所需专业及方向：<strong>${position.professionalOrientation }</strong></h4></div>
 	<div class="alert alert-info" role="alert">
 
 		<h3>
@@ -83,43 +83,63 @@
 		<h3>
 			当日报名<strong>${numAllToday }</strong>人
 		</h3>
-		今日报名博士<strong>${numDoctorToday }</strong>人、硕士<strong>${numMasterToday }</strong>人、学士<strong>${numBachelorToday }</strong>人，疆内户籍<strong>${numBachelorToday }</strong>人，本科双一流院校<strong>${numFirstSchoolInUndergraduateToday }</strong>人，本科双一流学科<strong>${numFirstMajorInUndergraduateToday }</strong>人，研究生双一流院校<strong>${numFirstSchoolInPastgraduateToday }</strong>人，研究生双一流学科<strong>${numFirstMajorInPastgraduateToday }</strong>人，博士双一流院校<strong>${numFirstSchoolInDoctorToday }</strong>人，博士双一流学科<strong>${numFirstMajorInDoctorToday }</strong>人。
+		今日报名博士<strong>${numDoctorToday }</strong>人、硕士<strong>${numMasterToday }</strong>人、学士<strong>${numBachelorToday }</strong>人，疆内户籍<strong>${numInSideToday }</strong>人，本科双一流院校<strong>${numFirstSchoolInUndergraduateToday }</strong>人，本科双一流学科<strong>${numFirstMajorInUndergraduateToday }</strong>人，研究生双一流院校<strong>${numFirstSchoolInPastgraduateToday }</strong>人，研究生双一流学科<strong>${numFirstMajorInPastgraduateToday }</strong>人，博士双一流院校<strong>${numFirstSchoolInDoctorToday }</strong>人，博士双一流学科<strong>${numFirstMajorInDoctorToday }</strong>人。
 
 	</div>
+	<button id="js-export" type="button" class="btn btn-primary">导出该职位报名汇总表</button>
+	<div style="width: 100%;text-align: center; margin-left: -20px"><h3><strong>报名人员</strong></h3></div>
 
 	<table  class="table   table-hover"
 									id="dataTables-example" style="margin-top: -1%">
 		<thead>
 			<tr>
 				<th>#</th>
-				<th>报名号</th>
 				<th>报名人</th>
-				<th>报名职业</th>
-				<th>手机号码</th>
-				<th>学历</th>
-				<th>E-mail</th>
-				<th>工作经历</th>
-				<th>身份证</th>
+				<th>性别</th>
+				<th>政治面貌</th>
+				<th>籍贯</th>
+				<th>电话</th>
+				<th>本科</th>
+				<th>硕士</th>
+				<th>博士</th>
+				<th>详情</th>
 			</tr>
 		</thead>
+		
 		<c:forEach items="${applList }" var="apply" varStatus="status">
 			<tbody>
-
+				<a href="">
 				<tr>
 					<th scope="row">${requestScope.offset+status.index+1}</th>
-					<td>${apply.applyId }</td>
 					<td>${apply.applyUserName }</td>
-					<td>${apply.occupationApplicant }</td>
+					<td>${apply.gender }</td>
+					<td>${apply.politicsStatus }</td>
+					<td>${apply.nativePlace }</td>
 					<td>${apply.telephone }</td>
-					<td>${apply.education }</td>
-					<td>${apply.eMail }</td>
-					<td>${apply.workExperience }</td>
-					<td>${apply.identityNum }</td>
+					<td>${apply.bachelorDegreeAndMajor }</td>
+					<td>${apply.graduateSchoolAndMajor }</td>
+					<td>${apply.doctoralDegreeAndMajor }</td>
+					<td><a target="_top"
+						href="${pageContext.request.contextPath}/user/toUserApply?applyId=${apply.applyId }"
+						class="waves-effect waves-dark" style="font-size: 20px">
+							<button type="button" class="btn btn-default btn-lg "
+								id="consultRecurit" name="consultRecurit"
+								onclick="CurentTime(${list.endTime })" style="padding-top: 4%;">
+								<small>详情</small>
+							</button>
+					</a></td>
 				</tr>
-
+				</a>
 			</tbody>
 		</c:forEach>
 	</table>
 
+	<script>
+	$('#js-export')
+	.click(
+			function() {
+				window.location.href = "${pageContext.request.contextPath}/user/export";
+			});
+	</script>
 </body>
 </html>

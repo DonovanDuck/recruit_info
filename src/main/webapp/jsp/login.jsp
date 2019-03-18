@@ -10,7 +10,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Title</title>
+<title>招聘信息管理</title>
 <%
 	SecureRandom random = new SecureRandom();
 	random.setSeed(8738);

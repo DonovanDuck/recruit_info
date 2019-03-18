@@ -141,6 +141,24 @@ public class UserController {
 		return mv;
 	}
 
+	/**
+	 * 退出
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="exit")
+	public ModelAndView exit(HttpServletRequest request){
+		ModelAndView mv = new ModelAndView();
+		try {
+			request.getSession().invalidate();
+			mv.setViewName("/jsp/login");// 设置返回页面
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return mv;
+	}
+	
 	@RequestMapping(value="toPublishRcruitPage",method= {RequestMethod.GET})
 	public ModelAndView toPublishRcruitPage(HttpServletRequest request)throws Exception {
 		ModelAndView mv = new ModelAndView();
@@ -177,6 +195,7 @@ public class UserController {
 			recruit.setOrganization(publisher.getOrganizationId());//设置招聘单位
 			recruit.setPublisher(publisherId);//发布者ID
 			recruit.setPublisherName(publisher.getUserName()); //发布人名
+			recruit.setOrganizatinName(publisher.getOrganizationName());
 			ts = Timestamp.valueOf((String)formdata.get("endTime"));  
 			recruit.setEndTime(ts);//设置结束时间
 			recruit.setPublishTime(new Timestamp(System.currentTimeMillis()));//设置发布时间
@@ -319,22 +338,21 @@ public class UserController {
 		ModelAndView mv = new ModelAndView();
 		try {
 			User user = (User) request.getSession().getAttribute("User");
+			String organizationName = "";
 			//查询所有单位
 			List<Organization> organizationList = userService.getOrganization();
 			List<String> organizationList2 = new ArrayList<>();
-			if(user.getAuthority() == 20){
-				for(Organization o : organizationList){
-					if(!"01".equals(o.getOrganizaionId())){
-						organizationList2.add(o.getOrganizatinName());
-					}
-				}
+			if(user.getAuthority() == 20 || user.getAuthority() == 10){ // 除超级管理外都只传本单位的名字
+				organizationName = userService.getOrganizationNameById(user.getOrganizationId());
+				request.setAttribute("organizationName", organizationName);
 			}
-			else{
+			else{ // 超级管理
 				for(Organization o : organizationList){
 					organizationList2.add(o.getOrganizatinName());
 				}
+				request.setAttribute("organizationList", organizationList2);
 			}
-			request.setAttribute("organizationList", organizationList2);
+			
 			mv.setViewName("jsp/addUserInfo");
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -625,7 +643,8 @@ public class UserController {
 			// 校验密码
 			String phoneNum = request.getParameter("phoneNum");
 			User user = userService.getUserByPhone(phoneNum);//根据电话找用户
-			if (user != null)
+			String userId = request.getParameter("userId");
+			if (!userId.equals(user.getUserId()))
 				result = JSONObject.toJSONString("ERROR");
 			else
 				result = JSONObject.toJSONString("OK");
@@ -703,9 +722,19 @@ public class UserController {
 			// 通过applyId获取报名表
 			Apply apply = userService.getApplyById(applyId);
 			if(apply != null){
-				String undergraduateGraduationTime =  apply.getUndergraduateGraduationTime().toString().substring(0, 10);
-				String graduateTime =  apply.getGraduateTime().toString().substring(0, 10);
-				String doctoralGraduationTime =  apply.getDoctoralGraduationTime().toString().substring(0, 10);
+				String undergraduateGraduationTime="";
+				String graduateTime = "";
+				String doctoralGraduationTime ="";
+				if(apply.getUndergraduateGraduationTime()!=null && !"".equals(apply.getUndergraduateGraduationTime())){
+					 undergraduateGraduationTime =  apply.getUndergraduateGraduationTime().toString().substring(0, 10);
+				}
+				if(apply.getGraduateTime()!=null && !"".equals(apply.getGraduateTime())){
+					 graduateTime =  apply.getGraduateTime().toString().substring(0, 10);
+				}
+				if(apply.getDoctoralGraduationTime()!=null && !"".equals(apply.getDoctoralGraduationTime())){
+					 doctoralGraduationTime =  apply.getDoctoralGraduationTime().toString().substring(0, 10);
+				}
+				
 				request.setAttribute("undergraduateGraduationTime", undergraduateGraduationTime);
 				request.setAttribute("graduateTime", graduateTime);
 				request.setAttribute("doctoralGraduationTime", doctoralGraduationTime);
@@ -803,6 +832,7 @@ public class UserController {
 		mv.addObject("applList", applList);
 		mv.addObject("numInSideToday", numInSideToday);
 		mv.addObject("numInSide", numInSide);
+		mv.addObject("numDoctor", numDoctor);
 		mv.addObject("numDoctorToday", numDoctorToday);
 		mv.addObject("numMaster", numMaster);
 		mv.addObject("numMasterToday", numMasterToday);
@@ -839,7 +869,8 @@ public class UserController {
 	public void export(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		//获取数据
 		String recruitId = (String) request.getSession().getAttribute("recruitId");
-		List<Apply> list =userService.applyListAll(recruitId);
+		String positionName = request.getParameter("positionName");
+		List<Apply> list =userService.applyList(recruitId,positionName);
 		RecruitInfo recruitInfo = userService.getRecruitInfoById(recruitId);
 		//excel标题
 		String[] title = {"报考单位","报名职位","专业及专业方向",

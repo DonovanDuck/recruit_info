@@ -77,7 +77,7 @@
 	<div id="wrapper">
 		<nav class="navbar navbar-default top-navbar" role="navigation">
 			<div class="text-center">
-				<h2>新疆招聘信息系统</h2>
+				<!-- <h2>新疆招聘信息系统</h2> -->
 			</div>
 		</nav>
 		<!--/. NAV TOP  -->
@@ -95,6 +95,9 @@
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toPersonalInfo"
 						class="waves-effect waves-dark">个人信息</a></li>
+					<li class="text-left"><a
+						href="${pageContext.request.contextPath}/user/exit"
+						class="waves-effect waves-dark">安全退出</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -110,10 +113,11 @@
 								<!-- 页头 -->
 								<!-- 页头 -->
 								<div class="titleMain">
-									<h3 style="text-align: center; font-size: 31px;">招聘信息</h3>
-									<h3>
-										<strong style="font-size: 31px;"> 招聘单位:</strong><strong style="font-size: 31px;"> ${organizationName }</strong>
-									</h3>
+									<h3 style="text-align: center">${recruitInfo.recruitInfo }</h3>
+									<div style="font-size: 18px;margin-top: 10px; margin-bottom: 10px;">
+										<strong> 招聘单位:</strong><strong>${recruitInfo.organizatinName }</strong>
+									<div>
+									
 									<div style="height: 18px;width: 100%"></div>
 
 									<c:forEach items="${occupationApplicantLsit }"
@@ -132,14 +136,10 @@
 										src="${pageContext.request.contextPath}/user/toStatistics?positonName=${occupationApplicantLsit[0].positonName }"
 										scrolling="no" width="100%" frameborder="0" border="0"></iframe>
 								</div>
-								<button id="js-export" type="button" class="btn btn-primary">导出Excel</button>
+								
 
 								<script>
-									$('#js-export')
-											.click(
-													function() {
-														window.location.href = "${pageContext.request.contextPath}/user/export";
-													});
+									
 									$('a').on('click', function() {
 										$(this).removeClass('active');
 										$(this).addClass('active');

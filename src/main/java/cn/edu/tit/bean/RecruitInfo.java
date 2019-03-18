@@ -22,23 +22,8 @@ public class RecruitInfo {
 	private String publisher; //发布人
 	private Timestamp publishTime; //发布时间
 	private String publisherName; //发布人名
-	
+	private String organizatinName; //公司名
 	private List<Position> position; //招聘职位信息
-	
-	
-	
-	public String getPublisherName() {
-		return publisherName;
-	}
-	public void setPublisherName(String publisherName) {
-		this.publisherName = publisherName;
-	}
-	public List<Position> getPosition() {
-		return position;
-	}
-	public void setPosition(List<Position> position) {
-		this.position = position;
-	}
 	public String getRecruitId() {
 		return recruitId;
 	}
@@ -87,14 +72,34 @@ public class RecruitInfo {
 	public void setPublishTime(Timestamp publishTime) {
 		this.publishTime = publishTime;
 	}
+	public String getPublisherName() {
+		return publisherName;
+	}
+	public void setPublisherName(String publisherName) {
+		this.publisherName = publisherName;
+	}
+	public String getOrganizatinName() {
+		return organizatinName;
+	}
+	public void setOrganizatinName(String organizatinName) {
+		this.organizatinName = organizatinName;
+	}
+	public List<Position> getPosition() {
+		return position;
+	}
+	public void setPosition(List<Position> position) {
+		this.position = position;
+	}
 	@Override
 	public String toString() {
 		return "RecruitInfo [recruitId=" + recruitId + ", organization=" + organization + ", recruitInfo=" + recruitInfo
 				+ ", accessory=" + accessory + ", startTime=" + startTime + ", endTime=" + endTime + ", publisher="
-				+ publisher + ", publishTime=" + publishTime + "]";
+				+ publisher + ", publishTime=" + publishTime + ", publisherName=" + publisherName + ", organizatinName="
+				+ organizatinName + ", position=" + position + "]";
 	}
 	public RecruitInfo(String recruitId, String organization, String recruitInfo, String accessory, Timestamp startTime,
-			Timestamp endTime, String publisher, Timestamp publishTime) {
+			Timestamp endTime, String publisher, Timestamp publishTime, String publisherName, String organizatinName,
+			List<Position> position) {
 		super();
 		this.recruitId = recruitId;
 		this.organization = organization;
@@ -104,11 +109,17 @@ public class RecruitInfo {
 		this.endTime = endTime;
 		this.publisher = publisher;
 		this.publishTime = publishTime;
+		this.publisherName = publisherName;
+		this.organizatinName = organizatinName;
+		this.position = position;
 	}
 	public RecruitInfo() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
+	
+	
+	
+	
 	
 }

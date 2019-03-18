@@ -257,23 +257,36 @@ public class WxTeacherController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="searchRecruit",method= {RequestMethod.GET})
-	public Map<String, Object> searchRecruit(HttpServletRequest request,@RequestParam(value="search") String search) throws Exception {
+	public Map<String, Object> searchRecruit(HttpServletRequest request) throws Exception {
 		Map<String, Object> ret = new HashMap<String, Object>();
 		Integer index = Integer.parseInt(request.getParameter("index"));
+		String openId = request.getParameter("openId");
 		List<RecruitInfo> list = new ArrayList<RecruitInfo>();
-		
+		List<RecruitInfo> list2 = new ArrayList<RecruitInfo>();
+		List<String> recruitList = new ArrayList<>();
 		try {
 			//获取招聘信息
 			User publisher = (User) request.getSession().getAttribute("User");
-			
 				list = userService.getAllRecruitInfoBypage(index); // 获取所有招聘信息
+				//如果是报名人登录给返回所报recruitId
+				if(openId!=null && !"".equals(openId)){
+					recruitList = userService.getApplyRecruitId(openId);
+				}
+				//获取当前时间
+				Date date = new Date();       
+				Timestamp nousedate = new Timestamp(date.getTime());
 			for(RecruitInfo re : list){ // 获取每次招聘的相关职位信息
-				List<Position> positionList = new ArrayList<>();
-				positionList = userService.getPositionByRecruitId(re.getRecruitId());
-				re.setPosition(positionList);
+				if(nousedate.before(re.getEndTime())){ //筛选未结束的
+					List<Position> positionList = new ArrayList<>();
+					positionList = userService.getPositionByRecruitId(re.getRecruitId());
+					re.setPosition(positionList);
+					list2.add(re);
+				}
 			}
-			ret.put("list",list);
+			ret.put("list",list2);
+			ret.put("recruitList", recruitList);
 			ret.put("status", "OK");
+			ret.put("user", publisher);
 		} catch (Exception e) {
 			e.printStackTrace();
 			ret.put("status", "ERROR");
@@ -354,6 +367,48 @@ public class WxTeacherController {
 	}
 	
 	/**
+	 * 获取所有招聘公司
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="getApplyOrganization")
+	public  Map<String, Object> getApplyOrganization(HttpServletRequest request) throws Exception {
+		Map<String, Object> ret = new HashMap<String, Object>();
+		try {
+			// 提供所有公司
+			List<Organization> organizationList = new ArrayList<>();
+			organizationList = userService.getOrganization();
+			ret.put("organization", organizationList);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return ret;
+	}
+	
+	/**
+	 * 获取某公司所有岗位
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="getApplyposition")
+	public  Map<String, Object> getApplyposition(HttpServletRequest request) throws Exception {
+		Map<String, Object> ret = new HashMap<String, Object>();
+		String organizationName = request.getParameter("organizationName");  // 获取公司名
+		try {
+			String organizationId = userService.getOrganizaionIdByName(organizationName);
+			List<Position> positionList = userService.getPosition(organizationId); // 获取公司所有职位
+			ret.put("position", positionList);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return ret;
+	}
+	
+	/**
 	 * 提交报名申请
 	 * */
 	@SuppressWarnings("unchecked")
@@ -370,7 +425,7 @@ public class WxTeacherController {
 			String applyId = Common.uuid();
 			Object[] obj = Common.fileFactory(request,applyId);
 			Map<String, Object> formdata = (Map<String, Object>) obj[1];
-			List<File> returnFileList = (List<File>) obj[0]; // 要返回的文件集合
+			List<File> returnFileList = (List<File>) obj[0]; // 要返回的文件集合 
 			Apply apply = new Apply(applyId,(String)formdata.get("gender"), (String)formdata.get("applyUserName"),  (String)formdata.get("nation"), (String)formdata.get("politicsStatus"),
 					(String)formdata.get("nativePlace"), (String)formdata.get("identityNum"), (String)formdata.get("isMarry"), 
 					(String)formdata.get("speciality"), (String)formdata.get("telephone"), (String)formdata.get("bachelorDegreeAndMajor"), (String)formdata.get("undergraduateGraduationTime"), 
@@ -408,6 +463,81 @@ public class WxTeacherController {
 		}
 		return ret;
 	}
+	
+	/**
+	 * 获得报名申请
+	 * */
+	@RequestMapping(value="getApply")
+	public Map<String, Object> getApply(HttpServletRequest request) throws Exception {
+		Map<String, Object> ret = new HashMap<String, Object>();
+		try {
+			// 获取openId 和 recruitId
+			String openId = request.getParameter("openId");
+			String recruitId = request.getParameter("recruitId");
+			//根据两个值找apply
+			Apply apply = userService.getApplyByOpenAndRecruit(openId, recruitId);
+			ret.put("apply",apply);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return ret;
+	}
+	
+	/**
+	 * 修改报名申请
+	 * */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value="modifyApply")
+	public Map<String, Object> modifyApply(HttpServletRequest request) throws Exception {
+		Map<String, Object> ret = new HashMap<String, Object>();
+		try {
+			request.setCharacterEncoding("utf-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			Object[] obj = Common.fileFactory(request,null);
+			Map<String, Object> formdata = (Map<String, Object>) obj[1];
+			List<File> returnFileList = (List<File>) obj[0]; // 要返回的文件集合 
+			Apply apply = new Apply((String)formdata.get("applyId"),(String)formdata.get("gender"), (String)formdata.get("applyUserName"),  (String)formdata.get("nation"), (String)formdata.get("politicsStatus"),
+					(String)formdata.get("nativePlace"), (String)formdata.get("identityNum"), (String)formdata.get("isMarry"), 
+					(String)formdata.get("speciality"), (String)formdata.get("telephone"), (String)formdata.get("bachelorDegreeAndMajor"), (String)formdata.get("undergraduateGraduationTime"), 
+					Integer.parseInt((String)formdata.get("undergraduateIsFirstSchool")),Integer.parseInt((String)formdata.get("undergraduateIsFirstMajor")),(String)formdata.get("graduateSchoolAndMajor"), (String)formdata.get("graduateTime"), 
+					Integer.parseInt((String)formdata.get("graduateIsFirstSchool")),Integer.parseInt((String)formdata.get("graduateIsFirstMajor")),(String)formdata.get("doctoralDegreeAndMajor"), (String)formdata.get("doctoralGraduationTime"), 
+					Integer.parseInt((String)formdata.get("doctorIsFirstSchool")),Integer.parseInt((String)formdata.get("doctorIsFirstMajor")),(String)formdata.get("workOrganization"), 
+					(String)formdata.get("position"), (String)formdata.get("telephoneOriganization"), 
+					(String)formdata.get("professionalAndTechnicalQualification"), (String)formdata.get("practicingRequirements"), (String)formdata.get("mailingAddress"), 
+					(String)formdata.get("postalAddress"), (String)formdata.get("eMail"), (String)formdata.get("applicationOrganization"), 
+					(String)formdata.get("majorApplicant"), (String)formdata.get("workExperience"), (String)formdata.get("occupationApplicant"), (String)formdata.get("recruitId"), 
+					(String)formdata.get("professionalOrientation"), (String)formdata.get("compilationNature"),
+					 (String)formdata.get("education"), (String)formdata.get("degree"), Integer.parseInt((String)formdata.get("isCurrent")), (String)formdata.get("jobPerformance"),
+						(String)formdata.get("paperTopicSituation"), (String)formdata.get("sanctionSituation"),(String)formdata.get("openId"),(String)formdata.get("formId"));
+			apply.setSubmitTime(new Date());
+			if(!returnFileList.isEmpty())
+			{
+				for(File f : returnFileList){
+					String path = Common.readProperties("prefix")+f.getPath().substring(2).replace("\\", "/");
+					apply.setFace(path);
+//					//存储报名材料(附件)
+//					Material material = new Material();
+//					//material.setApplyId(apply.getApplyId());
+//					material.setMaterialId(Common.uuid());
+//					material.setAccessory(f.getPath());
+//					userService.saveMaterial(material);
+				}
+			}
+			//存储获取的报名信息
+			userService.modifyApply(apply);
+			ret.put("status", "OK");
+		} catch (Exception e) {
+			e.printStackTrace();
+			ret.put("status", "ERROR");
+		}
+		return ret;
+	}
+	
 	
 	/**
 	 * 职位信息汇总
@@ -517,10 +647,6 @@ public class WxTeacherController {
 		String phone = "";
 		phone = request.getParameter("phone");
 		User user = userService.getUserByPhone(phone);
-		if(user == null){
-			map.put("img", "查无此人，请检查电话号码是否正确！");
-			return map;
-		}
 	    //拼接url
 		StringBuilder url = new StringBuilder("https://api.weixin.qq.com/sns/jscode2session?");
 		url.append("appid=");//appid设置
@@ -542,9 +668,14 @@ public class WxTeacherController {
 		    map = Common.parseJSON2Map(res);//这个小工具的代码在下面
 		    // 将openId和用户绑定
 		    String openId = (String) map.get("openId");
-		    if("".equals(openId) && openId !=null){
+		    if("".equals(openId) && openId !=null && user!=null){
+		    	map.put("user", user);
 		    	userService.bandOpenId(openId,user.getUserId());
 		    }
+		    else{
+		    	map.put("user", "应聘者");
+		    }
+		    
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}

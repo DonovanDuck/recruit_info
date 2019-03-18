@@ -96,6 +96,15 @@
 				alert("人数为空,请选择");
 				judge = false;
 			}
+			 if(!($(this).val()>0)&& i != num){
+				alert("人数为需大于0！");
+				judge = false;
+			} 
+			var x = String($(this).val()).indexOf('.')+1;
+			if(x > 0 && i != num){
+				alert("人数不能为小数！");
+				judge = false;
+			}
 		});
 		i = 0;
 		$("input[name='professionalOrientation']").each(function() {
@@ -183,7 +192,7 @@
 	<div id="wrapper">
 		<nav class="navbar navbar-default top-navbar" role="navigation">
 			<div class="text-center">
-				<h2>新疆招聘信息系统</h2>
+				<!-- <h2>新疆招聘信息系统</h2> -->
 			</div>
 		</nav>
 		<!--/. NAV TOP  -->
@@ -201,6 +210,9 @@
 					<li class="text-left"><a
 						href="${pageContext.request.contextPath}/user/toPersonalInfo"
 						class="waves-effect waves-dark">个人信息</a></li>
+					<li class="text-left"><a
+						href="${pageContext.request.contextPath}/user/exit"
+						class="waves-effect waves-dark">安全退出</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -208,14 +220,14 @@
 		<div id="page-wrapper">
 			<div id="page-inner">
 				<div class="col-md-12">
-					<div class="card" style="height: 100%">
+					<div class="card" style="height: 100%;padding-top: 33px;">
 						<div class="col-md-12 text-center">
 							<h2>发布招聘信息</h2>
 						</div>
 						<form class="form-horizontal"
 							action="${pageContext.request.contextPath}/user/publishRcruit"
 							method="post" enctype="multipart/form-data"
-							style="width: 50%; margin-left: 25%; padding-top: 5%;"
+							style="width: 60%;margin-left: 16%; padding-top: 5%;"
 							name="recruitForm" id="recruitForm">
 							<div class="form-group">
 								<div class="col-md-4 text-right " style="margin-top: 1%">
@@ -227,7 +239,7 @@
 										placeholder="招聘标题">
 								</div>
 							</div>
-							<div class="form-group">
+							<%-- <div class="form-group">
 								<div class="col-md-4 text-right" style="margin-top: 1%">
 									<h3>招聘单位:</h3>
 								</div>
@@ -236,12 +248,12 @@
 										id="organization" type="text" id="organization"
 										value="${sessionScope.User.organizationName }" readOnly="true">
 								</div>
-							</div>
+							</div> --%>
 							<div class="form-group">
 								<div class="col-md-4 text-right">
 									<h3>招聘信息:</h3>
 								</div>
-								<div class="col-md-7" style="padding: 0">
+								<div class="col-md-7" style="padding: 0;width: 66%;">
 									<ul class="col-md-12" style="padding: 0" id="ulContent">
 										<li class="col-md-10"
 											style="padding: 0; background-color: rgba(245, 246, 246, 0.8); margin-top: 4px"
@@ -249,7 +261,7 @@
 											<div class="col-md-12" style="padding: 0">
 												<div class="col-md-8" style="padding: 0">
 													<input id="position" style='font-size: 18px;'
-														name="position" type="text" placeholder="职业"
+														name="position" type="text" placeholder="职位"
 														list="positionlist">
 													<datalist id="positionlist">
 														<c:forEach items="${positionName }" var="positionName">
@@ -264,12 +276,14 @@
 												</div>
 											</div>
 											<div class="col-md-12" style="padding: 0">
-												<div class="col-md-7" style="padding: 0">
+												<div class="col-md-7" style="padding: 0;width: 100%;">
 													<input id="professionalOrientation"
 														style='font-size: 18px;' name="professionalOrientation"
 														type="text" placeholder="专业及专业方向">
 												</div>
-												<div class="col-md-5">
+												<div style="float:left;position: relative;left: -119px;"><h3>岗位性质:</h3></div>
+												<div class="col-md-5" style="position: relative;left: -109px;">
+													
 													<select class="form-control" id="compilationNatureS"
 														name="compilationNatureS"
 														style="margin-top: 6%; padding: 0">
@@ -363,7 +377,7 @@
 					id="liContentOne">
 					<div class="col-md-12" style="padding: 0">
 						<div class="col-md-8" style="padding: 0">
-							<input id="position" name="position" type="text" placeholder="职业"
+							<input id="position" name="position" type="text" placeholder="职位"
 								style='font-size: 18px;' list="positionlist">
 							<datalist id="positionlist">
 								<c:forEach items="${positionList }" var="list">
@@ -378,11 +392,12 @@
 						</div>
 					</div>
 					<div class="col-md-12" style="padding: 0">
-						<div class="col-md-7" style="padding: 0">
+						<div class="col-md-7" style="padding: 0;width: 100%">
 							<input id="professionalOrientation" style='font-size: 18px;'
 								name="professionalOrientation" type="text" placeholder="专业及专业方向">
 						</div>
-						<div class="col-md-5">
+						<div style="float:left;position: relative;left: -119px;"><h3>岗位性质:</h3></div>
+							<div class="col-md-5" style="position: relative;left: -109px;">
 							<select class="form-control" id="compilationNatureS"
 								name="compilationNatureS" style="margin-top: 6%; padding: 0">
 								<option>行政岗</option>
