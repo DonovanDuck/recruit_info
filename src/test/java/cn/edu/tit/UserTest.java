@@ -36,7 +36,7 @@ public class UserTest {
 
 	@Test
 	public void Test() throws Exception {
-		System.out.println(iUserService.getApplyByOpenAndRecruit("orUkK46Gjtpme5SuTm4JXCkWf-Xs", "5713CB655FDA451C9569B1FF1DA2401F"));
+		System.out.println(iUserService.getMaterial("1", "1"));
 		
 				
 	}

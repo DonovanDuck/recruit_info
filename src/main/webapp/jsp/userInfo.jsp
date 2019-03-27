@@ -147,8 +147,8 @@ function submitButton(ob){
 				cache : false,
 				url : "${pageContext.request.contextPath}/user/ajaxCheckPhone",
 				data : {
-					'phoneNum' : phoneNum,
-					'userId'   : userId
+					'phoneNum' : phoneNum
+				
 				},
 				type : "POST",
 				dataType : "text",
@@ -288,12 +288,18 @@ function deleteUser(ob){
 					    	<input class="btn btn-default" name="${requestScope.offset+status.index+1}" onclick="open1(this)" type="button" value="重置密码" style="margin-right: 0xp;">
 						</td>
 						</form>
+						
 						<td class="userInfo_TD" style="position: relative;left: -8px;padding-left: 0;">
+							
 							<form action="${pageContext.request.contextPath}/user/deleteUser" id="deleteForm">
 					    		<input class="form-control" type="hidden" name="deleteUserId"  value="${user.userId }" />
+					    		<c:if test="${user.userId != sessionScope.User.userId }">
 					    		<input class="btn btn-danger" name="${requestScope.offset+status.index+1}" onclick="deleteUser(${requestScope.offset+status.index+1})" type="button" value="删除用户" style="margin-right: 0xp;">
+								</c:if>
 							</form>
+							
 						</td>
+						
 					</tr>
 				
 				

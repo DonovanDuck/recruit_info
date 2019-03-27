@@ -161,8 +161,11 @@ public  class  Common {
 			List<FileItem> items = upload.parseRequest(request);// 得到所有的字段
 			for (FileItem fi : items) {
 				if (!fi.isFormField()) { // 判断是否是普通表单字段
-					int count = fi.getName().lastIndexOf(".");
-					String fileName = System.currentTimeMillis()+fi.getName().substring(count);
+					String fileName="";
+					if(fi.getName()!=null && !"".equals(fi.getName())){
+						int count = fi.getName().lastIndexOf(".");
+						 fileName = System.currentTimeMillis()+fi.getName().substring(count);
+					}
 					if (!fileName.isEmpty()) {
 						File fullFile = new File(new String(fileName.getBytes(), "utf-8")); // 解决文件名乱码问题,获得文件内容
 						File savedFile = new File(path, fullFile.getName()); // 为文件设置存储路径

@@ -64,7 +64,8 @@ public class Apply {
 	
 	private String openId; //微信用户（报名人）openid
 	private String formId; //微信用户（报名人）formid
-	private List<ApplyFamily> familyRelationship; // 家庭成员及重要社会关系
+	private String familyRelationship; //家庭成员及重要社会关系
+	//private List<ApplyFamily> familyRelationship; // 家庭成员及重要社会关系
 	
 	
 	public String getOpenId() {
@@ -349,10 +350,11 @@ public class Apply {
 	public void setSanctionSituation(String sanctionSituation) {
 		this.sanctionSituation = sanctionSituation;
 	}
-	public List<ApplyFamily> getFamilyRelationship() {
+	
+	public String getFamilyRelationship() {
 		return familyRelationship;
 	}
-	public void setFamilyRelationship(List<ApplyFamily> familyRelationship) {
+	public void setFamilyRelationship(String familyRelationship) {
 		this.familyRelationship = familyRelationship;
 	}
 	public Apply(String applyId, String gender, String applyUserName,  String nation, String politicsStatus,
@@ -366,7 +368,7 @@ public class Apply {
 			String postalAddress, String eMail, String applicationOrganization, String majorApplicant,
 			String workExperience, String occupationApplicant, String recruitId,
 			String professionalOrientation, String compilationNature, String education, String degree,
-			Integer isCurrent, String jobPerformance, String paperTopicSituation, String sanctionSituation,String openId,String formId) {
+			Integer isCurrent, String jobPerformance, String paperTopicSituation, String sanctionSituation,String openId,String formId,String familyRelationship) {
 		super();
 		this.applyId = applyId;
 		this.gender = gender;
@@ -413,6 +415,7 @@ public class Apply {
 		this.sanctionSituation = sanctionSituation;
 		this.openId = openId;
 		this.formId = formId;
+		this.familyRelationship = familyRelationship;
 	}
 	public Apply() {
 		super();

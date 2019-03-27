@@ -307,4 +307,12 @@ public interface IUserService {
 	 */
 	public void modifyApply(Apply apply);
 
+	/**
+	 * 获得报名材料
+	 * @param recruitId
+	 * @param openId
+	 * @return
+	 */
+	public List<Material> getMaterial(String recruitId, String openId);
+	
 }

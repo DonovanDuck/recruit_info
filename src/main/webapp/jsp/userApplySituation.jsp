@@ -77,7 +77,9 @@
 	}
 	.apply_TD{
 		width: 88px;
-    	padding-right: 51px; 
+    	 
+    	border: 1px solid;
+    	text-align: center;
 	}
 	.apply_table{
 	width: 895px;
@@ -86,18 +88,27 @@
 	}
 	.school{
 		width: 18%;
+		border: 1px solid;
+		font-weight: 900;
+		text-align: center;
 	}
 	.time{
 		width: 15%;
+		border: 1px solid;
+		font-weight: 900;
+		text-align: center;
 	}
 	.info_td{
 		width: 100px;
+		font-weight: 900;
+		border: 1px solid;
+		text-align: center;
 	}
 	.advice{
 		width: 100%;
     height: 50%;
     position: relative;
-    top: 82px;
+    top: 47px;
     padding-left: 32px;
     padding-right: 40px;
 	}
@@ -173,10 +184,16 @@ function doPrint() {
 		<button  onclick="doPrint()" type="button" class="btn btn-primary" style="position: absolute;left: 172px; top: 41px;">打印</button>
 		
 		<div class="apply_table" id="dayin">
-			<table class="table table-bordered">
+			<table>
 				
 				<tbody>
 				<form action="">
+					<tr>
+						<!-- <div style="">
+							<label>2019年伊犁州直引进高层次紧缺人才报名登记表</label>
+						</div> -->
+						<td style="width: 100px;font-weight: 900;border: 1px solid;text-align: center;padding: 17px;" colspan="10">2019年伊犁州直引进高层次紧缺人才报名登记表</td>
+					</tr>
 					<tr>
 						<td class="info_td">姓名</td>
 						<td class="apply_TD">${apply.applyUserName }</td>
@@ -185,7 +202,7 @@ function doPrint() {
 						<td class="info_td">民族</td>
 						<td class="apply_TD">${apply.nation }</td>
 						<td style="width: 112px;" rowspan="4">
-							<div style="height: 100%;width: 100%">
+							<div style="height: 100%;width: 100%;border: 1px solid;">
 								<img src="${apply.face }" style="height: 100%;width: 100%"/>
 							</div>
 						</td>
@@ -220,21 +237,21 @@ function doPrint() {
 						<tr>
 							<td class="info_td" rowspan="3">毕业院校及专业</td>
 									<td class="school">本科</td>
-									<td colspan="2">${apply.bachelorDegreeAndMajor }</td>
+									<td colspan="2" style="border: 1px solid;text-align: center;">${apply.bachelorDegreeAndMajor }</td>
 									<td class="time">毕业时间</td>
-									<td colspan="2">${undergraduateGraduationTime }</td>
+									<td colspan="2" style="border: 1px solid;text-align: center;">${undergraduateGraduationTime }</td>
 								</tr>
 								<tr>
 									<td class="school">硕士研究生</td>
-									<td colspan="2">${apply.graduateSchoolAndMajor }</td>
+									<td colspan="2" style="border: 1px solid;text-align: center;">${apply.graduateSchoolAndMajor }</td>
 									<td class="time">毕业时间</td>
-									<td colspan="2">${graduateTime }</td>
+									<td colspan="2" style="border: 1px solid;text-align: center;">${graduateTime }</td>
 								</tr>
 								<tr>
 									<td class="school">博士研究生</td>
-									<td colspan="2">${apply.doctoralDegreeAndMajor }</td>
+									<td colspan="2" style="border: 1px solid;text-align: center;">${apply.doctoralDegreeAndMajor }</td>
 									<td class="time">毕业时间</td>
-									<td colspan="2">${doctoralGraduationTime }</td>
+									<td colspan="2" style="border: 1px solid;text-align: center;">${doctoralGraduationTime }</td>
 								</tr>
 					
 					<tr>
@@ -259,7 +276,7 @@ function doPrint() {
 					</tr>
 					<tr>
 						<td class="info_td">报名单位及专业</td>
-						<td class="apply_TD" colspan="6">${apply.applicationOrganization }  ${apply.majorApplicant }</td>
+						<td class="apply_TD" colspan="6">${apply.applicationOrganization }  ${apply.occupationApplicant }</td>
 					</tr>
 					<tr>
 						<td class="info_td">学习和工作经历(由高中填起)</td>
@@ -278,6 +295,10 @@ function doPrint() {
 						<td class="apply_TD" colspan="6">${apply.sanctionSituation }</td>
 					</tr>
 					<tr>
+						<td class="info_td">家庭成员及重要社会关系</td>
+						<td class="apply_TD" colspan="6">${apply.familyRelationship }</td>
+					</tr>
+					<%-- <tr>
 						<td>家庭成员及重要社会关系</td>
 						<td>称谓</td>
 						<td>姓名</td>
@@ -294,7 +315,7 @@ function doPrint() {
 						<td>${family.politicsStatus }</td>
 						<td colspan="2">${family.organization }&emsp;&emsp;${family.position }</td>
 					</tr>
-					</c:forEach>
+					</c:forEach> --%>
 					<!-- <tr style="height: 33px;">
 						<td></td>
 						<td></td>

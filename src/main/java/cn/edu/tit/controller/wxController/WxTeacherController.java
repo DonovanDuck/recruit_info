@@ -438,7 +438,7 @@ public class WxTeacherController {
 					(String)formdata.get("majorApplicant"), (String)formdata.get("workExperience"), (String)formdata.get("occupationApplicant"), (String)formdata.get("recruitId"), 
 					(String)formdata.get("professionalOrientation"), (String)formdata.get("compilationNature"),
 					 (String)formdata.get("education"), (String)formdata.get("degree"), Integer.parseInt((String)formdata.get("isCurrent")), (String)formdata.get("jobPerformance"),
-						(String)formdata.get("paperTopicSituation"), (String)formdata.get("sanctionSituation"),(String)formdata.get("openId"),(String)formdata.get("formId"));
+						(String)formdata.get("paperTopicSituation"), (String)formdata.get("sanctionSituation"),(String)formdata.get("openId"),(String)formdata.get("formId"),(String)formdata.get("familyRelationship"));
 			apply.setSubmitTime(new Date());
 			if(!returnFileList.isEmpty())
 			{
@@ -456,6 +456,70 @@ public class WxTeacherController {
 			}
 			//存储获取的报名信息
 			userService.submitApply(apply);
+			ret.put("status", "OK");
+		} catch (Exception e) {
+			e.printStackTrace();
+			ret.put("status", "ERROR");
+		}
+		return ret;
+	}
+	
+	/**
+	 * 提交报名材料
+	 * */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value="submitMaterial")
+	public Map<String, Object> submitMaterial(HttpServletRequest request) throws Exception {
+		Map<String, Object> ret = new HashMap<String, Object>();
+		try {
+			request.setCharacterEncoding("utf-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			Object[] obj = Common.fileFactory(request,null);
+			Map<String, Object> formdata = (Map<String, Object>) obj[1];
+			List<File> returnFileList = (List<File>) obj[0]; // 要返回的文件集合 
+			if(!returnFileList.isEmpty())
+			{
+				for(File f : returnFileList){
+					String path = Common.readProperties("prefix")+f.getPath().substring(2).replace("\\", "/");;
+					//存储报名材料(附件)
+					Material material = new Material();
+					material.setRecruitId((String)formdata.get("recruitId"));
+					material.setOpenId((String)formdata.get("openId"));
+					material.setMaterialId(Common.uuid());
+					material.setAccessory(path);
+					userService.saveMaterial(material);
+				}
+			}
+			ret.put("status", "OK");
+		} catch (Exception e) {
+			e.printStackTrace();
+			ret.put("status", "ERROR");
+		}
+		return ret;
+	}
+	
+	/**
+	 * 提交报名材料
+	 * */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value="getMaterial")
+	public Map<String, Object> getMaterial(HttpServletRequest request) throws Exception {
+		Map<String, Object> ret = new HashMap<String, Object>();
+		try {
+			request.setCharacterEncoding("utf-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			String recruitId = request.getParameter("recruitId");
+			String openId = request.getParameter("openId");
+			List<Material> marerialList = userService.getMaterial(recruitId, openId);// 查材料
+			ret.put("marerialList", marerialList);
 			ret.put("status", "OK");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -513,7 +577,7 @@ public class WxTeacherController {
 					(String)formdata.get("majorApplicant"), (String)formdata.get("workExperience"), (String)formdata.get("occupationApplicant"), (String)formdata.get("recruitId"), 
 					(String)formdata.get("professionalOrientation"), (String)formdata.get("compilationNature"),
 					 (String)formdata.get("education"), (String)formdata.get("degree"), Integer.parseInt((String)formdata.get("isCurrent")), (String)formdata.get("jobPerformance"),
-						(String)formdata.get("paperTopicSituation"), (String)formdata.get("sanctionSituation"),(String)formdata.get("openId"),(String)formdata.get("formId"));
+						(String)formdata.get("paperTopicSituation"), (String)formdata.get("sanctionSituation"),(String)formdata.get("openId"),(String)formdata.get("formId"),(String)formdata.get("familyRelationship"));
 			apply.setSubmitTime(new Date());
 			if(!returnFileList.isEmpty())
 			{

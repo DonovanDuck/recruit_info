@@ -643,8 +643,7 @@ public class UserController {
 			// 校验密码
 			String phoneNum = request.getParameter("phoneNum");
 			User user = userService.getUserByPhone(phoneNum);//根据电话找用户
-			String userId = request.getParameter("userId");
-			if (!userId.equals(user.getUserId()))
+			if (user != null)
 				result = JSONObject.toJSONString("ERROR");
 			else
 				result = JSONObject.toJSONString("OK");
@@ -738,17 +737,17 @@ public class UserController {
 				request.setAttribute("undergraduateGraduationTime", undergraduateGraduationTime);
 				request.setAttribute("graduateTime", graduateTime);
 				request.setAttribute("doctoralGraduationTime", doctoralGraduationTime);
-				//获取报名人家庭信息
-				List<ApplyFamily> familyList = userService.getApplyFamily(apply.getApplyId());
-				List<String> birthList = new ArrayList<>();
-				for(ApplyFamily f : familyList){
-					if(f.getBirth() != null){
-						birthList.add(f.getBirth().toString().substring(0, 10));
-					}
-				}
-				apply.setFamilyRelationship(familyList);
+//				//获取报名人家庭信息
+//				List<ApplyFamily> familyList = userService.getApplyFamily(apply.getApplyId());
+//				List<String> birthList = new ArrayList<>();
+//				for(ApplyFamily f : familyList){
+//					if(f.getBirth() != null){
+//						birthList.add(f.getBirth().toString().substring(0, 10));
+//					}
+//				}
+//				apply.setFamilyRelationship(familyList);
 				request.setAttribute("apply",apply);
-				request.setAttribute("birthList", birthList);
+//				request.setAttribute("birthList", birthList);
 			}
 			mv.setViewName("/jsp/userApplySituation");
 		} catch (Exception e) {

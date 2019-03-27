@@ -24,6 +24,7 @@ public class RecruitInfo {
 	private String publisherName; //发布人名
 	private String organizatinName; //公司名
 	private List<Position> position; //招聘职位信息
+	private int flag; //小程序页面判断标志位
 	public String getRecruitId() {
 		return recruitId;
 	}
@@ -90,16 +91,22 @@ public class RecruitInfo {
 	public void setPosition(List<Position> position) {
 		this.position = position;
 	}
+	public int getFlag() {
+		return flag;
+	}
+	public void setFlag(int flag) {
+		this.flag = flag;
+	}
 	@Override
 	public String toString() {
 		return "RecruitInfo [recruitId=" + recruitId + ", organization=" + organization + ", recruitInfo=" + recruitInfo
 				+ ", accessory=" + accessory + ", startTime=" + startTime + ", endTime=" + endTime + ", publisher="
 				+ publisher + ", publishTime=" + publishTime + ", publisherName=" + publisherName + ", organizatinName="
-				+ organizatinName + ", position=" + position + "]";
+				+ organizatinName + ", position=" + position + ", flag=" + flag + "]";
 	}
 	public RecruitInfo(String recruitId, String organization, String recruitInfo, String accessory, Timestamp startTime,
 			Timestamp endTime, String publisher, Timestamp publishTime, String publisherName, String organizatinName,
-			List<Position> position) {
+			List<Position> position, int flag) {
 		super();
 		this.recruitId = recruitId;
 		this.organization = organization;
@@ -112,12 +119,12 @@ public class RecruitInfo {
 		this.publisherName = publisherName;
 		this.organizatinName = organizatinName;
 		this.position = position;
+		this.flag = flag;
 	}
 	public RecruitInfo() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
 	
 	
 	

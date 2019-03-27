@@ -325,4 +325,12 @@ public interface IUserDao {
 	 */
 	public void modifyApply(Apply apply);
 	
+	/**
+	 * 获得报名材料
+	 * @param recruitId
+	 * @param openId
+	 * @return
+	 */
+	public List<Material> getMaterial(@Param(value="recruitId")String recruitId, @Param(value="openId")String openId);
+	
 }

@@ -86,7 +86,9 @@
 		今日报名博士<strong>${numDoctorToday }</strong>人、硕士<strong>${numMasterToday }</strong>人、学士<strong>${numBachelorToday }</strong>人，疆内户籍<strong>${numInSideToday }</strong>人，本科双一流院校<strong>${numFirstSchoolInUndergraduateToday }</strong>人，本科双一流学科<strong>${numFirstMajorInUndergraduateToday }</strong>人，研究生双一流院校<strong>${numFirstSchoolInPastgraduateToday }</strong>人，研究生双一流学科<strong>${numFirstMajorInPastgraduateToday }</strong>人，博士双一流院校<strong>${numFirstSchoolInDoctorToday }</strong>人，博士双一流学科<strong>${numFirstMajorInDoctorToday }</strong>人。
 
 	</div>
+	<c:if test="${User.authority==0||User.authority==10||User.authority==20 }">
 	<button id="js-export" type="button" class="btn btn-primary">导出该职位报名汇总表</button>
+	</c:if>
 	<div style="width: 100%;text-align: center; margin-left: -20px"><h3><strong>报名人员</strong></h3></div>
 
 	<table  class="table   table-hover"

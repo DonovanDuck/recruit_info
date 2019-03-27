@@ -89,6 +89,7 @@
 		<result column="open_id" property="openId" />
 		<result column="form_id" property="formId" />
 		<result column="face" property="face" />
+		<result column="familyRelationship" property="familyRelationship" />
 	</resultMap>
 	<!-- 结果集映射 -->
 	<resultMap type="cn.edu.tit.bean.RecruitInfo"
@@ -103,6 +104,7 @@
 		<result column="publish_time" property="publishTime" />
 		<result column="publisher_name" property="publisherName" />
 		<result column="organization_name" property="organizatinName" />
+		<result column="flag" property="flag" />
 	</resultMap>
 	<!-- 结果集映射 -->
 	<resultMap type="cn.edu.tit.bean.Position" id="position">
@@ -127,6 +129,15 @@
 		<result column="politics_status" property="politicsStatus" />
 		<result column="organization" property="organization" />
 		<result column="position" property="position" />
+	</resultMap>
+	
+	<!-- 结果集映射 -->
+	<resultMap type="cn.edu.tit.bean.Material"
+		id="materialMap">
+		<result column="material_id" property="materialId" />
+		<result column="recruit_id" property="recruitId" />
+		<result column="open_id" property="openId" />
+		<result column="accessory" property="accessory" />
 	</resultMap>
 
 
@@ -216,7 +227,8 @@
 		publisher,
 		publish_time,
 		publisher_name,
-		organization_name)
+		organization_name,
+		flag)
 		VALUES
 		(#{recruitId},
 		#{organization},
@@ -227,7 +239,8 @@
 		#{publisher},
 		#{publishTime},
 		#{publisherName},
-		#{organizatinName});
+		#{organizatinName},
+		0);
 	</insert>
 	<select id="getRecruitInfo" parameterType="String"
 		resultMap="recruitInfo">
@@ -552,7 +565,8 @@
 		sanction_situation,
 		open_id,
 		form_id,
-		face
+		face,
+		familyRelationship
 		) values(
 		#{applyId},
 		#{gender},
@@ -600,7 +614,8 @@
 		#{sanctionSituation},
 		#{openId},
 		#{formId},
-		#{face}
+		#{face},
+		#{familyRelationship}
 		);
 	</insert>
 	
@@ -613,21 +628,21 @@
 		politics_status=#{politicsStatus},
 		native_place=#{nativePlace},
 		identity_num=#{identityNum},
-		is_marry=#{isMarry},
+		<if test="isMarry != null">is_marry=#{isMarry},</if>
 		speciality=#{speciality},
 		telephone=#{telephone},
 		undergraduate_and_major=#{bachelorDegreeAndMajor},
 		undergraduate_graduation_time=#{undergraduateGraduationTime},
-		undergraduate_is_first_school=#{undergraduateIsFirstSchool},
-		undergraduate_is_first_major=#{undergraduateIsFirstMajor},
+		<if test="undergraduateIsFirstSchool != null">undergraduate_is_first_school=#{undergraduateIsFirstSchool},</if>
+		<if test="undergraduateIsFirstMajor != null">undergraduate_is_first_major=#{undergraduateIsFirstMajor},</if>
 		graduate_school_and_major=#{graduateSchoolAndMajor},
 		graduate_time=#{graduateTime},
-		graduate_is_first_school=#{graduateIsFirstSchool},
-		graduate_is_first_major=#{graduateIsFirstMajor},
+		<if test="graduateIsFirstSchool != null">graduate_is_first_school=#{graduateIsFirstSchool},</if>
+		<if test="graduateIsFirstMajor != null">graduate_is_first_major=#{graduateIsFirstMajor},</if>
 		doctoral_degree_and_major=#{doctoralDegreeAndMajor},
 		doctoral_graduation_time=#{doctoralGraduationTime},
-		doctor_is_first_school=#{doctorIsFirstSchool},
-		doctor_is_first_major=#{doctorIsFirstMajor},
+		<if test="doctorIsFirstSchool != null">doctor_is_first_school=#{doctorIsFirstSchool},</if>
+		<if test="doctorIsFirstMajor != null">doctor_is_first_major=#{doctorIsFirstMajor},</if>
 		work_organization=#{workOrganization},
 		position=#{position},
 		telephone_organizatino=#{telephoneOriganization},
@@ -640,7 +655,7 @@
 		major_applicant=#{majorApplicant},
 		work_experience=#{workExperience},
 		occupation_applicant=#{occupationApplicant},
-		recruit_id=#{recruitId},
+		
 		submit_time=#{submitTime},
 		professional_orientation=#{professionalOrientation},
 		compilation_nature=#{compilationNature},
@@ -650,18 +665,23 @@
 		job_performance=#{jobPerformance},
 		paper_topic_situation=#{paperTopicSituation},
 		sanction_situation=#{sanctionSituation},
-		open_id=#{openId},
-		form_id=#{formId},
-		face=#{face}
+		<if test="face != null">face=#{face},</if>
+		familyRelationship=#{familyRelationship}
 		where apply_id=#{applyId};
 	</update>
 
 	<!-- 存储报名材料 -->
 	<insert id="saveMaterial"
 		parameterType="cn.edu.tit.bean.Material">
-		insert into material(apply_id, material_id, accessory)
-		values(#{applyId},#{materialId},#{accessory});
+		insert into material(recruit_id,open_id, material_id, accessory)
+		values(#{recruitId},#{openId},#{materialId},#{accessory});
 	</insert>
+
+	
+	<!-- 获得报名材料 -->
+	<select id="getMaterial" resultMap="materialMap">
+		select * from material where recruit_id = #{recruitId} and open_id = #{openId};
+	</select>
 
 	<!-- 增加教师信息 -->
 	<insert id="publishPosition"

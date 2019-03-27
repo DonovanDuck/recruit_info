@@ -73,7 +73,7 @@
 		margin-right: 10px;
 	}
 </style>
-<script>
+<!-- <script>
 	$(function(){
 		$("#phoneNum").blur(function(){
 			
@@ -88,7 +88,7 @@
 		});
 	})
 	
-</script>
+</script> -->
 
 <script type="text/javascript">
 function submitButton(){
@@ -114,6 +114,25 @@ function submitButton(){
 		alert("负责人不能为空！");
 		juge = false;
 	}
+	
+	$.ajax({
+		async : false,
+		cache : false,
+		url : "${pageContext.request.contextPath}/user/ajaxCheckPhone",
+		data : {
+			'phoneNum' : phoneNum
+		},
+		type : "POST",
+		dataType : "text",
+		success : function(result) {
+			//alert(eval(result));
+			if (eval(result) == "ERROR") {
+				alert("此号码已经存在！请重新输入");
+				juge = false;
+			} 
+		}
+	});
+	
 	if(juge){
 		$("#addForm").submit();
 	} 
