@@ -126,6 +126,15 @@ function submitButton() {
 	}
 }
 </script>
+
+<script type="text/javascript">
+function deleteButton() {
+	if (window.confirm("是否确认要删除?")) {
+		$("#re_delete_form").submit();
+	}
+}
+</script>
+
 <script type="text/javascript">
 	$(function() {
 		$(".form_datetime").datetimepicker({
@@ -234,9 +243,12 @@ function updateFile(element){
 									<h3>招聘单位:</h3>
 								</div>
 								<div class="col-md-7">
-									<input name="organization" style='font-size: 18px;'
+									<%-- <input name="organization" style='font-size: 18px;'
 										id="organization" type="text" id="organization"
-										value="${sessionScope.User.organizationName }" readOnly="true">
+										value="${sessionScope.User.organizationName }" > --%>
+										<input name="organization" style='font-size: 18px;'
+										id="organization" type="text" id="organization"
+										value="${recruit.organizatinName }" >
 								</div>
 							</div>
 							<div class="form-group">
@@ -375,6 +387,12 @@ function updateFile(element){
 								<div class="col-sm-offset-3" style="margin-left: 38%;">
 									<button type="button" class="btn btn-primary"
 										onclick="submitButton()">提交</button>
+									<form id="re_delete_form" action="${pageContext.request.contextPath}/user/deleteRecruit?recruitId=${recruit.recruitId }"
+									style="height: 36px;width: 55px; float: left; position: relative;left: 165px;">
+										<input name="recruitId" type="hidden" value="${recruit.recruitId }">
+										<button style="" type="button" class="btn btn-danger"
+										onclick="deleteButton()" >删除</button>
+									</form>
 									<button type="reset" class="btn btn-primary"
 										onclick="history.back(-1)" style="margin-left: 24%">取消</button>
 								</div>

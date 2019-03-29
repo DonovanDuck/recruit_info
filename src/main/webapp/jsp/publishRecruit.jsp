@@ -239,16 +239,16 @@
 										placeholder="招聘标题">
 								</div>
 							</div>
-							<%-- <div class="form-group">
+							 <div class="form-group">
 								<div class="col-md-4 text-right" style="margin-top: 1%">
 									<h3>招聘单位:</h3>
 								</div>
 								<div class="col-md-7">
 									<input name="organization" style='font-size: 18px;'
 										id="organization" type="text" id="organization"
-										value="${sessionScope.User.organizationName }" readOnly="true">
+										value="${sessionScope.User.organizationName }" >
 								</div>
-							</div> --%>
+							</div> 
 							<div class="form-group">
 								<div class="col-md-4 text-right">
 									<h3>招聘信息:</h3>

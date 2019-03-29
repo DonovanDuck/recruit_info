@@ -333,4 +333,24 @@ public interface IUserDao {
 	 */
 	public List<Material> getMaterial(@Param(value="recruitId")String recruitId, @Param(value="openId")String openId);
 	
+	/**
+	 * 通过招聘id删除相关职位
+	 * @param recruitId
+	 */
+	public void deletePositionByRId(String recruitId);
+	
+	/**
+	 * 删除招聘信息
+	 * @param recruitId
+	 */
+	public void deleteRecruit(String recruitId);
+	
+	/**
+	 * 得到职位专业和专业方向
+	 * @param occupationApplicant
+	 * @param recruitId
+	 * @return
+	 */
+	public List<String> getProfessionalOrientation(@Param(value="occupationApplicant")String occupationApplicant, @Param(value="recruitId")String recruitId);
+	
 }

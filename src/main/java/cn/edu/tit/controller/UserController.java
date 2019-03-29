@@ -193,9 +193,10 @@ public class UserController {
 			User publisher = (User) request.getSession().getAttribute("User");
 			String publisherId = publisher.getUserId();
 			recruit.setOrganization(publisher.getOrganizationId());//设置招聘单位
+			//recruit.setOrganizatinName(publisher.getOrganizationName());
+			recruit.setOrganizatinName((String)formdata.get("organization"));
 			recruit.setPublisher(publisherId);//发布者ID
 			recruit.setPublisherName(publisher.getUserName()); //发布人名
-			recruit.setOrganizatinName(publisher.getOrganizationName());
 			ts = Timestamp.valueOf((String)formdata.get("endTime"));  
 			recruit.setEndTime(ts);//设置结束时间
 			recruit.setPublishTime(new Timestamp(System.currentTimeMillis()));//设置发布时间
@@ -249,6 +250,24 @@ public class UserController {
 		return mv;
 	}
 
+	
+	/**
+	 * 删除招聘信息 返回页面调主页面(toMainPage)
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "deleteRecruit")
+	public ModelAndView deleteRecruit(HttpServletRequest request) throws Exception {
+		ModelAndView mv = new ModelAndView();
+		try {
+			String recruitId = request.getParameter("recruitId");
+			userService.deleteRecruit(recruitId);
+			mv = toMainPage(request);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return mv;
+	}
+	
 	/**
 	 * 更新发布信息页
 	 * 表现为更新，原理类似于重新发布
@@ -270,6 +289,7 @@ public class UserController {
 			//根据recruitId找到原有的招聘信息，将现有信息全部替换
 			recruit = userService.getRecruitInfoById(recruitId);
 			recruit.setOrganization(publisher.getOrganizationId());//设置招聘单位
+			recruit.setOrganizatinName((String)formdata.get("organization"));
 			recruit.setPublisher(publisherId);//发布者ID
 			ts = Timestamp.valueOf((String)formdata.get("endTime"));  
 			recruit.setEndTime(ts);//设置结束时间
@@ -766,10 +786,10 @@ public class UserController {
 		occupationApplicantLsit = userService.getPositionByRecruitId(recruitId);// 该招聘信息对应的所有职位对象
 		recruitInfo = userService.getRecruitInfoById(recruitId);
 		// 获取单位名
-		String organizationName = userService.getOrganizationNameById(recruitInfo.getOrganization());
+//		String organizationName = userService.getOrganizationNameById(recruitInfo.getOrganization());
 		mv.addObject("occupationApplicantLsit", occupationApplicantLsit);
 		mv.addObject("recruitInfo", recruitInfo);
-		mv.addObject("organizationName",organizationName);
+		mv.addObject("organizationName",recruitInfo.getOrganizatinName());
 		mv.setViewName("/jsp/application_status");
 		return mv;
 	}
@@ -869,7 +889,7 @@ public class UserController {
 		//获取数据
 		String recruitId = (String) request.getSession().getAttribute("recruitId");
 		String positionName = request.getParameter("positionName");
-		List<Apply> list =userService.applyList(recruitId,positionName);
+		List<Apply> list =userService.applyListAll(recruitId);
 		RecruitInfo recruitInfo = userService.getRecruitInfoById(recruitId);
 		//excel标题
 		String[] title = {"报考单位","报名职位","专业及专业方向",
@@ -879,7 +899,7 @@ public class UserController {
 				"学位","应历届","是否双一流大学",
 				"是否双一流专业","本科就读院校及专业","本科毕业时间",
 				"研究生就读院校及专业","研究生毕业时间","博士就读院校及专业",
-				"博士毕业时间","原工作单位","原工作单位职务","专业技术资格",
+				"博士毕业时间","工作单位","工作单位职务","专业技术资格",
 				"执业资格","联系电话","邮箱","通讯地址","邮编","备注"};
 
 		//excel文件名
@@ -894,8 +914,13 @@ public class UserController {
 			Apply obj = list.get(i);
 			content[i][0] = obj.getApplicationOrganization();//报考单位
 			content[i][1] = obj.getOccupationApplicant();//报名职业
-			content[i][2] = obj.getProfessionalOrientation();//专业及方向
-			content[i][3] = obj.getCompilationNature();//编制性质
+			Position position = userService.getPositionByPositionNameAndRecruitId(recruitId, obj.getOccupationApplicant());
+			
+			content[i][2] =position.getProfessionalOrientation() ;//专业及方向
+
+			content[i][3] = position.getCompilationNature();//编制性质
+
+			
 			content[i][4] = obj.getApplyUserName();//姓名
 			content[i][5] = obj.getGender();//性别
 			content[i][6] = obj.getNation();//民族

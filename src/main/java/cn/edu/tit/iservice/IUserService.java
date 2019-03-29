@@ -315,4 +315,18 @@ public interface IUserService {
 	 */
 	public List<Material> getMaterial(String recruitId, String openId);
 	
+	/**
+	 * 删除招聘信息
+	 * @param recruitId
+	 */
+	public void deleteRecruit(String recruitId);
+	
+	/**
+	 * 得到职位专业和专业方向
+	 * @param occupationApplicant
+	 * @param recruitId
+	 * @return
+	 */
+	public String getProfessionalOrientation(String occupationApplicant, String recruitId);
+	
 }

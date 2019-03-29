@@ -172,7 +172,8 @@ function CurentTime(time)
 											<tr>
 												<td class="text-center" style="padding-top: 1%;">${requestScope.offset+status.index+1}</td>
 												<td class="text-center" style="padding-top: 1%;">${list.recruitInfo }</td>
-												<td class="text-center" style="padding-top: 1%;">${onameList[status.index] }</td>
+												<%-- <td class="text-center" style="padding-top: 1%;">${onameList[status.index] }</td> --%>
+												<td class="text-center" style="padding-top: 1%;">${list.organizatinName }</td>
 												<td class="text-center" style="padding-top: 1%;">${list.startTime }</td>
 												<td class="text-center" style="padding-top: 1%;">${list.endTime }</td>
 												<td class="text-center" style="padding-top: 1%;">${list.publishTime }</td>

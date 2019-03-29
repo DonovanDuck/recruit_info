@@ -100,15 +100,17 @@
 										value="${recruit.recruitInfo }" readOnly="true">
 								</div>
 							</div>
-							<%-- <div class="form-group">
+							 <div class="form-group">
 								<div class="col-md-4 text-right" style="margin-top: 1%;">
 									<h3>招聘单位:</h3>
 								</div>
 								<div class="col-md-7">
-									<input style='font-size: 18px;border: none;' type="text"
-										value="${sessionScope.User.organizationName }" readOnly="true">
+									<%-- <input style='font-size: 18px;border: none;' type="text"
+										value="${sessionScope.User.organizationName }" readOnly="true"> --%>
+										<input style='font-size: 18px;border: none;' type="text"
+										value="${recruit.organizatinName }" readOnly="true">
 								</div>
-							</div> --%>
+							</div> 
 							<div class="form-group">
 								<div class="col-md-4 text-right">
 									<h3>招聘信息:</h3>

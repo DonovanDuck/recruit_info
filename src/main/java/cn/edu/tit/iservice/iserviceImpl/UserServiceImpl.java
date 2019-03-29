@@ -540,4 +540,18 @@ public class UserServiceImpl implements IUserService {
 		// TODO Auto-generated method stub
 		return iUserDao.getMaterial(recruitId, openId);
 	}
+
+	@Override
+	public void deleteRecruit(String recruitId) {
+		// 删除招聘信息相关岗位
+		iUserDao.deletePositionByRId(recruitId);
+		// 删除招聘信息
+		iUserDao.deleteRecruit(recruitId);
+	}
+
+	@Override
+	public String getProfessionalOrientation(String occupationApplicant, String recruitId) {
+		// TODO Auto-generated method stub
+		return iUserDao.getProfessionalOrientation( occupationApplicant,  recruitId).get(0);
+	}
 }

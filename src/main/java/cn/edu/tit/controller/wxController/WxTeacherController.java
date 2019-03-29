@@ -440,6 +440,9 @@ public class WxTeacherController {
 					 (String)formdata.get("education"), (String)formdata.get("degree"), Integer.parseInt((String)formdata.get("isCurrent")), (String)formdata.get("jobPerformance"),
 						(String)formdata.get("paperTopicSituation"), (String)formdata.get("sanctionSituation"),(String)formdata.get("openId"),(String)formdata.get("formId"),(String)formdata.get("familyRelationship"));
 			apply.setSubmitTime(new Date());
+			// 获取职位专业及专业方向
+			String po = userService.getProfessionalOrientation((String)formdata.get("occupationApplicant"), (String)formdata.get("recruitId"));
+			apply.setProfessionalOrientation(po);
 			if(!returnFileList.isEmpty())
 			{
 				for(File f : returnFileList){
